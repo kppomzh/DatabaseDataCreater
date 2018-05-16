@@ -14,9 +14,9 @@ public class TableStructure implements Cloneable{
         listStructureList=new ArrayList<>();
     }
 
-    public void addlist(String ListType,boolean canbeNull,boolean isSingal,int... Range)
+    public void addlist(String ListType,String defaultDataType,boolean canbeNull,boolean isSingal,int... Range)
     {
-        listStructureList.add(new ListStructure(ListType,canbeNull,isSingal,Range));
+        listStructureList.add(new ListStructure(ListType,defaultDataType,canbeNull,isSingal,Range));
     }
 
     public boolean hasNext()

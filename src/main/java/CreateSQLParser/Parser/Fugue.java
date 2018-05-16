@@ -28,6 +28,7 @@ public class Fugue {
         mark.add("timestamp");
         mark.add("not");
         mark.add("null");
+        mark.add("stringtype");
         mark.add(";");
     }
     public Fugue()
@@ -53,18 +54,23 @@ public class Fugue {
                 }
             }
             else{
+                w.setSubstance(w.getName());
                 if(checknumber(w.getName())) {
-                    w.setSubstance(w.getName());
                     w.setName("range");
                 }
-                else if(last.getName().equals("table")) {
-                    w.setSubstance(w.getName());
-                    w.setName("tablename");
-                }
-                else if(last.getName().equals("(")
-                        ||last.getName().equals(",")){
-                    w.setSubstance(w.getName());
-                    w.setName("listname");
+                else switch (last.getName()) {
+                    case "table":
+                        w.setName("tablename");
+                        break;
+                    case "(":
+                    case ",":
+                        w.setName("listname");
+                        break;
+                    case "stringtype":
+                        w.setName("defaultdatatype");
+                        break;
+                    default:
+                        break;
                 }
             }
         }

@@ -7,19 +7,6 @@ public class privateRandom {
     private final static Random rm= new Random();
     private final static Integer[] primelist={7,3,2,5};//4
 
-//    public static int RandomNumber(int start,int end)
-//    {
-//        int Return=rm.nextInt(),mean=start;
-//        if(end==Integer.MAX_VALUE) end--;
-//        if(mean<0)
-//            mean=0;
-//        while(Math.abs(Return)<end-mean+1) {
-//            if(Return<0)
-//
-//            Return = Return * primelist[Math.abs(rm.nextInt()) % 8];
-//        }
-//        return Return%(end-mean+1)+start;
-//    }
     public static Double RandomNumber(double start,double end)
     {
         double Return=Math.abs(rm.nextDouble());

@@ -15,7 +15,7 @@ public class Parser {
         int[] range=new int[10];
         boolean rangeEnd=false;
         int arraylocal=0;
-        String listname,type="string";
+        String listname,type="string",defaultDataType="";
 
         for (; iwords.hasNext(); ) {
             Word w = iwords.next();
@@ -31,6 +31,8 @@ public class Parser {
                     range[arraylocal] = Integer.valueOf(w.getSubstance());
                     arraylocal++;
                     break;
+                case "defaultdatatype":
+                    defaultDataType=w.getSubstance();
                 case ")":
                     if (rangeEnd)
                         rangeEnd = false;
@@ -38,7 +40,7 @@ public class Parser {
                 case ";":
                 case ",":
                     if (!rangeEnd) {
-                        structure.addlist(type, false, false, range);
+                        structure.addlist(type, defaultDataType,false, false, range);
                         arraylocal = 0;
                         range = new int[10];
                     }

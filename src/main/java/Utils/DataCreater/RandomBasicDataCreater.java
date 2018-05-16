@@ -1,8 +1,17 @@
-package Utils;
+package Utils.DataCreater;
 
+import Utils.env_properties;
+import Utils.privateRandom;
 import javafx.beans.DefaultProperty;
 
 public abstract class RandomBasicDataCreater {
+    private static char[] c={
+    'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',//25
+    'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',//51
+    '0','1','2','3','4','5','6','7','8','9',//52-61
+    '_',//62
+    '(',')','<','>','?','~','!','^','%','#','+','-','=','@','$'//63-77
+    };
     public static String getDate()
     {
         int year=privateRandom.RandomNumber(1950,2050).intValue();
@@ -12,31 +21,34 @@ public abstract class RandomBasicDataCreater {
         {
             case 2:
                 date=privateRandom.RandomNumber(1,28).intValue();
+                break;
             case 4: case 6: case 9: case 11:
                 date=privateRandom.RandomNumber(1,30).intValue();
+                break;
             default:
                 date=privateRandom.RandomNumber(1,31).intValue();
         }
 
         StringBuffer sb=new StringBuffer();
-        if(env_properties.getEnvironment("toDB").equals("file")) {
-            sb.append("to_date(");
-            sb.append('\'');
-            sb.append(year);
-            if(month<10)
-                sb.append('0');
-            sb.append(month);
-            sb.append(date);
-            sb.append("\',\'yyyymmdd\')");
-        }
-        else{
-            sb.append(year);
-            sb.append('-');
-            if(month<10)
-                sb.append('0');
-            sb.append(month);
-            sb.append('-');
-            sb.append(date);
+        sb.append(year);
+        if(month<10)
+            sb.append('0');
+        sb.append(month);
+        if(date<10)
+            sb.append('0');
+        sb.append(date);
+        switch (env_properties.getEnvironment("toDB")) {
+            case "file":
+            case "jdbc":
+                sb.insert(0, "to_date(\'");
+                sb.append("\',\'yyyymmdd\')");
+                break;
+            case "load":
+                sb.insert(4, '-');
+                sb.insert(7, '-');
+                break;
+            default:
+                break;
         }
 
         return sb.toString();
@@ -76,7 +88,8 @@ public abstract class RandomBasicDataCreater {
                 strRange=privateRandom.RandomNumber(1,strRange>>3).intValue();
         }
 
-        if(env_properties.getEnvironment("toDB").equals("file")) {
+        if(env_properties.getEnvironment("toDB").equals("file")||
+                env_properties.getEnvironment("toDB").equals("jdbc")) {
             str = new char[strRange + 2];
             str[0]='\'';
             str[strRange+1]='\'';
@@ -86,40 +99,28 @@ public abstract class RandomBasicDataCreater {
             str=new char[strRange];
         for(int loop=start;loop<strRange+start;loop++)
         {
-            switch(privateRandom.RandomNumber(1,9).intValue())
-            {
-                case 1: case 9:
-                    str[loop]=RandomCharNumber();
-                    break;
-                case 2:case 5:case 8:
-                    str[loop]=RandomCharLowcase();
-                    break;
-                case 3:case 7:case 6:
-                    str[loop]=RandomCharUppercase();
-                    break;
-                case 4:
-                default:
-                    str[loop]=RandomCharMark();
-            }
+            str[loop]=c[privateRandom.RandomNumber(0,c.length-1).intValue()];
         }
         return new String(str);
     }
 
+    //定长数值函数
+    public static String getFixNumber(int intRange, int decRange, boolean canbeNegative)
+    {
+        char Result[];
+        int length=intRange;
+        if(decRange>0)
+            length=length+decRange+1;
 
-    private static char RandomCharNumber()
-    {
-        return (char)privateRandom.RandomNumber(48,57).intValue();
-    }
-    private static char RandomCharLowcase()
-    {
-        return (char)privateRandom.RandomNumber(97,122).intValue();
-    }
-    private static char RandomCharUppercase()
-    {
-        return (char)privateRandom.RandomNumber(65,90).intValue();
-    }
-    private static char RandomCharMark()
-    {
-        return '_';
+        Result=new char[length];
+        for(int loop=0;loop<length;loop++)
+        {
+            Result[loop]=c[privateRandom.RandomNumber(52,61).intValue()];
+        }
+
+        if(canbeNegative)
+            return '-'+new String(Result);
+        else
+            return new String(Result);
     }
 }

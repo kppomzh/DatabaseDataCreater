@@ -1,6 +1,7 @@
 package Utils.insert;
 
-import Utils.RandomBasicDataCreater;
+import Utils.DataCreater.RandomAdvanceDataCreater;
+import Utils.DataCreater.RandomBasicDataCreater;
 import Utils.env_properties;
 import dataStruture.ListStructure;
 import dataStruture.TableStructure;
@@ -20,55 +21,48 @@ public class InsertSQLCreater implements Runnable{
 
     @Override
     public void run() {
-//        try {
-//            mStartSignal.await();
-            // 所有的工作线程都在等待同一个启动的命令
-            for(double loop=0;loop<makenumber;loop++)
-                makeainsert();
-//            mDoneSignal.countDown();// 完成以后计数减一
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
+        for(double loop=0;loop<makenumber;loop++)
+            makeainsert();
     }
 
     private void makeainsert()
     {
         StringBuffer sb=new StringBuffer();
-        if(env_properties.getEnvironment("toDB").equals("file")){
-            sb.append("insert into ");
-            sb.append(tablename);
-            sb.append(" values(");
-        }
         while (tableStructure.hasNext())
         {
             ListStructure ls=tableStructure.getNextStruc();
-            switch (ls.getListType())
-            {
-                case "number":
-                    sb.append(RandomBasicDataCreater.getNumber(ls.getRange()[0],ls.getRange()[1],true));
-                    break;
-                case "string":
-                    sb.append(RandomBasicDataCreater.getStr(ls.getRange()[0]));
-                    break;
-                case "date":
-                    sb.append(RandomBasicDataCreater.getDate());
-                    break;
-
+            if(ls.getDefaultType().equals("")){
+                switch (ls.getListType())
+                {
+                    case "number":
+                        sb.append(RandomBasicDataCreater.getNumber(ls.getRange()[0],ls.getRange()[1],true));
+                        break;
+                    case "date":
+                        sb.append(RandomBasicDataCreater.getDate());
+                        break;
+                    case "string":
+                    default:
+                        sb.append(RandomBasicDataCreater.getStr(ls.getRange()[0]));
+                        break;
+                }
+            }
+            else{
+                switch (ls.getDefaultType()){
+                    case "IDcard":
+                        sb.append(RandomAdvanceDataCreater.chineseIDNumber());
+                        break;
+                }
             }
             sb.append(',');
         }
         sb.deleteCharAt(sb.length()-1);
-        if(env_properties.getEnvironment("toDB").equals("file")) {
+        if(env_properties.getEnvironment("toDB").equals("file")||
+                env_properties.getEnvironment("toDB").equals("jdbc")) {
+            sb.insert(0," values(");
+            sb.insert(0,tablename);
+            sb.insert(0,"insert into ");
             sb.append(");");
         }
         writer.WriteLine(sb.toString());
     }
-
-//    public Runnable setstart(CountDownLatch mStartSignal,CountDownLatch mDoneSignal,int i)
-//    {
-//        this.mStartSignal=mStartSignal;
-//        this.mDoneSignal=mDoneSignal;
-//        this.mThreadIndex=i;
-//        return this;
-//    }
 }

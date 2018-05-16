@@ -5,13 +5,15 @@ public class ListStructure implements Cloneable{
     private int[] Range;
     private boolean canbeNull;
     private boolean isSingal;
+    private String defaultType;
 
-    public ListStructure(String ListType,boolean canbeNull,boolean isSingal,int... Range)
+    public ListStructure(String ListType,String defaultDataType,boolean canbeNull,boolean isSingal,int... Range)
     {
         this.canbeNull=canbeNull;
         this.isSingal=isSingal;
         this.ListType =ListType;
         this.Range=Range;
+        this.defaultType=defaultDataType;
     }
 
     public String getListType() {
@@ -33,5 +35,9 @@ public class ListStructure implements Cloneable{
     @Override
     public Object clone() throws CloneNotSupportedException {
         return super.clone();
+    }
+
+    public String getDefaultType() {
+        return defaultType;
     }
 }

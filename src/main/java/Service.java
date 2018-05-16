@@ -36,6 +36,12 @@ public class Service {
                 case "-h":
                     new help().printHelpMessage();
                     System.exit(0);
+                case "-O":
+                    env_properties.setEnvironment("Optimal", "true");
+                    break;
+                case "-a":
+                    env_properties.setEnvironment("asynchronous", "true");
+                    break;
             }
         }
         if(filename==null) {
