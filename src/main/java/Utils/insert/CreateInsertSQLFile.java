@@ -45,7 +45,13 @@ public class CreateInsertSQLFile {
         Thread.sleep((long) (linenumber/40000));
         service.awaitTermination(1,TimeUnit.HOURS);
 
+        if(env_properties.getEnvironment("asynchronous").equals("true"))
+            for(int loop=0;loop<TOTAL_THREADS;loop++)
+            {
+                writers[loop].closeWriter();
+            }
+        else
             fileWriter.closeWriter();
-            return result;
+        return result;
     }
 }

@@ -38,7 +38,7 @@ public class InsertSQLCreater implements Runnable{
                         sb.append(RandomBasicDataCreater.getNumber(ls.getRange()[0],ls.getRange()[1],true));
                         break;
                     case "date":
-                        sb.append(RandomBasicDataCreater.getDate());
+                        sb.append(RandomBasicDataCreater.getDate(true));
                         break;
                     case "string":
                     default:
@@ -48,8 +48,14 @@ public class InsertSQLCreater implements Runnable{
             }
             else{
                 switch (ls.getDefaultType()){
-                    case "IDcard":
+                    case "idcard":
                         sb.append(RandomAdvanceDataCreater.chineseIDNumber());
+                        break;
+                    case "email":
+                        sb.append(RandomAdvanceDataCreater.emailAddress(ls.getRange()[0]));
+                        break;
+                    case "tele":
+                        sb.append(RandomAdvanceDataCreater.telephoneNumber());
                         break;
                 }
             }

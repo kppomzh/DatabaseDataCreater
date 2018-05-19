@@ -5,10 +5,7 @@ import dataStruture.TableStructure;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 public class CreateInsertSQLJDBC {
     private static final int TOTAL_THREADS = Integer.valueOf(env_properties.getEnvironment("TOTAL_THREADS"));
@@ -36,10 +33,6 @@ public class CreateInsertSQLJDBC {
         Thread.sleep((long) (linenumber/40000));
         service.awaitTermination(1,TimeUnit.HOURS);
 
-//        new InsertSQLCreater(ts.getTbname(),
-//                (TableStructure)ts.clone(),
-//                linenumber.intValue(),
-//                new textFileJDBC()).singalrun();
         return result;
     }
 }

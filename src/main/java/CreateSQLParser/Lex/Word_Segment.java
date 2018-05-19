@@ -34,8 +34,6 @@ public class Word_Segment {
             if (Stop && toWord.length() != 0) {
                 String isWord = toWord.toString().toLowerCase();//统一转换成小写
                 if (single_quotation)
-                //在这里通过略微损失效率，每字符进行比较，从而正确完成解析
-                //遇到单引号，需要构造String
                 {
                     StringBuffer quo = new StringBuffer();
                     create_word_and_add(isWord, null);
@@ -74,7 +72,6 @@ public class Word_Segment {
 
     private void build_undefined_var(String isWord) throws Exception {
         boolean nocreate = true;
-        //接下来有两种可能，1.这是一个对象名称、2.这是不存在的单词
         if (status.equals(Coolean.mark))
             throw new Exception(nowline + nowlist + isWord + "符号不存在");
 
@@ -183,10 +180,7 @@ public class Word_Segment {
     }
 
     private Integer Stringinquotation(int loopo, StringBuffer str) throws Exception {
-        //loopo是引号所在的位置，包括单双引号,注意SQL只支持单引号字符串
-        //反斜杠以及转义的识别是严重问题
-        //String example1="'\""; 单引号和双引号区间内不同种引号的识别情况
-        //char example2='"';
+        //loopo是引号所在的位置
         char stop = '\'';
         int loop = 1;
         while (true) {
@@ -213,10 +207,7 @@ public class Word_Segment {
         return loop;
     }
     private Integer varnameinquotation(int loopo, StringBuffer str) throws Exception {
-        //loopo是引号所在的位置，包括单双引号,注意SQL只支持单引号字符串
-        //反斜杠以及转义的识别是严重问题
-        //String example1="'\""; 单引号和双引号区间内不同种引号的识别情况
-        //char example2='"';
+        //loopo是引号所在的位置，单引号和双引号区间内不同种引号的识别情况
         char stop = '\"';
         int loop = 1;
         while (true) {
@@ -224,7 +215,7 @@ public class Word_Segment {
             if (loopo + loop == toSQL.length() - 1)
                 throw new Exception(nowline + nowlist + "没有终结符号的字符串");
 
-            if (toSQL.charAt(loopo + loop) == stop)//应对标准形式的Oeacle单引号转义
+            if (toSQL.charAt(loopo + loop) == stop)
             {
                 break;
             } else

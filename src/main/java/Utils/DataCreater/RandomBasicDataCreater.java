@@ -12,7 +12,7 @@ public abstract class RandomBasicDataCreater {
     '_',//62
     '(',')','<','>','?','~','!','^','%','#','+','-','=','@','$'//63-77
     };
-    public static String getDate()
+    public static String getDate(boolean outuse)
     {
         int year=privateRandom.RandomNumber(1950,2050).intValue();
         int month=privateRandom.RandomNumber(1,12).intValue();
@@ -37,19 +37,20 @@ public abstract class RandomBasicDataCreater {
         if(date<10)
             sb.append('0');
         sb.append(date);
-        switch (env_properties.getEnvironment("toDB")) {
-            case "file":
-            case "jdbc":
-                sb.insert(0, "to_date(\'");
-                sb.append("\',\'yyyymmdd\')");
-                break;
-            case "load":
-                sb.insert(4, '-');
-                sb.insert(7, '-');
-                break;
-            default:
-                break;
-        }
+        if(outuse)
+            switch (env_properties.getEnvironment("toDB")) {
+                case "file":
+                case "jdbc":
+                    sb.insert(0, "to_date(\'");
+                    sb.append("\',\'yyyymmdd\')");
+                    break;
+                case "load":
+                    sb.insert(4, '-');
+                    sb.insert(7, '-');
+                    break;
+                default:
+                    break;
+            }
 
         return sb.toString();
     }
@@ -122,5 +123,26 @@ public abstract class RandomBasicDataCreater {
             return '-'+new String(Result);
         else
             return new String(Result);
+    }
+    //获取不带符号引号的字符串
+    public static String getNameStr(int strRange)
+    {
+        int start=0;
+        char[] str;
+        if(strRange<1) {
+            strRange=privateRandom.RandomNumber(1,10).intValue();
+        } else if(env_properties.getEnvironment("Optimal").equals("true")) {
+            if (strRange < 32&&strRange>8)
+                strRange=strRange-privateRandom.RandomNumber(1,8).intValue();
+            else if(strRange>=32)
+                strRange=privateRandom.RandomNumber(1,strRange>>3).intValue();
+        }
+
+        str=new char[strRange];
+        for(int loop=start;loop<strRange+start;loop++)
+        {
+            str[loop]=c[privateRandom.RandomNumber(0,62).intValue()];
+        }
+        return new String(str);
     }
 }

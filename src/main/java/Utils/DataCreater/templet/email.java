@@ -1,9 +1,14 @@
 package Utils.DataCreater.templet;
 
-public enum email {
-    QQ,N163,N126,hotmail,Gmail;
+import Utils.privateRandom;
 
-    email() {
+public abstract class email {
+    private static String[] emailSuffix={"@qq.com","@163.com","@126.com",
+            "@hotmail.com","@gmail.com","@yeah.net",
+            "@sina.com"};
 
+    public static String getRandomEmailSuffix()
+    {
+        return emailSuffix[privateRandom.RandomNumber(0,emailSuffix.length-1).intValue()];
     }
 }

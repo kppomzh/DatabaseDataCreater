@@ -15,7 +15,7 @@ public class Service {
         String filename=null,FileString;
         String[] createSQLs=null;
         Double linenumber = null;
-        for(int loop=0;loop<args.length-1;loop++)
+        for(int loop=0;loop<args.length;loop++)
         {
             switch (args[loop]) {
                 case "-f":
@@ -61,7 +61,6 @@ public class Service {
             TableStructure ts = CreateTableStruc.makeStructure(SQL + ';');
             if (env_properties.getEnvironment("toDB").equals("jdbc"))
             {
-                new textFileJDBC().WriteCreateinJDBC(SQL + ';');//先自动建表，即使已经有表失败也无所谓
                 CreateInsertSQLJDBC sqljdbc=new CreateInsertSQLJDBC();
                 sqljdbc.CreateInsertSQLJDBC(ts,linenumber);
             }

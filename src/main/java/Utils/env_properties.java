@@ -43,9 +43,6 @@ public class env_properties {
         {
             if(load)
             {
-//                env.setProperty("listlength", "15");
-
-//                System.out.println("默认参数已加载");
             }
         }
     }

@@ -43,6 +43,7 @@ public class Parser {
                         structure.addlist(type, defaultDataType,false, false, range);
                         arraylocal = 0;
                         range = new int[10];
+                        defaultDataType="";
                     }
                     break;
             }
