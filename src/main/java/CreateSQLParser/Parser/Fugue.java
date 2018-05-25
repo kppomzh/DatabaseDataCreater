@@ -2,6 +2,7 @@ package CreateSQLParser.Parser;
 
 import CreateSQLParser.Lex.Word;
 import SavingTypeString.DataType;
+import SavingTypeString.stringType;
 
 import java.util.HashSet;
 import java.util.Iterator;

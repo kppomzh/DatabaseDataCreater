@@ -125,7 +125,7 @@ public abstract class RandomBasicDataCreater {
             return new String(Result);
     }
     //获取不带符号引号的字符串
-    public static String getNameStr(int strRange)
+    public static char[] getNameStr(int strRange)
     {
         int start=0;
         char[] str;
@@ -143,6 +143,32 @@ public abstract class RandomBasicDataCreater {
         {
             str[loop]=c[privateRandom.RandomNumber(0,62).intValue()];
         }
-        return new String(str);
+        return str;
+    }
+
+    public static char[] getArbitraryCharacter(int strRange,char type)
+    {
+        char[] str=new char[strRange];
+        int min=0,max=c.length-1;
+
+        switch (type){
+            case 'c':
+                min=0;max=51;break;
+            case 'b':
+                min=0;max=25;break;
+            case 's':
+                min=26;max=51;break;
+            case 'm':
+                min=62;max=c.length-1;break;
+            case 'n':
+                min=52;max=61;break;
+        }
+
+        for(int loop=0;loop<strRange;loop++)
+        {
+            str[loop]=c[privateRandom.RandomNumber(min,max).intValue()];
+        }
+
+        return str;
     }
 }

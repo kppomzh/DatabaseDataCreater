@@ -5,7 +5,7 @@ import java.io.*;
 public class textFileWriter  implements tF{
     private File textfile;
     private long writenum;
-    private FileOutputStream fos;
+    private BufferedOutputStream bos;
 
     public textFileWriter(String Filename) throws IOException {
         textfile=new File(Filename);
@@ -17,23 +17,24 @@ public class textFileWriter  implements tF{
         else
             throw new IOException(textfile.getPath()+"can't be write.");
 
-        fos=new FileOutputStream(textfile,false);
+        bos=new BufferedOutputStream(new FileOutputStream(textfile,false),5242880);
+        //暂定5M缓存
         writenum=0;
     }
     @Override
     public synchronized boolean WriteLine(String insert) {
         try {
-            fos.write(insert.getBytes());
-            fos.write("\r\n".getBytes());
-            System.out.println(textfile.getName()+' '+writenum++);
+            bos.write(insert.getBytes());
+            bos.write("\r\n".getBytes());
+//            System.out.println(textfile.getName()+' '+writenum++);
             return true;
         } catch (IOException e) {
             e.printStackTrace();
             return false;
         }
     }
+    @Override
     public void closeWriter() throws IOException {
-        fos.flush();
-        fos.close();
+        bos.close();
     }
 }

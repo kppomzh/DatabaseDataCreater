@@ -19,20 +19,24 @@ public class Service {
         {
             switch (args[loop]) {
                 case "-f":
-                    System.out.print(":");
                     filename = args[loop + 1];
+                    loop++;
                     break;
                 case "-n":
                     linenumber = Double.valueOf(args[loop + 1]);
+                    loop++;
                     break;
                 case "-s":
                     env_properties.setEnvironment(args[loop + 1].split(",")[0], args[loop + 1].split(",")[1]);
+                    loop++;
                     break;
                 case "-o":
                     env_properties.setEnvironment("baseFileDir", args[loop + 1]);
+                    loop++;
                     break;
                 case "-t":
                     env_properties.setEnvironment("TOTAL_THREADS", args[loop + 1]);
+                    loop++;
                 case "-h":
                     new help().printHelpMessage();
                     System.exit(0);

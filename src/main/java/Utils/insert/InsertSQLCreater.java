@@ -21,12 +21,16 @@ public class InsertSQLCreater implements Runnable{
 
     @Override
     public void run() {
-        for(double loop=0;loop<makenumber;loop++)
-            makeainsert();
+        for(double loop=0;loop<makenumber;loop++) {
+            try {
+                makeainsert();
+            } catch (Exception e) {
+                throw new RuntimeException(e.getMessage());
+            }
+        }
     }
 
-    private void makeainsert()
-    {
+    private void makeainsert() throws Exception {
         StringBuffer sb=new StringBuffer();
         while (tableStructure.hasNext())
         {
@@ -47,15 +51,20 @@ public class InsertSQLCreater implements Runnable{
                 }
             }
             else{
+                if (!ls.getListType().equals("string"))
+                    throw new Exception("非字符串类型不能使用stringtype关键字");
                 switch (ls.getDefaultType()){
                     case "idcard":
-                        sb.append(RandomAdvanceDataCreater.chineseIDNumber());
+                        sb.append(RandomAdvanceDataCreater.chineseIDNumber(ls.getRange()[0]));
                         break;
                     case "email":
                         sb.append(RandomAdvanceDataCreater.emailAddress(ls.getRange()[0]));
                         break;
                     case "tele":
-                        sb.append(RandomAdvanceDataCreater.telephoneNumber());
+                        sb.append(RandomAdvanceDataCreater.telephoneNumber(ls.getRange()[0]));
+                        break;
+                    default:
+                        sb.append(RandomAdvanceDataCreater.freeStringType(ls.getRange()[0],ls.getDefaultType()));
                         break;
                 }
             }

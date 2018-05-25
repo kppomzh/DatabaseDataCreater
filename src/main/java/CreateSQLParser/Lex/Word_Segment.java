@@ -26,29 +26,17 @@ public class Word_Segment {
             char c = toSQL.charAt(loop);
             Coolean nowstatus = c_BuildWord(c);
             boolean isStop = nowstatus.equals(Coolean.stop);//
-            boolean charStop = charStop(nowstatus);//
-            boolean single_quotation = (c == '\'');//判断是否转入String类型处理函数
-            boolean double_quotation = (c == '\"');
-            boolean Stop = isStop | charStop | single_quotation;
+            boolean charStop = charStop(nowstatus);
+            boolean quotation = (c == '\"');
+            boolean Stop = isStop | charStop | quotation;
 
             if (Stop && toWord.length() != 0) {
                 String isWord = toWord.toString().toLowerCase();//统一转换成小写
-                if (single_quotation)
+                if(quotation)
                 {
                     StringBuffer quo = new StringBuffer();
                     create_word_and_add(isWord, null);
-                    Integer cp_length = Stringinquotation(loop, quo);
-                    create_word_and_add("String", quo.toString());
-                    loop = loop + cp_length;//loop停在后面的单引号上
-                    nowstatus = Coolean.mark;
-                    toWord.delete(0, toWord.length());
-                    continue;
-                }
-                else if(double_quotation)
-                {
-                    StringBuffer quo = new StringBuffer();
-                    create_word_and_add(isWord, null);
-                    Integer cp_length = varnameinquotation(loop,quo);
+                    Integer cp_length = varnameinquotation(loop,quo,c);
                     create_word_and_add(quo.toString(), null);
                     loop = loop + cp_length;//loop停在后面的单引号上
                     nowstatus = Coolean.mark;
@@ -61,6 +49,10 @@ public class Word_Segment {
 
             if (!nowstatus.equals(Coolean.stop)) {
                 toWord.append(c);
+                if(c=='\'') {
+                    loop = loop + varnameinquotation(loop, toWord, c)+1;
+                    toWord.append(c);
+                }
             }
 
             status = nowstatus;
@@ -68,15 +60,6 @@ public class Word_Segment {
         create_word_and_add(";", null);
 
         return LW;
-    }
-
-    private void build_undefined_var(String isWord) throws Exception {
-        boolean nocreate = true;
-        if (status.equals(Coolean.mark))
-            throw new Exception(nowline + nowlist + isWord + "符号不存在");
-
-        else
-            create_word_and_add(isWord, null);
     }
 
     private Coolean c_BuildWord(char c) throws Exception {
@@ -105,7 +88,6 @@ public class Word_Segment {
             case '=':
             case '>':
             case '^':
-            case '\'':
             case '\"':
                 return Coolean.mark;//识别为mark的时候将当前字符列为单词
 
@@ -173,42 +155,15 @@ public class Word_Segment {
             case 'Z':
             case '.':
             case '_':
-                return Coolean.letter;
+            case '\''://单引号在纯create语句当中并没有作用，所以被拿来当作stringType的一个字符来识别
+//                return Coolean.letter;
             default:
-                throw new Exception(nowline + nowlist + "该字符是非法字符");
+                return Coolean.letter;
         }
     }
 
-    private Integer Stringinquotation(int loopo, StringBuffer str) throws Exception {
-        //loopo是引号所在的位置
-        char stop = '\'';
-        int loop = 1;
-        while (true) {
-            nowlist++;
-            if (loopo + loop == toSQL.length() - 1)
-                throw new Exception(nowline + nowlist + "没有终结符号的字符串");
-            if (toSQL.charAt(loopo + loop) == '\n') {
-                nowline = nowline + 1;
-                nowlist = 0;
-            }
-            if (toSQL.charAt(loopo + loop) == stop)//应对标准形式的Oeacle单引号转义
-            {
-                if (toSQL.charAt(loopo + loop + 1) == stop) {
-                    str.append(stop);
-                    loop++;
-                } else
-                    break;
-            } else
-                str.append(toSQL.charAt(loopo + loop));
-            loop++;
-        }
-        //最后要将生成的String和String的结尾位置返回上层函数，同时将整个String视为一个"字"
-        status = Coolean.letter;
-        return loop;
-    }
-    private Integer varnameinquotation(int loopo, StringBuffer str) throws Exception {
+    private Integer varnameinquotation(int loopo, StringBuffer str,char stop) throws Exception {
         //loopo是引号所在的位置，单引号和双引号区间内不同种引号的识别情况
-        char stop = '\"';
         int loop = 1;
         while (true) {
             nowlist++;

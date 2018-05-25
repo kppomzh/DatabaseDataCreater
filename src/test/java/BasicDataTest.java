@@ -15,17 +15,16 @@ public class BasicDataTest {
         System.out.println(RandomBasicDataCreater.getDate(true));
     }
     @Test
-    public void emailtest()
-    {
+    public void emailtest() throws Exception {
         System.out.println(RandomAdvanceDataCreater.emailAddress(15));
     }
 
     @Test
-    public void idcardtest(){
-        System.out.println(RandomAdvanceDataCreater.chineseIDNumber());
+    public void idcardtest() throws Exception {
+        System.out.println(RandomAdvanceDataCreater.chineseIDNumber(18));
     }
     @Test
-    public void teltest(){
-        System.out.println(RandomAdvanceDataCreater.telephoneNumber());
+    public void teltest() throws Exception {
+        System.out.println(RandomAdvanceDataCreater.telephoneNumber(11));
     }
 }

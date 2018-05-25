@@ -17,6 +17,13 @@ public class textFileJDBC implements tF {
             return false;
         }
     }
+
+    @Override
+    public void closeWriter() throws SQLException {
+        getConn.Stmt().close();
+        getConn.Conn().close();
+    }
+
     public synchronized boolean WriteCreateinJDBC(String create) {
         try {
             getConn.Stmt().executeUpdate(create);

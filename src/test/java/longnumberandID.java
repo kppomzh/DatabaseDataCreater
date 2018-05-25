@@ -3,8 +3,7 @@ import org.junit.Test;
 
 public class longnumberandID {
     @Test
-    public void test()
-    {
-        System.out.println(RandomAdvanceDataCreater.chineseIDNumber());
+    public void test() throws Exception {
+        System.out.println(RandomAdvanceDataCreater.chineseIDNumber(5));
     }
 }

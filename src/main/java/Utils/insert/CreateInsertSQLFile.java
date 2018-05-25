@@ -15,7 +15,7 @@ public class CreateInsertSQLFile {
         ExecutorService service = Executors.newFixedThreadPool(TOTAL_THREADS);
         List<Future<?>> tasks = new ArrayList<>();//Future接口提供方法来检测任务是否被执行完，等待任务执行完获得结果，也可以设置任务执行的超时时间。
         boolean result = true;
-        textFileWriter fileWriter = null,writers[]=new textFileWriter[TOTAL_THREADS];
+        tF fileWriter = null,writers[]=new textFileWriter[TOTAL_THREADS];
 
         int outnum = linenumber.intValue() % TOTAL_THREADS;
 
@@ -45,13 +45,10 @@ public class CreateInsertSQLFile {
         Thread.sleep((long) (linenumber/40000));
         service.awaitTermination(1,TimeUnit.HOURS);
 
-        if(env_properties.getEnvironment("asynchronous").equals("true"))
-            for(int loop=0;loop<TOTAL_THREADS;loop++)
-            {
-                writers[loop].closeWriter();
-            }
-        else
-            fileWriter.closeWriter();
+        for(int loop=0;loop<TOTAL_THREADS;loop++)
+        {
+            writers[loop].closeWriter();
+        }
         return result;
     }
 }
