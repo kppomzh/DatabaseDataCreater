@@ -7,22 +7,17 @@ public class Word_Segment {
     LinkedList<Word> LW;//主SQL序列
     Coolean status;
     String toSQL;
-    int nowline, nowlist, streamPoint = 0;
 
     public Word_Segment() {
         LW = new LinkedList<>();
-        nowline = 1;
-        nowlist = 0;
     }
 
     public LinkedList<Word> Segment(String content) throws Exception {
-        streamPoint = 0;
         LW.clear();
         toSQL = content;
         StringBuffer toWord = new StringBuffer();
         status = Coolean.letter;
         for (int loop = 0; loop < toSQL.length(); loop++) {
-            nowlist++;
             char c = toSQL.charAt(loop);
             Coolean nowstatus = c_BuildWord(c);
             boolean isStop = nowstatus.equals(Coolean.stop);//
@@ -64,9 +59,7 @@ public class Word_Segment {
 
     private Coolean c_BuildWord(char c) throws Exception {
         switch (c) {
-            case '\n'://遇到换行符将行列数据刷新
-                nowline = nowline + 1;
-                nowlist = 0;
+            case '\n':
             case ' ':
             case '\r':
             case ';':
@@ -76,21 +69,22 @@ public class Word_Segment {
 
             case '(':
             case ')':
-            case '!':
-            case '%':
-            case '*':
-            case '+':
+//            case '!':
+//            case '%':
             case ',':
-            case '-':
-            case '/'://46是'.'，要作为小数点保留//case '\"':
-            case ':':
-            case '<':
-            case '=':
-            case '>':
-            case '^':
+//            case '/':
+//            case ':':
             case '\"':
                 return Coolean.mark;//识别为mark的时候将当前字符列为单词
 
+            case '[':
+            case ']':
+            case '{':
+            case '}':
+            case '?':
+            case '*':
+            case '+':
+                //类正则表达式
             case '0':
             case '1':
             case '2':
@@ -166,9 +160,8 @@ public class Word_Segment {
         //loopo是引号所在的位置，单引号和双引号区间内不同种引号的识别情况
         int loop = 1;
         while (true) {
-            nowlist++;
             if (loopo + loop == toSQL.length() - 1)
-                throw new Exception(nowline + nowlist + "没有终结符号的字符串");
+                throw new Exception("没有终结符号的字符串");
 
             if (toSQL.charAt(loopo + loop) == stop)
             {
@@ -186,9 +179,9 @@ public class Word_Segment {
     private void create_word_and_add(String name, String substance) {
         Word word;
         if (name.equals("String"))
-            word = new Word(name, substance, nowline, nowlist - substance.length(), status.equals(Coolean.mark));
+            word = new Word(name, substance, status.equals(Coolean.mark));
         else
-            word = new Word(name, substance, nowline, nowlist - name.length(), status.equals(Coolean.mark));
+            word = new Word(name, substance, status.equals(Coolean.mark));
         LW.add(word);
     }
 

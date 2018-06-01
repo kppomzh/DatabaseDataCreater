@@ -3,7 +3,7 @@ public class help {
             "这些数据可以以insert语句的方式产生，也可以是逗号隔开的格式通过数据库外部表或load工具来利用。支持通过JDBC直接导入数据。\n" +
             "目前本工具不支持过分复杂的create，比如带有索引或者带默认值的SQL，会被掠过。\n" +
             "目前可以在每个字段的后面加上stringtype关键字来指定当前字段的数据格式，其中固定格式包括idcard（中国身份证号）、\n" +
-            "tele（手机号）、email（电子邮件）的随机生成；自定义格式支持以下五种：字母 c、大写字母 b、小写字母 s、数字 n、（特定）标点符号 m\n" +
+            "tele（手机号）、Email（电子邮件）的随机生成；自定义格式支持以下五种：字母 c、大写字母 b、小写字母 s、数字 n、（特定）标点符号 m\n" +
             "，字母后面加上数字表示生成数量，另外可以用单引号表达特定字符串，比如'http://'，就可以在特定位置生成http://字符串。\n" +
             "字段类型会覆盖先前指定的类型，所以务必保证对应字段的数据类型是长度足够的字符串形式。\n" +
             "例如create table t(id varchar2(20) stringtype idcard);，就会向id字段中填入随机的身份证号。\n" +
@@ -16,7 +16,7 @@ public class help {
             "件实现。\n" +
             "-a:允许异步写（将一个表的insert拆分成多个sql文件），可以加快生成速度。\n" +
             "-O:允许SQL优化，将特别长的字符串随机缩短长度之后再输出，可以加快生成速度。\n";
-    public void printHelpMessage()
+    public static void printHelpMessage()
     {
         System.out.println(help);
     }

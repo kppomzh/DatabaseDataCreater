@@ -37,8 +37,9 @@ public class Service {
                 case "-t":
                     env_properties.setEnvironment("TOTAL_THREADS", args[loop + 1]);
                     loop++;
+                    break;
                 case "-h":
-                    new help().printHelpMessage();
+                    help.printHelpMessage();
                     System.exit(0);
                 case "-O":
                     env_properties.setEnvironment("Optimal", "true");

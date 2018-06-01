@@ -16,15 +16,20 @@ public class BasicDataTest {
     }
     @Test
     public void emailtest() throws Exception {
-        System.out.println(RandomAdvanceDataCreater.emailAddress(15));
+        System.out.println(new RandomAdvanceDataCreater().email(15));
     }
 
     @Test
     public void idcardtest() throws Exception {
-        System.out.println(RandomAdvanceDataCreater.chineseIDNumber(18));
+        System.out.println(new RandomAdvanceDataCreater().ch_idcard(18));
     }
     @Test
     public void teltest() throws Exception {
-        System.out.println(RandomAdvanceDataCreater.telephoneNumber(11));
+        System.out.println(new RandomAdvanceDataCreater().telephone(11));
+    }
+    @Test
+    public void chinesetest() throws Exception {
+
+        System.out.println(new RandomAdvanceDataCreater().ch_word(11).length());
     }
 }

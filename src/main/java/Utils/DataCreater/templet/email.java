@@ -2,7 +2,7 @@ package Utils.DataCreater.templet;
 
 import Utils.privateRandom;
 
-public abstract class email {
+public abstract class Email {
     private static String[] emailSuffix={"@qq.com","@163.com","@126.com",
             "@hotmail.com","@gmail.com","@yeah.net",
             "@sina.com"};

@@ -13,7 +13,8 @@ public class alltest {
     public static void main(String[] ar) throws Exception {
         long time=System.currentTimeMillis();
 
-        Service.main(new String[]{"-n","20000000","-f","f:/create.txt","-a","-o","E:/"});
+//        Service.main(new String[]{"-n","20000000","-f","f:/create.txt","-a","-o","E:/"});
+        Service.main(new String[]{"-n","2000000","-a","-f","f:/create.txt","-t","4","-o","f:/"});
 
         System.out.println(((System.currentTimeMillis()-time)/1000.0)/60.0+" min");
     }

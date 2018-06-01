@@ -2,7 +2,6 @@ package Utils.DataCreater;
 
 import Utils.env_properties;
 import Utils.privateRandom;
-import javafx.beans.DefaultProperty;
 
 public abstract class RandomBasicDataCreater {
     private static char[] c={
@@ -76,74 +75,51 @@ public abstract class RandomBasicDataCreater {
 
         return sb.toString();
     }
-    public static String getStr(int strRange)
+    public static char[] getStr(int range)
     {
-        int start=0;
         char[] str;
-        if(strRange<1)
-            strRange=privateRandom.RandomNumber(1,10).intValue();
-        else if(env_properties.getEnvironment("Optimal").equals("true")) {
-            if (strRange < 32&&strRange>8)
-                strRange=strRange-privateRandom.RandomNumber(1,8).intValue();
-            else if(strRange>=32)
-                strRange=privateRandom.RandomNumber(1,strRange>>3).intValue();
-        }
+        range=strRangeOptimal(range);
 
         if(env_properties.getEnvironment("toDB").equals("file")||
                 env_properties.getEnvironment("toDB").equals("jdbc")) {
-            str = new char[strRange + 2];
+            range = range + 2;
+            str= basicCharArrayFill(range,1,range-1,0,c.length-1);
             str[0]='\'';
-            str[strRange+1]='\'';
-            start=1;
+            str[range+1]='\'';
         }
         else
-            str=new char[strRange];
-        for(int loop=start;loop<strRange+start;loop++)
-        {
-            str[loop]=c[privateRandom.RandomNumber(0,c.length-1).intValue()];
-        }
-        return new String(str);
+            str= basicCharArrayFill(range,0,range,0,c.length-1);
+
+        return str;
     }
 
     //定长数值函数
-    public static String getFixNumber(int intRange, int decRange, boolean canbeNegative)
+    public static char[] getFixNumber(int intRange, int decRange, boolean canbeNegative)
     {
         char Result[];
-        int length=intRange;
-        if(decRange>0)
-            length=length+decRange+1;
+        int length=intRange,start=0;
+
+        if(canbeNegative && privateRandom.RandomBool()){
+            length++;
+            start=1;
+        }
+        if(decRange>0) {
+            length = length + decRange + 1;
+        }
 
         Result=new char[length];
-        for(int loop=0;loop<length;loop++)
-        {
-            Result[loop]=c[privateRandom.RandomNumber(52,61).intValue()];
-        }
 
-        if(canbeNegative)
-            return '-'+new String(Result);
-        else
-            return new String(Result);
+        Result=basicCharArrayFill(length,start,intRange+start,52,61);
+        if(decRange>0)
+            Result[intRange+start+1]='.';
+        if(start==1)
+            Result[0]='-';
+        return Result;
     }
-    //获取不带符号引号的字符串
-    public static char[] getNameStr(int strRange)
+    //获取不带引号、可以用作对象名称的字符串
+    public static char[] getNameStr(int range)
     {
-        int start=0;
-        char[] str;
-        if(strRange<1) {
-            strRange=privateRandom.RandomNumber(1,10).intValue();
-        } else if(env_properties.getEnvironment("Optimal").equals("true")) {
-            if (strRange < 32&&strRange>8)
-                strRange=strRange-privateRandom.RandomNumber(1,8).intValue();
-            else if(strRange>=32)
-                strRange=privateRandom.RandomNumber(1,strRange>>3).intValue();
-        }
-
-        str=new char[strRange];
-        for(int loop=start;loop<strRange+start;loop++)
-        {
-            str[loop]=c[privateRandom.RandomNumber(0,62).intValue()];
-        }
-        return str;
+        return basicCharArrayFill(range,0,range,0,62);
     }
 
     public static char[] getArbitraryCharacter(int strRange,char type)
@@ -162,13 +138,33 @@ public abstract class RandomBasicDataCreater {
                 min=62;max=c.length-1;break;
             case 'n':
                 min=52;max=61;break;
+            case 'z':
+                min=0x4e00;max=0x9FFF;break;
         }
 
-        for(int loop=0;loop<strRange;loop++)
+        return basicCharArrayFill(strRange,0,strRange,min,max);
+    }
+
+    private static char[] basicCharArrayFill(int range, int start, int end, int min, int max)
+    {
+        char[] str=new char[range];
+
+        for(int loop=start;loop<end;loop++)
         {
             str[loop]=c[privateRandom.RandomNumber(min,max).intValue()];
         }
-
         return str;
+    }
+    private static int strRangeOptimal(int range)
+    {
+        if(range<1) {
+            range=privateRandom.RandomNumber(1,10).intValue();
+        } else if(env_properties.getEnvironment("Optimal").equals("true")) {
+            if (range < 32&&range>8)
+                range=range-privateRandom.RandomNumber(1,8).intValue();
+            else if(range>=32)
+                range=privateRandom.RandomNumber(1,range>>3).intValue();
+        }
+        return range;
     }
 }

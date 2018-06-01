@@ -5,6 +5,7 @@ import Utils.DataCreater.RandomBasicDataCreater;
 import Utils.env_properties;
 import dataStruture.ListStructure;
 import dataStruture.TableStructure;
+import java.lang.reflect.Method;
 
 public class InsertSQLCreater implements Runnable{
 
@@ -12,11 +13,13 @@ public class InsertSQLCreater implements Runnable{
     private TableStructure tableStructure;
     private double makenumber;
     private tF writer;
+    private RandomAdvanceDataCreater radc;
     public InsertSQLCreater(String tablename, TableStructure tableStructure,double makenumber,tF writer){
         this.tablename=tablename;
         this.tableStructure=tableStructure;
         this.makenumber=makenumber;
         this.writer=writer;
+        this.radc=new RandomAdvanceDataCreater();
     }
 
     @Override
@@ -53,20 +56,7 @@ public class InsertSQLCreater implements Runnable{
             else{
                 if (!ls.getListType().equals("string"))
                     throw new Exception("非字符串类型不能使用stringtype关键字");
-                switch (ls.getDefaultType()){
-                    case "idcard":
-                        sb.append(RandomAdvanceDataCreater.chineseIDNumber(ls.getRange()[0]));
-                        break;
-                    case "email":
-                        sb.append(RandomAdvanceDataCreater.emailAddress(ls.getRange()[0]));
-                        break;
-                    case "tele":
-                        sb.append(RandomAdvanceDataCreater.telephoneNumber(ls.getRange()[0]));
-                        break;
-                    default:
-                        sb.append(RandomAdvanceDataCreater.freeStringType(ls.getRange()[0],ls.getDefaultType()));
-                        break;
-                }
+                sb.append(radc.returnAdvancedString(ls.getDefaultType(),ls.getRange()[0]));
             }
             sb.append(',');
         }
