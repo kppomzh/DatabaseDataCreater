@@ -1,8 +1,6 @@
 package dataStruture;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 
 public class TableStructure implements Cloneable{
@@ -14,9 +12,9 @@ public class TableStructure implements Cloneable{
         listStructureList=new ArrayList<>();
     }
 
-    public void addlist(String ListType,String defaultDataType,boolean canbeNull,boolean isSingal,int... Range)
+    public void addlist(String listname,String ListType,String defaultDataType,boolean isSingal,boolean isDefault,String defaultStr,int... Range)
     {
-        listStructureList.add(new ListStructure(ListType,defaultDataType,canbeNull,isSingal,Range));
+        listStructureList.add(new ListStructure(listname,ListType,defaultDataType,isSingal,isDefault,defaultStr,Range));
     }
 
     public boolean hasNext()
@@ -33,6 +31,10 @@ public class TableStructure implements Cloneable{
         if(readnum==listStructureList.size())
             readnum = -1;
         return listStructureList.get(readnum);
+    }
+    public List<ListStructure> getStruc()
+    {
+        return listStructureList;
     }
 
     @Override

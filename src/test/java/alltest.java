@@ -14,7 +14,7 @@ public class alltest {
         long time=System.currentTimeMillis();
 
 //        Service.main(new String[]{"-n","20000000","-f","f:/create.txt","-a","-o","E:/"});
-        Service.main(new String[]{"-n","2000000","-a","-f","f:/create.txt","-t","4","-o","f:/"});
+        Service.main(new String[]{"-n","50","-f","f:/zhaohuang.txt","-o","f:/","-t","1"});
 
         System.out.println(((System.currentTimeMillis()-time)/1000.0)/60.0+" min");
     }

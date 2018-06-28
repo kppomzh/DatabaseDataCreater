@@ -7,7 +7,7 @@ import org.junit.Test;
 import java.io.File;
 
 public class fileroadtest {
-    @Test
+//    @Test
     public void main(String[] args) throws Exception {
         String FileString=Fileloader.loadingFile(new File("E:\\Work\\tpch.sql"));
         String[] createSQLs=FileString.split(";");

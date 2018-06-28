@@ -16,6 +16,9 @@ public abstract class RandomBasicDataCreater {
         int year=privateRandom.RandomNumber(1950,2050).intValue();
         int month=privateRandom.RandomNumber(1,12).intValue();
         int date;
+        int hour=privateRandom.RandomNumber(0,23).intValue();
+        int minute=privateRandom.RandomNumber(0,59).intValue();
+        int second=privateRandom.RandomNumber(0,59).intValue();
         switch (month)
         {
             case 2:
@@ -30,22 +33,36 @@ public abstract class RandomBasicDataCreater {
 
         StringBuffer sb=new StringBuffer();
         sb.append(year);
-        if(month<10)
-            sb.append('0');
+        sb.append(less10give0(month));
         sb.append(month);
-        if(date<10)
-            sb.append('0');
+        sb.append(less10give0(date));
         sb.append(date);
+
+        sb.append(' ');
+        sb.append(less10give0(hour));
+        sb.append(hour);
+        sb.append(':');
+        sb.append(less10give0(minute));
+        sb.append(minute);
+        sb.append(':');
+        sb.append(less10give0(second));
+        sb.append(second);
         if(outuse)
             switch (env_properties.getEnvironment("toDB")) {
-                case "file":
+                case "sql":
                 case "jdbc":
                     sb.insert(0, "to_date(\'");
-                    sb.append("\',\'yyyymmdd\')");
+                    sb.append("\',\'yyyymmdd\' hh:mi:ss)");
                     break;
-                case "load":
+                case "csv":
                     sb.insert(4, '-');
                     sb.insert(7, '-');
+                    break;
+                case "json":
+                    sb.insert(4, '-');
+                    sb.insert(7, '-');
+                    sb.insert(0,'"');
+                    sb.append('"');
                     break;
                 default:
                     break;
@@ -75,22 +92,35 @@ public abstract class RandomBasicDataCreater {
 
         return sb.toString();
     }
-    public static char[] getStr(int range)
+    public static String getBool()
+    {
+        if(privateRandom.RandomBool())
+            return "true";
+        else
+            return "false";
+    }
+    public static String getStr(int range)
     {
         char[] str;
         range=strRangeOptimal(range);
 
-        if(env_properties.getEnvironment("toDB").equals("file")||
+        if(env_properties.getEnvironment("toDB").equals("sql")||
                 env_properties.getEnvironment("toDB").equals("jdbc")) {
             range = range + 2;
             str= basicCharArrayFill(range,1,range-1,0,c.length-1);
             str[0]='\'';
-            str[range+1]='\'';
+            str[range-1]='\'';
+        }
+        else if(env_properties.getEnvironment("toDB").equals("json")){
+            range = range + 2;
+            str= basicCharArrayFill(range,1,range-1,0,c.length-1);
+            str[0]='\"';
+            str[range-1]='\"';
         }
         else
             str= basicCharArrayFill(range,0,range,0,c.length-1);
 
-        return str;
+        return new String(str);
     }
 
     //定长数值函数
@@ -139,7 +169,7 @@ public abstract class RandomBasicDataCreater {
             case 'n':
                 min=52;max=61;break;
             case 'z':
-                min=0x4e00;max=0x9FFF;break;
+                return CNCharArrayFill(strRange);
         }
 
         return basicCharArrayFill(strRange,0,strRange,min,max);
@@ -155,6 +185,16 @@ public abstract class RandomBasicDataCreater {
         }
         return str;
     }
+    private static char[] CNCharArrayFill(int range)
+    {
+        char[] str=new char[range];
+
+        for(int loop=0;loop<range;loop++)
+        {
+            str[loop]= (char) privateRandom.RandomNumber(0x4e00,0x9FFF).intValue();
+        }
+        return str;
+    }
     private static int strRangeOptimal(int range)
     {
         if(range<1) {
@@ -166,5 +206,12 @@ public abstract class RandomBasicDataCreater {
                 range=privateRandom.RandomNumber(1,range>>3).intValue();
         }
         return range;
+    }
+    private static char[] less10give0(int i)
+    {
+        if(i<10)
+            return new char[]{'0'};
+        else
+            return new char[]{};
     }
 }

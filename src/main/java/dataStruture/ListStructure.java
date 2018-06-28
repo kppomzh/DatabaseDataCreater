@@ -1,19 +1,25 @@
 package dataStruture;
 
+import Utils.env_properties;
+
 public class ListStructure implements Cloneable{
+    private String listname;
     private String ListType;
     private int[] Range;
-    private boolean canbeNull;
     private boolean isSingal;
+    private boolean isDefault;
     private String defaultType;
+    private String defaultStr;
 
-    public ListStructure(String ListType,String defaultDataType,boolean canbeNull,boolean isSingal,int... Range)
+    public ListStructure(String listname,String ListType,String defaultDataType,boolean isSingal,boolean isDefault,String defaultStr,int... Range)
     {
-        this.canbeNull=canbeNull;
+        this.listname=listname;
         this.isSingal=isSingal;
         this.ListType =ListType;
         this.Range=Range;
         this.defaultType=defaultDataType;
+        this.isDefault=isDefault;
+        this.defaultStr=defaultStr;
     }
 
     public String getListType() {
@@ -23,14 +29,14 @@ public class ListStructure implements Cloneable{
     public int[] getRange() {
         return Range;
     }
-
-    public boolean isCanbeNull() {
-        return canbeNull;
+    public String getDefaultStr() {
+        return defaultStr;
     }
 
     public boolean isSingal() {
         return isSingal;
     }
+    public boolean isDefault(){ return isDefault; }
 
     @Override
     public Object clone() throws CloneNotSupportedException {
@@ -39,5 +45,9 @@ public class ListStructure implements Cloneable{
 
     public String getDefaultType() {
         return defaultType;
+    }
+
+    public String getListname() {
+        return listname;
     }
 }

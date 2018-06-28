@@ -26,7 +26,7 @@ public class Service {
                     linenumber = Double.valueOf(args[loop + 1]);
                     loop++;
                     break;
-                case "-s":
+                case "-set":
                     env_properties.setEnvironment(args[loop + 1].split(",")[0], args[loop + 1].split(",")[1]);
                     loop++;
                     break;
@@ -36,6 +36,10 @@ public class Service {
                     break;
                 case "-t":
                     env_properties.setEnvironment("TOTAL_THREADS", args[loop + 1]);
+                    loop++;
+                    break;
+                case "-i":
+                    env_properties.setEnvironment("toDB", args[loop + 1]);
                     loop++;
                     break;
                 case "-h":

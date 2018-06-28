@@ -22,10 +22,10 @@ public class CreateInsertSQLFile {
         if(env_properties.getEnvironment("asynchronous").equals("true"))
             for(int loop=0;loop<TOTAL_THREADS;loop++)
             {
-                writers[loop]=new textFileWriter(env_properties.getEnvironment("baseFileDir") + ts.getTbname() +loop+ ".sql");
+                writers[loop]=new textFileWriter(env_properties.getEnvironment("baseFileDir") + ts.getTbname() +loop+ "."+env_properties.getEnvironment("toDB"));
             }
         else {
-            fileWriter = new textFileWriter(env_properties.getEnvironment("baseFileDir") + ts.getTbname() + ".sql");
+            fileWriter = new textFileWriter(env_properties.getEnvironment("baseFileDir") + ts.getTbname() + "."+env_properties.getEnvironment("toDB"));
             for(int loop=0;loop<TOTAL_THREADS;loop++)
                 writers[loop]=fileWriter;
         }

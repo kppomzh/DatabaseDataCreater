@@ -4,30 +4,30 @@ import Utils.env_properties;
 import org.junit.Test;
 
 public class BasicDataTest {
-    @Test
+//    @Test
     public void datatest()
     {
-        env_properties.setEnvironment("toDB","load");
+        env_properties.setEnvironment("toDB","csv");
         System.out.println(RandomBasicDataCreater.getDate(true));
-        env_properties.setEnvironment("toDB","file");
+        env_properties.setEnvironment("toDB","sql");
         System.out.println(RandomBasicDataCreater.getDate(true));
         env_properties.setEnvironment("toDB","jdbc");
         System.out.println(RandomBasicDataCreater.getDate(true));
     }
-    @Test
+//    @Test
     public void emailtest() throws Exception {
         System.out.println(new RandomAdvanceDataCreater().email(15));
     }
 
-    @Test
+//    @Test
     public void idcardtest() throws Exception {
         System.out.println(new RandomAdvanceDataCreater().ch_idcard(18));
     }
-    @Test
+//    @Test
     public void teltest() throws Exception {
         System.out.println(new RandomAdvanceDataCreater().telephone(11));
     }
-    @Test
+//    @Test
     public void chinesetest() throws Exception {
 
         System.out.println(new RandomAdvanceDataCreater().ch_word(11).length());

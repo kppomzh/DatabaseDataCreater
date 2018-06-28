@@ -23,29 +23,30 @@ public class Word_Segment {
             boolean isStop = nowstatus.equals(Coolean.stop);//
             boolean charStop = charStop(nowstatus);
             boolean quotation = (c == '\"');
-            boolean Stop = isStop | charStop | quotation;
+            boolean Stop = isStop | charStop | quotation |(toWord.length()!=0&&status.equals(Coolean.stop));
 
-            if (Stop && toWord.length() != 0) {
+            if (Stop) { //
                 String isWord = toWord.toString().toLowerCase();//统一转换成小写
+                if(isWord.length()!=0)
+                {
+                    create_word_and_add(isWord, null);
+                    toWord.delete(0, toWord.length());
+                }
                 if(quotation)
                 {
                     StringBuffer quo = new StringBuffer();
-                    create_word_and_add(isWord, null);
+//                    create_word_and_add(isWord, null);
                     Integer cp_length = varnameinquotation(loop,quo,c);
-                    create_word_and_add(quo.toString(), null);
-                    loop = loop + cp_length;//loop停在后面的单引号上
+                    create_word_and_add("String", quo.toString());
+                    loop = loop + cp_length;//loop停在后面的引号的下一个字符
                     nowstatus = Coolean.mark;
                 }
-                else {
-                    create_word_and_add(isWord, null);
-                }
-                toWord.delete(0, toWord.length());
             }
 
-            if (!nowstatus.equals(Coolean.stop)) {
+            if (!isStop&&!quotation) {
                 toWord.append(c);
                 if(c=='\'') {
-                    loop = loop + varnameinquotation(loop, toWord, c)+1;
+                    loop = loop + varnameinquotation(loop, toWord, c);
                     toWord.append(c);
                 }
             }
@@ -178,10 +179,7 @@ public class Word_Segment {
     //生成简单SQL关键字的方法
     private void create_word_and_add(String name, String substance) {
         Word word;
-        if (name.equals("String"))
-            word = new Word(name, substance, status.equals(Coolean.mark));
-        else
-            word = new Word(name, substance, status.equals(Coolean.mark));
+        word = new Word(name, substance, status.equals(Coolean.mark));
         LW.add(word);
     }
 

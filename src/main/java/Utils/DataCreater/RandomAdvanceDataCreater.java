@@ -25,11 +25,15 @@ public class RandomAdvanceDataCreater {
                 e1.printStackTrace();
             }
         }
-        if(!env_properties.getEnvironment("toDB").equals("load")){
+        if(env_properties.getEnvironment("toDB").equals("sql")||
+                env_properties.getEnvironment("toDB").equals("jdbc")){
             advancedString.insert(0,'\'');
             advancedString.append('\'');
         }
-
+        else if(env_properties.getEnvironment("toDB").equals("json")) {
+            advancedString.insert(0,'\"');
+            advancedString.append('\"');
+        }
         return advancedString.toString();
     }
 
@@ -93,7 +97,7 @@ public class RandomAdvanceDataCreater {
         {
             now=c[loop];
             if(now>47&&now<58) {
-                if(c[loop+1]>47&&c[loop+1]<58) {
+                if(loop+1<c.length&&c[loop+1]>47&&c[loop+1]<58) {
                     now_length=now_length*10+now-48;
                 }
                 else {
