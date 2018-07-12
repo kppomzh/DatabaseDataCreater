@@ -1,5 +1,7 @@
 package dataStruture;
 
+import com.sun.istack.internal.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,9 +14,13 @@ public class TableStructure implements Cloneable{
         listStructureList=new ArrayList<>();
     }
 
-    public void addlist(String listname,String ListType,String defaultDataType,boolean isSingal,boolean isDefault,String defaultStr,int... Range)
+    public void addlist(@NotNull String listname, String ListType, String defaultDataType, boolean isSingal, boolean isDefault, String defaultStr, int[] Range,double[] Numberarea)
     {
-        listStructureList.add(new ListStructure(listname,ListType,defaultDataType,isSingal,isDefault,defaultStr,Range));
+        ListStructure ls=new ListStructure(listname,ListType,isSingal,isDefault,defaultStr);
+        ls.setDefaultType(defaultDataType);
+        ls.setRange(Range);
+        ls.setNumberarea(Numberarea);
+        listStructureList.add(ls);
     }
 
     public boolean hasNext()

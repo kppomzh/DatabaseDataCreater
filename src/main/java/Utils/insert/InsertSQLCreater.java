@@ -62,7 +62,8 @@ public class InsertSQLCreater implements Runnable{
                 switch (ls.getListType())
                 {
                     case "number":
-                        appendStr=Double.valueOf(ls.getDefaultStr()).toString();//根本目的是进行一轮检查
+                        appendStr=ls.getDefaultStr();//如果进行转换检查的话可能导致出现整形默认值被添加小数点的情况
+                        //所以不对输入值进行逻辑语义检查
                         break;
                     case "date":
                         appendStr="sysdate";//这里暂时只能用sysdate凑数了 _(:3」∠)_
@@ -84,7 +85,7 @@ public class InsertSQLCreater implements Runnable{
                 switch (ls.getListType())
                 {
                     case "number":
-                        appendStr=RandomBasicDataCreater.getNumber(ls.getRange()[0],ls.getRange()[1],true);
+                        appendStr=RandomBasicDataCreater.getNumber(ls.getRange()[0],ls.getRange()[1],ls.getNumberarea());
                         break;
                     case "date":
                         appendStr=RandomBasicDataCreater.getDate(true);

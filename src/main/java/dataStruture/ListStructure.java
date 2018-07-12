@@ -6,20 +6,28 @@ public class ListStructure implements Cloneable{
     private String listname;
     private String ListType;
     private int[] Range;
+    private double[] Numberarea;
     private boolean isSingal;
     private boolean isDefault;
     private String defaultType;
     private String defaultStr;
 
-    public ListStructure(String listname,String ListType,String defaultDataType,boolean isSingal,boolean isDefault,String defaultStr,int... Range)
+    public ListStructure(String listname,String ListType,boolean isSingal,boolean isDefault,String defaultStr)
     {
         this.listname=listname;
         this.isSingal=isSingal;
         this.ListType =ListType;
-        this.Range=Range;
-        this.defaultType=defaultDataType;
         this.isDefault=isDefault;
         this.defaultStr=defaultStr;
+    }
+    public void setDefaultType(String defaultType) {
+        this.defaultType = defaultType;
+    }
+    public void setRange(int[] range) {
+        Range = range;
+    }
+    public void setNumberarea(double[] numberarea) {
+        Numberarea = numberarea;
     }
 
     public String getListType() {
@@ -50,4 +58,9 @@ public class ListStructure implements Cloneable{
     public String getListname() {
         return listname;
     }
+
+    public double[] getNumberarea() {
+        return Numberarea;
+    }
+
 }

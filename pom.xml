@@ -6,7 +6,7 @@
 
     <groupId>zhzm</groupId>
     <artifactId>DBDF</artifactId>
-    <version>0.0.1</version>
+    <version>1.0.4</version>
     <build>
         <plugins>
             <plugin>
@@ -28,6 +28,18 @@
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <compilerArguments>
+                        <bootclasspath>C:/Program Files/Java/jdk/jre/lib/rt.jar</bootclasspath>
+                    </compilerArguments>
                 </configuration>
             </plugin>
         </plugins>

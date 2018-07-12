@@ -70,24 +70,38 @@ public abstract class RandomBasicDataCreater {
 
         return sb.toString();
     }
-    public static String getNumber(int intRange, int decRange, boolean canbeNegative)
+    public static String getNumber(int intRange, int decRange, double[] Numberarea)
     {
-        Double intS,intMax=Math.pow(10,intRange)-1,decMax=Math.pow(10,decRange)-1;
-        StringBuffer sb=new StringBuffer();
+        boolean canbeNegative=(false&env_properties.getEnvironment("canbeNegative").equals("true")
+                &privateRandom.RandomBool())
+                |Numberarea[1]<0;
         if(intRange<0)
             intRange=privateRandom.RandomNumber(1,10).intValue();
+        Double intS,intMin=0d,intMax=Math.pow(10,intRange)-1,decMax=Math.pow(10,decRange)-1;
+        StringBuffer sb=new StringBuffer();
 
-        intS=privateRandom.RandomNumber(0,intMax);
+        if((Numberarea[0]<0&privateRandom.RandomBool())||canbeNegative) {
+            intMax = (-Numberarea[0] < intMax & (Numberarea[0] != 0 | Numberarea[1] != 0) ? -Numberarea[0] : intMax);
+            sb.append('-');
+        }
+        else
+            intMax=(Numberarea[1]<intMax&(Numberarea[0]!=0|Numberarea[1]!=0) ? Numberarea[1]:intMax);
 
-        if(canbeNegative)
-            if(privateRandom.RandomBool())
-                intS=-intS;
-        sb.append(intS.toString().substring(0,intS.toString().indexOf(".")));
+        if(Numberarea[1]<0)
+            intMin=-Numberarea[1];
+        if(Numberarea[0]>0)
+            intMin=Numberarea[0];
+
+        if(decRange>1)
+            Numberarea[1]=Numberarea[1]-1;
+        intS=privateRandom.RandomNumber(intMin,intMax);
+
+        sb.append(Double2String(intS));
         if(decRange>0)
         {
             sb.append('.');
             Double decS=privateRandom.RandomNumber(0,decMax);
-            sb.append(decS.toString().substring(0,decS.toString().indexOf(".")));
+            sb.append(Double2String(decS));
         }
 
         return sb.toString();
@@ -213,5 +227,21 @@ public abstract class RandomBasicDataCreater {
             return new char[]{'0'};
         else
             return new char[]{};
+    }
+    private static String Double2String(Double d)
+    {
+        String s[]=d.toString().split("\\.");
+        if(s[1].toString().indexOf("E")==-1)
+            return s[0];
+        String s1[]=s[1].split("E");
+        int length=Integer.valueOf(s1[1]);
+        if(s1[0].length()<length) {
+            StringBuilder sb=new StringBuilder();
+            for(int loop=0;loop<length - s1[0].length();loop++){
+                sb.append('0');
+            }
+            s1[0] = s1[0] + sb.toString();
+        }
+        return s[0] + s1[0].substring(0, Math.abs(Integer.valueOf(s1[1])));
     }
 }

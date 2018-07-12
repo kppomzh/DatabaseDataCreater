@@ -22,6 +22,7 @@ public class DataType {
         type2typeCorresponding.put("varchar2","string");
         type2typeCorresponding.put("char","string");
         type2typeCorresponding.put("nvarchar","string");
+        type2typeCorresponding.put("string","string");
         type2typeCorresponding.put("text","string");
 
         type2typeCorresponding.put("date","date");

@@ -26,6 +26,7 @@ public class Fugue {
         mark.add("key");
         mark.add("unique");
         mark.add("stringtype");
+        mark.add("numberarea");
         mark.add(";");
 
         data=DataType.getTypeKeySet();
@@ -73,11 +74,18 @@ public class Fugue {
             else{
                 if(checknumber(w.getName())) {
                     w.setSubstance(w.getName());
-                    if(last.getName().equals("default")){
-                        w.setName("defaultStr");
+                    switch (last.getName()) {
+                        case "default":
+                            w.setName("defaultStr");
+                            break;
+                        case "numberarea":
+                        case "~":
+                            w.setName("numberange");
+                            break;
+                        default:
+                            w.setName("range");
+                            break;
                     }
-                    else
-                        w.setName("range");
                 }
                 else switch (last.getName()) {
                     case "table":
@@ -109,9 +117,14 @@ public class Fugue {
 
     private boolean checknumber(String s)
     {
-        for(char c:s.toCharArray())
+        int fu=0;
+        for(char c:s.toCharArray()){
+            if(c=='-'&&fu==0)
+                continue;
             if(c<48||c>57)
                 return false;
+            fu++;
+        }
         return true;
     }
 }

@@ -9,6 +9,8 @@ public class privateRandom {
 
     public static Double RandomNumber(double start,double end)
     {
+        if(start==end)
+            return start;
         double Return=Math.abs(rm.nextInt()+rm.nextDouble()*10);
         if(Return<end-start&&Return*primelist[0]>0)
             Return=Return*primelist[Math.abs(rm.nextInt()) % primelist.length];

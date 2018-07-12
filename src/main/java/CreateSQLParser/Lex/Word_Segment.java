@@ -76,6 +76,7 @@ public class Word_Segment {
 //            case '/':
 //            case ':':
             case '\"':
+            case '~':
                 return Coolean.mark;//识别为mark的时候将当前字符列为单词
 
             case '[':

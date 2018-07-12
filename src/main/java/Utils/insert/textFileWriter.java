@@ -4,8 +4,8 @@ import java.io.*;
 
 public class textFileWriter  implements tF{
     private File textfile;
-    private long writenum;
     private BufferedOutputStream bos;
+    private BufferedWriter bw;
 
     public textFileWriter(String Filename) throws IOException {
         textfile=new File(Filename);
@@ -17,15 +17,15 @@ public class textFileWriter  implements tF{
         else
             throw new IOException(textfile.getPath()+"can't be write.");
 
-        bos=new BufferedOutputStream(new FileOutputStream(textfile,false),5242880);
-        //暂定5M缓存
-        writenum=0;
+        bos=new BufferedOutputStream(new FileOutputStream(textfile,false),524288);
+        //暂定512K缓存，一般硬盘测试的中等数据块
+        bw=new BufferedWriter(new OutputStreamWriter(bos),524288);
     }
     @Override
     public synchronized boolean WriteLine(String insert) {
         try {
-            bos.write(insert.getBytes());
-            bos.write("\r\n".getBytes());
+            bw.write(insert);
+            bw.write("\r\n");
 //            System.out.println(textfile.getName()+' '+writenum++);
             return true;
         } catch (IOException e) {
@@ -35,6 +35,7 @@ public class textFileWriter  implements tF{
     }
     @Override
     public void closeWriter() throws IOException {
-        bos.close();
+        bw.flush();
+        bw.close();
     }
 }

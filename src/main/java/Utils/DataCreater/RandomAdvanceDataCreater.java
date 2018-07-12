@@ -5,9 +5,6 @@ import Utils.DataCreater.templet.Telephone;
 import Utils.DataCreater.templet.chineseIDNumber;
 import Utils.env_properties;
 import Utils.privateRandom;
-import java.lang.reflect.Method;
-
-import java.lang.reflect.InvocationTargetException;
 
 public class RandomAdvanceDataCreater {
     public RandomAdvanceDataCreater(){}
@@ -83,6 +80,106 @@ public class RandomAdvanceDataCreater {
     public StringBuffer ch_word(int strRange)
     {
         return new StringBuffer(strRange).append(RandomBasicDataCreater.getArbitraryCharacter(strRange,'z'));
+    }
+
+    public StringBuffer a_ip(int range) throws Exception {
+        if(range<15)
+            throw new Exception("IP地址所在字段长度不能小于15");
+        StringBuffer sb=new StringBuffer();
+        sb.append(privateRandom.RandomNumber(1,125).intValue());
+        sb.append('.');
+        sb.append(privateRandom.RandomNumber(0,255).intValue());
+        sb.append('.');
+        sb.append(privateRandom.RandomNumber(0,255).intValue());
+        sb.append('.');
+        sb.append(privateRandom.RandomNumber(0,255).intValue());
+
+        return sb;
+    }
+    public StringBuffer b_ip(int range) throws Exception {
+        if(range<15)
+            throw new Exception("IP地址所在字段长度不能小于15");
+        StringBuffer sb=new StringBuffer();
+        sb.append(privateRandom.RandomNumber(128,191).intValue());
+        sb.append('.');
+        sb.append(privateRandom.RandomNumber(0,254).intValue());
+        sb.append('.');
+        sb.append(privateRandom.RandomNumber(0,255).intValue());
+        sb.append('.');
+        sb.append(privateRandom.RandomNumber(0,255).intValue());
+
+        return sb;
+    }
+    public StringBuffer c_ip(int range) throws Exception {
+        if(range<15)
+            throw new Exception("IP地址所在字段长度不能小于15");
+        StringBuffer sb=new StringBuffer();
+        sb.append(privateRandom.RandomNumber(192,223).intValue());
+        sb.append('.');
+        sb.append(privateRandom.RandomNumber(0,254).intValue());
+        sb.append('.');
+        sb.append(privateRandom.RandomNumber(0,254).intValue());
+        sb.append('.');
+        sb.append(privateRandom.RandomNumber(0,255).intValue());
+
+        return sb;
+    }
+    public StringBuffer d_ip(int range) throws Exception {
+        if(range<15)
+            throw new Exception("IP地址所在字段长度不能小于15");
+        StringBuffer sb=new StringBuffer();
+        sb.append(privateRandom.RandomNumber(224,239).intValue());
+        sb.append('.');
+        sb.append(privateRandom.RandomNumber(0,255).intValue());
+        sb.append('.');
+        sb.append(privateRandom.RandomNumber(0,255).intValue());
+        sb.append('.');
+        sb.append(privateRandom.RandomNumber(0,255).intValue());
+
+        return sb;
+    }
+    public StringBuffer e_ip(int range) throws Exception {
+        if(range<15)
+            throw new Exception("IP地址所在字段长度不能小于15");
+        StringBuffer sb=new StringBuffer();
+        sb.append(privateRandom.RandomNumber(240,255).intValue());
+        sb.append('.');
+        sb.append(privateRandom.RandomNumber(0,255).intValue());
+        sb.append('.');
+        sb.append(privateRandom.RandomNumber(0,255).intValue());
+        sb.append('.');
+        sb.append(privateRandom.RandomNumber(0,255).intValue());
+
+        return sb;
+    }
+
+    public StringBuffer warp_latitude(int range)
+    {
+        StringBuffer sb=new StringBuffer();
+        sb.append(privateRandom.RandomNumber(0,89).intValue());
+        sb.append('°');
+        sb.append(privateRandom.RandomNumber(0,60).intValue());
+        sb.append('′');
+        sb.append(privateRandom.RandomNumber(0,60).intValue());
+        sb.append('″');
+        if(privateRandom.RandomBool())
+            sb.append('N');
+        else
+            sb.append('S');
+
+        sb.append(',');
+
+        sb.append(privateRandom.RandomNumber(0,89).intValue());
+        sb.append('°');
+        sb.append(privateRandom.RandomNumber(0,60).intValue());
+        sb.append('′');
+        sb.append(privateRandom.RandomNumber(0,60).intValue());
+        sb.append('″');
+        if(privateRandom.RandomBool())
+            sb.append('E');
+        else
+            sb.append('W');
+        return sb;
     }
 
     public StringBuffer freeStringType(int range,String type) throws Exception {
