@@ -3,7 +3,7 @@ package Utils.DataCreater;
 import Utils.env_properties;
 import Utils.privateRandom;
 
-public abstract class RandomBasicDataCreater {
+public class RandomBasicDataCreater {
     private static char[] c={
     'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',//25
     'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',//51
@@ -11,9 +11,27 @@ public abstract class RandomBasicDataCreater {
     '_',//62
     '(',')','<','>','?','~','!','^','%','#','+','-','=','@','$'//63-77
     };
-    public static String getDate(boolean outuse)
+    private String[] quickStr;
+    private int rangeLength,strusages;
+    public RandomBasicDataCreater(int maxStringLength){
+        rangeLength=Double.valueOf(Math.sqrt(maxStringLength)).intValue()*2;
+        reinitQuickStr();
+        strusages=8191;
+    }
+
+    private void reinitQuickStr()
     {
-        int year=privateRandom.RandomNumber(1950,2050).intValue();
+        strusages=8191;
+        quickStr=new String[20];
+        for(int loop=0;loop<quickStr.length;loop++)
+        {
+            quickStr[loop]=new String(basicCharArrayFill(rangeLength,0,rangeLength,0,77));
+        }
+    }
+
+    public String getDate(boolean outuse)
+    {
+        int year=privateRandom.RandomNumber(1970,2050).intValue();
         int month=privateRandom.RandomNumber(1,12).intValue();
         int date;
         int hour=privateRandom.RandomNumber(0,23).intValue();
@@ -52,7 +70,7 @@ public abstract class RandomBasicDataCreater {
                 case "sql":
                 case "jdbc":
                     sb.insert(0, "to_date(\'");
-                    sb.append("\',\'yyyymmdd\' hh:mi:ss)");
+                    sb.append("\',\'yyyymmdd hh:mi:ss\')");
                     break;
                 case "csv":
                     sb.insert(4, '-');
@@ -70,7 +88,7 @@ public abstract class RandomBasicDataCreater {
 
         return sb.toString();
     }
-    public static String getNumber(int intRange, int decRange, double[] Numberarea)
+    public String getNumber(int intRange, int decRange, double[] Numberarea)
     {
         boolean canbeNegative=(false&env_properties.getEnvironment("canbeNegative").equals("true")
                 &privateRandom.RandomBool())
@@ -106,35 +124,39 @@ public abstract class RandomBasicDataCreater {
 
         return sb.toString();
     }
-    public static String getBool()
+    public String getBool()
     {
         if(privateRandom.RandomBool())
             return "true";
         else
             return "false";
     }
-    public static String getStr(int range)
+    public String getStr(int range)
     {
-        char[] str;
+        int piecewise;
+        StringBuilder sb=new StringBuilder();
         range=strRangeOptimal(range);
 
-        if(env_properties.getEnvironment("toDB").equals("sql")||
-                env_properties.getEnvironment("toDB").equals("jdbc")) {
-            range = range + 2;
-            str= basicCharArrayFill(range,1,range-1,0,c.length-1);
-            str[0]='\'';
-            str[range-1]='\'';
-        }
-        else if(env_properties.getEnvironment("toDB").equals("json")){
-            range = range + 2;
-            str= basicCharArrayFill(range,1,range-1,0,c.length-1);
-            str[0]='\"';
-            str[range-1]='\"';
-        }
-        else
-            str= basicCharArrayFill(range,0,range,0,c.length-1);
+        piecewise=Double.valueOf(Math.sqrt(range)).intValue();
 
-        return new String(str);
+        for(int loop=0;loop<piecewise;loop++)
+        {
+            int sublength=privateRandom.RandomNumber(1,rangeLength).intValue();
+            int substrart=privateRandom.RandomNumber(0,rangeLength-sublength-1).intValue();
+            sb.append(quickStr[privateRandom.RandomNumber(0,quickStr.length-1).intValue()]
+                    .substring(substrart,substrart+sublength));
+        }
+
+        if(sb.length()<range){
+            int lastlength=range-sb.length();
+            sb.append(basicCharArrayFill(lastlength,0,lastlength,0,c.length-1));
+
+        }
+
+        strusages--;
+        if(strusages==0)
+            reinitQuickStr();
+        return sb.toString();
     }
 
     //定长数值函数

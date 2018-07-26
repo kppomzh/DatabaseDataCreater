@@ -18,6 +18,8 @@ public class Fugue {
         mark=new HashSet<>();
         mark.add("create");
         mark.add("table");
+        mark.add("{");
+        mark.add("}");
         mark.add("(");
         mark.add(")");
         mark.add(",");
@@ -42,6 +44,7 @@ public class Fugue {
 
     public List<Word> fugue(List<Word> words)
     {
+        boolean inlineOpen=false;
         if(!words.get(0).getName().equals("create"))
             throw new RuntimeException("not start with create");
 
@@ -69,10 +72,19 @@ public class Fugue {
                 continue;
             }
             else if(mark.contains(w.getName())){
+                if(w.getName().equals("{"))
+                    inlineOpen=true;
+                if(w.getName().equals("}"))
+                    inlineOpen=false;
                 continue;
             }
             else{
-                if(checknumber(w.getName())) {
+                if(inlineOpen){
+                    if(!w.getName().equals("String"))
+                        w.setSubstance(w.getName());
+                    w.setName("inline");
+                }
+                else if(checknumber(w.getName())) {
                     w.setSubstance(w.getName());
                     switch (last.getName()) {
                         case "default":
@@ -100,7 +112,8 @@ public class Fugue {
                         w.setName("listname");
                         break;
                     case "default":
-//                        w.setSubstance(w.getName());
+                        if(!w.getName().equals("String"))
+                            w.setSubstance(w.getName());
                         w.setName("defaultStr");
                         break;
                     case "stringtype":

@@ -11,7 +11,7 @@ import java.util.concurrent.*;
 public class CreateInsertSQLFile {
     private static final int TOTAL_THREADS = Integer.valueOf(env_properties.getEnvironment("TOTAL_THREADS"));
 
-    public /*static*/ boolean createInsertSQLFile(TableStructure ts, Double linenumber) throws Exception {
+    public /*static*/ void createInsertSQLFile(TableStructure ts, Double linenumber) throws Exception {
         ExecutorService service = Executors.newFixedThreadPool(TOTAL_THREADS);
         List<Future<?>> tasks = new ArrayList<>();//Future接口提供方法来检测任务是否被执行完，等待任务执行完获得结果，也可以设置任务执行的超时时间。
         boolean result = true;
@@ -43,12 +43,15 @@ public class CreateInsertSQLFile {
                 writers[0])));
         service.shutdown();
         Thread.sleep((long) (linenumber/40000));
-        service.awaitTermination(1,TimeUnit.HOURS);
+        service.awaitTermination(7,TimeUnit.DAYS);
 
+        if(fileWriter!=null){
+            fileWriter.closeWriter();
+            return;
+        }
         for(int loop=0;loop<TOTAL_THREADS;loop++)
         {
             writers[loop].closeWriter();
         }
-        return result;
     }
 }

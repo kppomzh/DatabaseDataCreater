@@ -20,6 +20,7 @@ public class textFileJDBC implements tF {
 
     @Override
     public void closeWriter() throws SQLException {
+        getConn.Stmt().execute("commit;");
         getConn.Stmt().close();
         getConn.Conn().close();
     }

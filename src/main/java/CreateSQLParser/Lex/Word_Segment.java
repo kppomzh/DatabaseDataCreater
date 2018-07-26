@@ -37,7 +37,7 @@ public class Word_Segment {
                     StringBuffer quo = new StringBuffer();
 //                    create_word_and_add(isWord, null);
                     Integer cp_length = varnameinquotation(loop,quo,c);
-                    create_word_and_add("String", quo.toString());
+                    create_word_and_add(quo.toString(),null);
                     loop = loop + cp_length;//loop停在后面的引号的下一个字符
                     nowstatus = Coolean.mark;
                 }
@@ -77,12 +77,13 @@ public class Word_Segment {
 //            case ':':
             case '\"':
             case '~':
+            case '{':
+            case '}':
                 return Coolean.mark;//识别为mark的时候将当前字符列为单词
 
             case '[':
             case ']':
-            case '{':
-            case '}':
+
             case '?':
             case '*':
             case '+':

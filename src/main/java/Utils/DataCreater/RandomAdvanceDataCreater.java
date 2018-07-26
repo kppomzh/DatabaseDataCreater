@@ -7,7 +7,8 @@ import Utils.env_properties;
 import Utils.privateRandom;
 
 public class RandomAdvanceDataCreater {
-    public RandomAdvanceDataCreater(){}
+    private RandomBasicDataCreater rbdc;
+    public RandomAdvanceDataCreater(RandomBasicDataCreater r){rbdc=r;}
     public String returnAdvancedString(String methodString,int range) throws Exception {
         StringBuffer advancedString = null;
         try {
@@ -39,7 +40,7 @@ public class RandomAdvanceDataCreater {
             throw new Exception("身份证号所在字段长度不能小于18");
         StringBuffer middle=new StringBuffer(18);
         middle.append(chineseIDNumber.getRandomLocalPrefix());
-        middle.append(RandomBasicDataCreater.getDate(false));
+        middle.append(rbdc.getDate(false));
         middle.append(RandomBasicDataCreater.getFixNumber(3,0,false));
         int checkNum=0;
         char[] charArray = middle.toString().toCharArray();

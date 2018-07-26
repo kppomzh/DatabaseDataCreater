@@ -4,6 +4,7 @@ import CreateSQLParser.Lex.Word;
 import dataStruture.TableStructure;
 
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 public class InsertPlanMaker {
@@ -13,13 +14,17 @@ public class InsertPlanMaker {
         Iterator<Word> iwords=words.iterator();
         int[] range=new int[10];
         double[] numberarea=new double[2];
-        boolean rangeEnd=false,isDefault=false,isSingal=false;
+        boolean rangeEnd=false,isDefault=false,isSingal=false,setInline=false;
         int arraylocal=0,na=0;
+        List<String> inlineObject=new LinkedList<>();
         String listname = null,type="string",defaultDataType="",defaultStr=null;
 
         for (; iwords.hasNext(); ) {
             Word w = iwords.next();
             switch (w.getName()) {
+                case "inline":
+                    inlineObject.add(w.getSubstance());
+                    break;
                 case "not":
                     if(!iwords.next().getName().equals("null"))
                         throw new Exception("多单词关键字：not null必须连用。");
@@ -60,12 +65,12 @@ public class InsertPlanMaker {
                     break;
                 case ";":
                 case ",":
-                    if (!rangeEnd) {
+                    if (!(rangeEnd || setInline)) {
                         if(numberarea[0]>numberarea[1])
                             throw new Exception("数值型设定范围必须由小到大。");
                         structure.addlist(listname,type,
                                 defaultDataType,isSingal,isDefault,defaultStr,
-                                range,numberarea);
+                                range,numberarea,inlineObject);
                         arraylocal = 0;
                         na=0;
                         numberarea=new double[2];
@@ -73,7 +78,14 @@ public class InsertPlanMaker {
                         defaultDataType="";
                         isSingal=false;
                         isDefault=false;
+                        inlineObject=new LinkedList<>();
                     }
+                    break;
+                case "{":
+                    setInline=true;
+                    break;
+                case "}":
+                    setInline=false;
                     break;
             }
         }

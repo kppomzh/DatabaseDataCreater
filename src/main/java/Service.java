@@ -3,6 +3,7 @@ import Utils.datastruc.CreateTableStruc;
 import Utils.datastruc.Fileloader;
 import Utils.env_properties;
 import Utils.insert.CreateInsertSQLFile;
+import Utils.insert.tF;
 import Utils.insert.textFileJDBC;
 import dataStruture.TableStructure;
 

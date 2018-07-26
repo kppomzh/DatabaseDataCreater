@@ -25,8 +25,7 @@ public class textFileWriter  implements tF{
     public synchronized boolean WriteLine(String insert) {
         try {
             bw.write(insert);
-            bw.write("\r\n");
-//            System.out.println(textfile.getName()+' '+writenum++);
+            bw.newLine();
             return true;
         } catch (IOException e) {
             e.printStackTrace();
