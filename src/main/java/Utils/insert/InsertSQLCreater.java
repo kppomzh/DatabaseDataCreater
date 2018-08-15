@@ -54,10 +54,28 @@ public class InsertSQLCreater implements Runnable{
 
     private void makeainsert()  {
         try {
-        StringBuffer sb=new StringBuffer();
+        StringBuffer table=new StringBuffer();
+        StringBuffer values=new StringBuffer();
+
+            if(env_properties.getEnvironment("toDB").equals("sql")||
+                    env_properties.getEnvironment("toDB").equals("jdbc")) {
+                values.append(" values(");
+                table.append("insert into ");
+                table.append(tablename);
+                if(tableStructure.isUnmake()) {
+                    table.append('(');
+                    table.append(tableStructure.getListnames());
+                    table.append(')');
+                }
+            }
+            else if(env_properties.getEnvironment("toDB").equals("json")){
+                values.insert(0,'{');
+            }
         while (tableStructure.hasNext())
         {
             ListStructure ls=tableStructure.getNextStruc();
+            if(ls.isUnmake())
+                continue;
             String appendStr=null;
             if(ls.isInline()) {//inline覆盖掉所有其他设置
                 int num=privateRandom.RandomNumber(0,ls.getInlinelength()).intValue();
@@ -128,31 +146,28 @@ public class InsertSQLCreater implements Runnable{
             else{
                 if (!ls.getListType().equals("string"))
                     throw new Exception("非字符串类型不能使用stringtype关键字");
-                appendStr=radc.returnAdvancedString(ls.getDefaultType(),ls.getRange()[0]);
+                appendStr=StringSpecificationOutput.specString(
+                        radc.returnAdvancedString(ls.getDefaultType(),ls.getRange()[0]),ls.getRange()[0]);
                 addtoSet(ls,appendStr);
             }
 
             if(env_properties.getEnvironment("toDB").equals("json")) {
-                sb.append("\n\"");
-                sb.append(ls.getListname());
-                sb.append("\": ");
+                values.append("\n\"");
+                values.append(ls.getListname());
+                values.append("\": ");
             }
-            sb.append(appendStr);
-            sb.append(',');
+            values.append(appendStr);
+            values.append(',');
         }
-        sb.deleteCharAt(sb.length()-1);
+        values.deleteCharAt(values.length()-1);
         if(env_properties.getEnvironment("toDB").equals("sql")||
                 env_properties.getEnvironment("toDB").equals("jdbc")) {
-            sb.insert(0," values(");
-            sb.insert(0,tablename);
-            sb.insert(0,"insert into ");
-            sb.append(");");
+            values.append(");");
         }
         else if(env_properties.getEnvironment("toDB").equals("json")){
-            sb.insert(0,'{');
-            sb.append("\n}");
+            values.append("\n}");
         }
-        writer.WriteLine(sb.toString());
+        writer.WriteLine(table.append(values).toString());
         } catch (Exception e) {
             e.printStackTrace();
         }

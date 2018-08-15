@@ -6,8 +6,8 @@ import org.junit.Test;
 import java.util.Random;
 
 public class BasicDataTest {
-//    @Test
     RandomBasicDataCreater rbdc=new RandomBasicDataCreater(18);
+    @Test
     public void datatest()
     {
         env_properties.setEnvironment("toDB","csv");

@@ -11,22 +11,51 @@ public class RandomBasicDataCreater {
     '_',//62
     '(',')','<','>','?','~','!','^','%','#','+','-','=','@','$'//63-77
     };
-    private String[] quickStr;
-    private int rangeLength,strusages;
+    private String quickStr,
+            quickAllStr,
+            quickNumStr, //数字字符串
+            quickUppStr, //大写字符串
+            quickLowStr, //小写字符串
+            quickMarkStr; //符号字符串
+
+    private int rangeLength,
+            strusages=0,
+            numusages=0,
+            uppusages=0,
+            lowusages=0,
+            markusages=0;
     public RandomBasicDataCreater(int maxStringLength){
         rangeLength=Double.valueOf(Math.sqrt(maxStringLength)).intValue()*2;
-        reinitQuickStr();
-        strusages=8191;
     }
 
-    private void reinitQuickStr()
+    String reinitStr(int sl, int min, int max)
+    {
+        return new String(basicCharArrayFill(sl*rangeLength,0,sl*rangeLength,min,max));
+    }
+    private void reinitAllStr()
     {
         strusages=8191;
-        quickStr=new String[20];
-        for(int loop=0;loop<quickStr.length;loop++)
-        {
-            quickStr[loop]=new String(basicCharArrayFill(rangeLength,0,rangeLength,0,77));
-        }
+        quickAllStr=reinitStr(64,0,77);
+    }
+    private void reinitNumStr()
+    {
+        numusages=511;
+        quickNumStr=reinitStr(16,52,61);
+    }
+    private void reinitUppStr()
+    {
+        uppusages=511;
+        quickUppStr=reinitStr(16,0,25);
+    }
+    private void reinitLowStr()
+    {
+        lowusages=511;
+        quickLowStr=reinitStr(16,26,51);
+    }
+    private void reinitMarkStr()
+    {
+        markusages=511;
+        quickMarkStr=reinitStr(16,62,77);
     }
 
     public String getDate(boolean outuse)
@@ -133,6 +162,36 @@ public class RandomBasicDataCreater {
     }
     public String getStr(int range)
     {
+        if(strusages==0)
+            reinitAllStr();
+        quickStr=quickAllStr;
+        strusages--;
+        return basegetStr(range);
+    }
+    //定长数值函数
+    public String getFixNumber(int intRange, int decRange, boolean canbeNegative)
+    {
+        if(numusages==0)
+            reinitNumStr();
+        quickStr=quickNumStr;
+        numusages--;
+        StringBuilder sb=new StringBuilder();
+
+        if(canbeNegative && privateRandom.RandomBool()){
+            sb.append('-');
+        }
+
+        sb.append(basegetStr(intRange));
+
+        if(decRange>0) {
+            sb.append('.');
+            sb.append(basegetStr(decRange));
+        }
+
+        return sb.toString();
+    }
+    private String basegetStr(int range)
+    {
         int piecewise;
         StringBuilder sb=new StringBuilder();
         range=strRangeOptimal(range);
@@ -143,52 +202,25 @@ public class RandomBasicDataCreater {
         {
             int sublength=privateRandom.RandomNumber(1,rangeLength).intValue();
             int substrart=privateRandom.RandomNumber(0,rangeLength-sublength-1).intValue();
-            sb.append(quickStr[privateRandom.RandomNumber(0,quickStr.length-1).intValue()]
-                    .substring(substrart,substrart+sublength));
+            sb.append(quickStr, substrart, substrart+sublength);
         }
 
         if(sb.length()<range){
-            int lastlength=range-sb.length();
-            sb.append(basicCharArrayFill(lastlength,0,lastlength,0,c.length-1));
-
+            int substrart=privateRandom.RandomNumber(0,rangeLength-range+sb.length()-1).intValue();
+            sb.append(quickStr, substrart, substrart+range-sb.length());
         }
 
-        strusages--;
-        if(strusages==0)
-            reinitQuickStr();
         return sb.toString();
     }
 
-    //定长数值函数
-    public static char[] getFixNumber(int intRange, int decRange, boolean canbeNegative)
+
+    //获取不带引号、可以用作对象名称的字符串，并且强制启用SQL优化
+    public String getNameStr(int range)
     {
-        char Result[];
-        int length=intRange,start=0;
-
-        if(canbeNegative && privateRandom.RandomBool()){
-            length++;
-            start=1;
-        }
-        if(decRange>0) {
-            length = length + decRange + 1;
-        }
-
-        Result=new char[length];
-
-        Result=basicCharArrayFill(length,start,intRange+start,52,61);
-        if(decRange>0)
-            Result[intRange+start+1]='.';
-        if(start==1)
-            Result[0]='-';
-        return Result;
-    }
-    //获取不带引号、可以用作对象名称的字符串
-    public static char[] getNameStr(int range)
-    {
-        return basicCharArrayFill(range,0,range,0,62);
+        return basicCharArrayFill(strRangeOptimal(range),0,range,0,62);
     }
 
-    public static char[] getArbitraryCharacter(int strRange,char type)
+    public String getArbitraryCharacter(int strRange,char type)
     {
         char[] str=new char[strRange];
         int min=0,max=c.length-1;
@@ -197,13 +229,25 @@ public class RandomBasicDataCreater {
             case 'c':
                 min=0;max=51;break;
             case 'b':
-                min=0;max=25;break;
+                if(uppusages==0)
+                    reinitUppStr();
+                quickStr=quickUppStr;
+                uppusages--;
+                return basegetStr(strRange);
             case 's':
-                min=26;max=51;break;
+                if(lowusages==0)
+                    reinitLowStr();
+                quickStr=quickLowStr;
+                lowusages--;
+                return basegetStr(strRange);
             case 'm':
-                min=62;max=c.length-1;break;
+                if(markusages==0)
+                    reinitMarkStr();
+                quickStr=quickMarkStr;
+                markusages--;
+                return basegetStr(strRange);
             case 'n':
-                min=52;max=61;break;
+                return getFixNumber(strRange,0,false);
             case 'z':
                 return CNCharArrayFill(strRange);
         }
@@ -211,7 +255,7 @@ public class RandomBasicDataCreater {
         return basicCharArrayFill(strRange,0,strRange,min,max);
     }
 
-    private static char[] basicCharArrayFill(int range, int start, int end, int min, int max)
+    private static String basicCharArrayFill(int range, int start, int end, int min, int max)
     {
         char[] str=new char[range];
 
@@ -219,17 +263,17 @@ public class RandomBasicDataCreater {
         {
             str[loop]=c[privateRandom.RandomNumber(min,max).intValue()];
         }
-        return str;
+        return new String(str);
     }
-    private static char[] CNCharArrayFill(int range)
+    private static String CNCharArrayFill(int range)
     {
         char[] str=new char[range];
 
         for(int loop=0;loop<range;loop++)
         {
-            str[loop]= (char) privateRandom.RandomNumber(0x4e00,0x9FFF).intValue();
+            str[loop]= (char) privateRandom.RandomNumber(0x4e00,0x9fa5).intValue();
         }
-        return str;
+        return new String(str);
     }
     private static int strRangeOptimal(int range)
     {

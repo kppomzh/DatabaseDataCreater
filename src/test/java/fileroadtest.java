@@ -8,7 +8,7 @@ import java.io.File;
 
 public class fileroadtest {
 //    @Test
-    public void main(String[] args) throws Exception {
+    public static void main(String[] args) throws Exception {
         String FileString=Fileloader.loadingFile(new File("E:\\Work\\tpch.sql"));
         String[] createSQLs=FileString.split(";");
 
@@ -17,6 +17,7 @@ public class fileroadtest {
             TableStructure ts = CreateTableStruc.makeStructure(SQL + ';');
             createInsertSQLFile.createInsertSQLFile(ts, 20.0);
         }
+        System.out.println(Runtime.getRuntime().availableProcessors());
     }
 
 

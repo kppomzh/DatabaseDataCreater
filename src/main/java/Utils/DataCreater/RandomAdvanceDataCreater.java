@@ -23,15 +23,7 @@ public class RandomAdvanceDataCreater {
                 e1.printStackTrace();
             }
         }
-        if(env_properties.getEnvironment("toDB").equals("sql")||
-                env_properties.getEnvironment("toDB").equals("jdbc")){
-            advancedString.insert(0,'\'');
-            advancedString.append('\'');
-        }
-        else if(env_properties.getEnvironment("toDB").equals("json")) {
-            advancedString.insert(0,'\"');
-            advancedString.append('\"');
-        }
+
         return advancedString.toString();
     }
 
@@ -41,7 +33,7 @@ public class RandomAdvanceDataCreater {
         StringBuffer middle=new StringBuffer(18);
         middle.append(chineseIDNumber.getRandomLocalPrefix());
         middle.append(rbdc.getDate(false));
-        middle.append(RandomBasicDataCreater.getFixNumber(3,0,false));
+        middle.append(rbdc.getFixNumber(3,0,false));
         int checkNum=0;
         char[] charArray = middle.toString().toCharArray();
         for (int i = 0; i < charArray.length; i++) {
@@ -61,7 +53,7 @@ public class RandomAdvanceDataCreater {
         if(r_mus_suffix<0)
             throw new Exception("所在字段长度太小");
 
-        sb.append(RandomBasicDataCreater.getNameStr(r_mus_suffix));
+        sb.append(rbdc.getNameStr(r_mus_suffix));
         sb.append(suffix);
 
         return sb;
@@ -72,15 +64,15 @@ public class RandomAdvanceDataCreater {
             throw new Exception("手机号码所在字段长度不能小于11");
         StringBuffer sb=new StringBuffer(11);
         sb.append(Telephone.getRandomPrefix());
-        sb.append(RandomBasicDataCreater.getFixNumber(4,0,false));
-        sb.append(RandomBasicDataCreater.getFixNumber(4,0,false));
+        sb.append(rbdc.getFixNumber(4,0,false));
+        sb.append(rbdc.getFixNumber(4,0,false));
 
         return sb;
     }
 
     public StringBuffer ch_word(int strRange)
     {
-        return new StringBuffer(strRange).append(RandomBasicDataCreater.getArbitraryCharacter(strRange,'z'));
+        return new StringBuffer(strRange).append(rbdc.getArbitraryCharacter(strRange,'z'));
     }
 
     public StringBuffer a_ip(int range) throws Exception {
@@ -205,7 +197,7 @@ public class RandomAdvanceDataCreater {
                     if(range<input_length)
                         throw new Exception("所在字段长度太小");
 
-                    Return.append(RandomBasicDataCreater.getArbitraryCharacter(now_length,toGet));
+                    Return.append(rbdc.getArbitraryCharacter(now_length,toGet));
 
                     now_length=0;
                     toGet='c';

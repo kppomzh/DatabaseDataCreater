@@ -10,6 +10,7 @@ public class ListStructure implements Cloneable{
     private boolean isSingal;
     private boolean isDefault;
     private boolean isInline;
+    private boolean unmake;
     private String defaultType;
     private String defaultStr;
     private String[] inlineObject;
@@ -83,5 +84,13 @@ public class ListStructure implements Cloneable{
 
     public boolean isInline() {
         return isInline;
+    }
+
+    public boolean isUnmake() {
+        return unmake;
+    }
+
+    public void setUnmake(boolean unmake) {
+        this.unmake = unmake;
     }
 }

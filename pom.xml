@@ -12,6 +12,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.1.0</version>
                 <configuration>
                     <archive>
                         <manifest>
@@ -20,10 +21,6 @@
                             <!-- 打包时 MANIFEST.MF文件不记录的时间戳版本 -->
                             <useUniqueVersions>true</useUniqueVersions>
                         </manifest>
-
-                        <!--<manifestEntries>-->
-                            <!--<Class-Path>.</Class-Path>-->
-                        <!--</manifestEntries>-->
                     </archive>
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
@@ -39,10 +36,19 @@
                     <target>1.8</target>
                     <compilerArguments>
                         <bootclasspath>C:/Program Files/Java/jdk/jre/lib/rt.jar</bootclasspath>
+                        <extdirs>lib/</extdirs>
                     </compilerArguments>
                 </configuration>
             </plugin>
         </plugins>
+
+        <resources>
+            <resource>
+                <directory>src/main/java/Utils/DataCreater</directory>
+                <filtering>false</filtering>
+                <includes></includes>
+            </resource>
+        </resources>
     </build>
     <dependencies>
         <dependency>
@@ -60,11 +66,11 @@
             <artifactId>postgresql</artifactId>
             <version>42.2.2</version>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>com.github.noraui</groupId>-->
-            <!--<artifactId>ojdbc8</artifactId>-->
-            <!--<version>12.2.0.1</version>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>oracle</groupId>
+            <artifactId>ojdbc8</artifactId>
+            <version>12.2.0.1</version>
+        </dependency>
         <dependency>
             <groupId>com.microsoft.sqlserver</groupId>
             <artifactId>mssql-jdbc</artifactId>

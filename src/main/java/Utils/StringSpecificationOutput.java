@@ -93,7 +93,7 @@ public class StringSpecificationOutput {
         if(range==0)
             Return=str;
         else if(str.length()>range)
-            Return=str.substring(0,range-1);
+            Return=str.substring(0,range);
         else Return=str;
         switch (env_properties.getEnvironment("toDB")) {
             case "sql":

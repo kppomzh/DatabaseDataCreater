@@ -9,10 +9,11 @@ import java.util.List;
 import java.util.concurrent.*;
 
 public class CreateInsertSQLFile {
+    private static final int basicThreads = Integer.valueOf(env_properties.getEnvironment("nCPU"));
     private static final int TOTAL_THREADS = Integer.valueOf(env_properties.getEnvironment("TOTAL_THREADS"));
 
     public /*static*/ void createInsertSQLFile(TableStructure ts, Double linenumber) throws Exception {
-        ExecutorService service = Executors.newFixedThreadPool(TOTAL_THREADS);
+        ExecutorService service = Executors.newFixedThreadPool(basicThreads);//根据CPU核心最大值确定线程数量，一般是核心数减一
         List<Future<?>> tasks = new ArrayList<>();//Future接口提供方法来检测任务是否被执行完，等待任务执行完获得结果，也可以设置任务执行的超时时间。
         boolean result = true;
         tF fileWriter = null,writers[]=new textFileWriter[TOTAL_THREADS];

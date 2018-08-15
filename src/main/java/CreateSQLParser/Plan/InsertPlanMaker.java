@@ -14,7 +14,8 @@ public class InsertPlanMaker {
         Iterator<Word> iwords=words.iterator();
         int[] range=new int[10];
         double[] numberarea=new double[2];
-        boolean rangeEnd=false,isDefault=false,isSingal=false,setInline=false;
+        boolean rangeEnd=false,isDefault=false,isSingal=false,
+                setInline=false,isUnmake=false;
         int arraylocal=0,na=0;
         List<String> inlineObject=new LinkedList<>();
         String listname = null,type="string",defaultDataType="",defaultStr=null;
@@ -57,6 +58,9 @@ public class InsertPlanMaker {
                     numberarea[na] = Double.valueOf(w.getSubstance());
                     na++;
                     break;
+                case "unmake":
+                    isUnmake=true;
+                    break;
                 case "defaultdatatype":
                     defaultDataType=w.getSubstance();
                 case ")":
@@ -70,7 +74,7 @@ public class InsertPlanMaker {
                             throw new Exception("数值型设定范围必须由小到大。");
                         structure.addlist(listname,type,
                                 defaultDataType,isSingal,isDefault,defaultStr,
-                                range,numberarea,inlineObject);
+                                range,numberarea,inlineObject,isUnmake);
                         arraylocal = 0;
                         na=0;
                         numberarea=new double[2];
@@ -78,6 +82,7 @@ public class InsertPlanMaker {
                         defaultDataType="";
                         isSingal=false;
                         isDefault=false;
+                        isUnmake=false;
                         inlineObject=new LinkedList<>();
                     }
                     break;

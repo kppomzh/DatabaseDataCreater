@@ -19,6 +19,7 @@ public class env_properties {
         FileInputStream FIS;
         String path=null;
         try {
+            env.setProperty("nCPU",String.valueOf(Runtime.getRuntime().availableProcessors()-1));
             if(debug.equals("debug"))
             {
                 FIS=new FileInputStream(new File("config.properties"));

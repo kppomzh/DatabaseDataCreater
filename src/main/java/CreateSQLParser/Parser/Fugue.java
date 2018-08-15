@@ -29,6 +29,7 @@ public class Fugue {
         mark.add("unique");
         mark.add("stringtype");
         mark.add("numberarea");
+        mark.add("unmake");
         mark.add(";");
 
         data=DataType.getTypeKeySet();
