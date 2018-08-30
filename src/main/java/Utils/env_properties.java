@@ -13,19 +13,21 @@ public class env_properties {
     private static Properties env;
     private env_properties()
     {
-        String debug="debug"; //debug,building
         boolean load=false;
         env=new Properties();
         FileInputStream FIS;
         String path=null;
         try {
             env.setProperty("nCPU",String.valueOf(Runtime.getRuntime().availableProcessors()-1));
-            if(debug.equals("debug"))
+
+            if(this.getClass().getResource(this.getClass().getSimpleName() + ".class")
+                    .toString().startsWith("file:"))
             {
                 FIS=new FileInputStream(new File("config.properties"));
                 env.load(FIS);
             }
-            else if(debug.equals("building"))
+            else if (this.getClass().getResource(this.getClass().getSimpleName() + ".class")
+                    .toString().startsWith("jar:"))
             {
                 path = System.getProperty("java.class.path");
                 int firstIndex = path.lastIndexOf(System.getProperty("path.separator")) + 1;
