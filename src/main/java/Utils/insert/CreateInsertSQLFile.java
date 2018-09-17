@@ -1,9 +1,9 @@
 package Utils.insert;
 
+import Utils.DataCreater.InsertSQLCreater;
 import Utils.env_properties;
 import dataStruture.TableStructure;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
