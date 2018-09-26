@@ -20,26 +20,60 @@
 -O:允许SQL优化，将长度上限特别大的字段随机缩短长度，可以加快生成速度，或者模拟现实当中的字段长度。  
 
 ## 支持的SQL数据类型
+1.数值型  
+number  
+numeric  
+integer  
+int  
+float  
+double  
+decimal  
+  
+2.字符型
+varchar  
+varchar2  
+char  
+nvarchar  
+string  
+text  
+  
+3.日期型
+date  
+timestamp  
+  
+4.布尔型  
+boolean  
 
 ## 自定义数据格式，按照预计生成数据的方法
 ### 一般的数据库当中已经存在的方法
 1.默认值/default：该关键字后面的跟随的常量将会成为
 
 ### 本程序默认的数据格式实现
+1.stringtype  
+2.numberarea  
 
 ### 如何自定义
+1.inline方式：  
+2.stringtype for free:  
 
 ## 配置文件config.properties的参数设置
+### 数据库连接部分参数
 DBsoftware=  
 IP=  
 port=  
 user=  
 password=  
 database=  
+
+### 数据导入
 toDB=  
 #传递给DB的方式，目前允许jdbc（通过jdbc传SQL），sql（写到对应的表名称的sql文件里），
 #csv（通过写入类似外部表的文件载入），json（json字符串文件）
 baseFileDir=E:/  
+canbeNegative=false  
+#是否允许数值型数据出现负数，当指定输入范围时失效  
+
+### 性能参数
 Optimal=false  
 #优化，（伪）随机缩短字符串长度，避免超长字符串的变量生成导致长时间卡顿  
 asynchronous=true  
@@ -48,8 +82,6 @@ TOTAL_THREADS=4
 #这个值请根据CPU核心数量来确定，注意请排除超线程的逻辑核心，不然电脑会奇卡无比  
 defaultProportion=0.9  
 #默认比例  
-canbeNegative=false  
-#是否允许数值型数据出现负数，当指定输入范围时失效  
 
 ## 注意事项
 1.关于数据库连接选项的设置这里暂时不提供，请用配置文件实现。  
