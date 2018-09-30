@@ -2,13 +2,33 @@
 ### 简介
 本程序的作用是根据给定的建立数据库表的SQL（create语句），自动的生成给定行数的数据，这些数据可以以insert语句的方式产生，也可以是逗号隔开的csv格式以便通过数据库外部表或load工具来利用。支持通过JDBC直接导入数据。支持生成json字符串。
 ## 最简化使用方法
-1.下载https://github.com/kiloline/DatabaseDataCreater/releases/download/1.1.0/1.1.0.zip  
+1.下载https://github.com/kiloline/DatabaseDataCreater/releases/download/1.1.1/DBDF-1.1.1.zip  
 2.解压  
 3.命令行定位到jar包所在位置  
-4.输入命令：java -jar DBDF-1.1.0-jar-with-dependencies.jar  
+4.输入命令：java -jar DBDF-1.1.1-jar-with-dependencies.jar  
 5.按照提示输入create命令和输出条数  
 6.在jar包所在的文件夹下就可以找到和表名一致的.sql文件，里面是相应条数的insert数据  
 7.复制粘贴运行三连  
+
+## 当前版本性能测试
+#### 硬件环境
+CPU:Intel i7-7700HQ 3.4~3.5Ghz  
+Memory:16G DDR4 2400Mhz  
+SSD:LITEON CX2  
+HDD:ST1000LM024 HN-M101M  
+
+#### 软件环境以及测试条件
+OS:Windows10 1803  
+Java:Java 1.8_181/Java 11  
+测试条件:  
+1.4线程  
+2.异步写入  
+3.默认值比例0.9  
+4.禁止SQL优化  
+5.写入方式为csv  
+6.生成条数5000000
+
+ ![image](https://github.com/kiloline/DatabaseDataCreater/raw/master/screenshots/sample_test.png)
 
 ## 程序参数详解
 -h:显示帮助。  
@@ -84,7 +104,7 @@ baseFileDir:数据文件写入位置，当toDB为jdbc的时候参数失效。
 canbeNegative:是否允许数值型数据出现负数，当指定输入范围时失效。    
 
 ### 性能参数
-Optimal:优化，（伪）随机缩短字符串长度，避免超长字符串的变量生成导致长时间卡顿。   
+Optimal:SQL优化，（伪）随机缩短字符串长度，避免超长字符串的变量生成导致长时间卡顿。   
 asynchronous:允许异步写文件以加快输出。  
 TOTAL_THREADS:总线程数量，当asynchronous为true的时候整个任务将会被分成和线程数量同等的多个文件。  
 defaultProportion:取值区间0~1，default值在整个字段中占用的默认比例，如果有使用default值的字段，加大该参数会适当的提高程序的性能，但是一定要按照实际的业务需求制定该参数的允许上限。  
