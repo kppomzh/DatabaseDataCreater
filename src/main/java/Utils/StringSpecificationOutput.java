@@ -19,8 +19,8 @@ public class StringSpecificationOutput {
     }
 
     public static String specDate(String date) {
-        StringBuffer specstr = new StringBuffer(),
-                sb = new StringBuffer();
+        StringBuilder specstr = new StringBuilder(),
+                sb = new StringBuilder();
         String[] dates = date.split(" "), datestrs, timestrs;
         datestrs = dates[0].split("-");
 

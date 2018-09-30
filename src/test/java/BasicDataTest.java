@@ -41,6 +41,6 @@ public class BasicDataTest {
         Double[] d=new Double[1];
 
 
-        System.out.println(d[0]);
+        System.out.println(1%9);
     }
 }

@@ -20,6 +20,8 @@ public abstract class WordMap {
         wordMap.put("varchar",temp);
         wordMap.put("varchar2",temp);
         wordMap.put("char",temp);
+        wordMap.put("string",temp);
+        wordMap.put("text",temp);
         wordMap.put("nvarchar",temp);
         wordMap.put("number",temp);
         wordMap.put("int",temp);
@@ -30,6 +32,7 @@ public abstract class WordMap {
         wordMap.put("date",temp);
         wordMap.put("timestamp",temp);
         wordMap.put("boolean",temp);
+        wordMap.put("bool",temp);
         wordMap.put("not",temp);
         wordMap.put("unique",temp);
         wordMap.put("primark",temp);

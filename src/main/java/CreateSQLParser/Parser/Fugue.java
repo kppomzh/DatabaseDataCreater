@@ -13,9 +13,9 @@ public class Fugue {
     Set<String> mark;
     Set<String> data;
     Set<String> multi;
-    public void init()
-    {
-        mark=new HashSet<>();
+
+    public void init() {
+        mark = new HashSet<>();
         mark.add("create");
         mark.add("table");
         mark.add("{");
@@ -32,60 +32,44 @@ public class Fugue {
         mark.add("unmake");
         mark.add(";");
 
-        data=DataType.getTypeKeySet();
+        data = DataType.getTypeKeySet();
 
-        multi=new HashSet<>();
+        multi = new HashSet<>();
         multi.add("not");
         multi.add("primary");
     }
-    public Fugue()
-    {
+
+    public Fugue() {
         init();
     }
 
-    public List<Word> fugue(List<Word> words)
-    {
-        boolean inlineOpen=false;
-        if(!words.get(0).getName().equals("create"))
+    public List<Word> fugue(List<Word> words) {
+        boolean inlineOpen = false;
+        if (!words.get(0).getName().equals("create"))
             throw new RuntimeException("not start with create");
 
-        Iterator<Word> iwords=words.iterator();
-        Word w=words.get(0),last;
-        for (int loop=0; iwords.hasNext();loop++) {
-            last=w;
+        Iterator<Word> iwords = words.iterator();
+        Word w = words.get(0), last;
+        for (int loop = 0; iwords.hasNext(); loop++) {
+            last = w;
             w = iwords.next();
-            if(data.contains(w.getName()))
-            {
+            if (data.contains(w.getName())) {
                 w.setSubstance(DataType.getDataTypeString(w.getName()));
                 w.setName("type");
-            }
-            else if(multi.contains(w.getName())){
-//                switch(w.getName()){
-//                    case "not":
-//                        if(iwords.next().getName().equals("null"))
-//
-//                        break;
-//                    case "primary":
-//                        if(iwords.next().getName().equals("key"))
-//
-//                        break;
-//                }
+            } else if (multi.contains(w.getName())) {
                 continue;
-            }
-            else if(mark.contains(w.getName())){
-                if(w.getName().equals("{"))
-                    inlineOpen=true;
-                if(w.getName().equals("}"))
-                    inlineOpen=false;
+            } else if (mark.contains(w.getName())) {
+                if (w.getName().equals("{"))
+                    inlineOpen = true;
+                if (w.getName().equals("}"))
+                    inlineOpen = false;
                 continue;
-            }
-            else{
-                if(inlineOpen){
-                    if(!w.getName().equals("String"))
+            } else {
+                if (inlineOpen) {
+                    if (!w.getName().equals("String"))
                         w.setSubstance(w.getName());
                     w.setName("inline");
-                }
-                else if(checknumber(w.getName())) {
+                } else if (checknumber(w.getName())) {
                     w.setSubstance(w.getName());
                     switch (last.getName()) {
                         case "default":
@@ -99,21 +83,20 @@ public class Fugue {
                             w.setName("range");
                             break;
                     }
-                }
-                else switch (last.getName()) {
+                } else switch (last.getName()) {
                     case "table":
-                        if(!w.getName().equals("String"))
+                        if (!w.getName().equals("String"))
                             w.setSubstance(w.getName());
                         w.setName("tablename");
                         break;
                     case "(":
                     case ",":
-                        if(!w.getName().equals("String"))
+                        if (!w.getName().equals("String"))
                             w.setSubstance(w.getName());
                         w.setName("listname");
                         break;
                     case "default":
-                        if(!w.getName().equals("String"))
+                        if (!w.getName().equals("String"))
                             w.setSubstance(w.getName());
                         w.setName("defaultStr");
                         break;
@@ -129,13 +112,12 @@ public class Fugue {
         return words;
     }
 
-    private boolean checknumber(String s)
-    {
-        int fu=0;
-        for(char c:s.toCharArray()){
-            if(c=='-'&&fu==0)
+    private boolean checknumber(String s) {
+        int fu = 0;
+        for (char c : s.toCharArray()) {
+            if (c == '-' && fu == 0)
                 continue;
-            if(c<48||c>57)
+            if (c < 48 || c > 57)
                 return false;
             fu++;
         }

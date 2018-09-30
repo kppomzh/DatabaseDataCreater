@@ -1,16 +1,9 @@
 package Utils.DataCreater;
 
 import Utils.DataCreater.FiledCreater.*;
-import Utils.DataCreater.RandomAdvanceDataCreater;
-import Utils.DataCreater.RandomBasicDataCreater;
-import Utils.StringSpecificationOutput;
 import Utils.env_properties;
-import Utils.insert.tF;
-import Utils.privateRandom;
-import dataStruture.ListStructure;
+import Utils.DataWriter.tF;
 import dataStruture.TableStructure;
-
-import java.util.*;
 
 public class InsertSQLCreater implements Runnable {
 

@@ -1,8 +1,7 @@
 import Utils.datastruc.CreateTableStruc;
-import Utils.insert.CreateInsertSQLFile;
+import Utils.insert.CreateInsertSQLProcess;
 import Utils.datastruc.Fileloader;
 import dataStruture.TableStructure;
-import org.junit.Test;
 
 import java.io.File;
 
@@ -12,10 +11,11 @@ public class fileroadtest {
         String FileString=Fileloader.loadingFile(new File("E:\\Work\\tpch.sql"));
         String[] createSQLs=FileString.split(";");
 
-        CreateInsertSQLFile createInsertSQLFile=new CreateInsertSQLFile();
+        CreateInsertSQLProcess createInsertSQLProcess;
         for(String SQL:createSQLs) {
             TableStructure ts = CreateTableStruc.makeStructure(SQL + ';');
-            createInsertSQLFile.createInsertSQLFile(ts, 20.0);
+            createInsertSQLProcess =new CreateInsertSQLProcess(ts, 20.0);
+            createInsertSQLProcess.createInsertSQLFile();
         }
         System.out.println(Runtime.getRuntime().availableProcessors());
     }

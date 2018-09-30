@@ -15,7 +15,7 @@ public class Word_Segment {
     public LinkedList<Word> Segment(String content) throws Exception {
         LW.clear();
         toSQL = content;
-        StringBuffer toWord = new StringBuffer();
+        StringBuilder toWord = new StringBuilder();
         status = Coolean.letter;
         for (int loop = 0; loop < toSQL.length(); loop++) {
             char c = toSQL.charAt(loop);
@@ -23,29 +23,27 @@ public class Word_Segment {
             boolean isStop = nowstatus.equals(Coolean.stop);//
             boolean charStop = charStop(nowstatus);
             boolean quotation = (c == '\"');
-            boolean Stop = isStop | charStop | quotation |(toWord.length()!=0&&status.equals(Coolean.stop));
+            boolean Stop = isStop | charStop | quotation | (toWord.length() != 0 && status.equals(Coolean.stop));
 
             if (Stop) { //
                 String isWord = toWord.toString().toLowerCase();//统一转换成小写
-                if(isWord.length()!=0)
-                {
+                if (isWord.length() != 0) {
                     create_word_and_add(isWord, null);
                     toWord.delete(0, toWord.length());
                 }
-                if(quotation)
-                {
-                    StringBuffer quo = new StringBuffer();
+                if (quotation) {
+                    StringBuilder quo = new StringBuilder();
 //                    create_word_and_add(isWord, null);
-                    Integer cp_length = varnameinquotation(loop,quo,c);
-                    create_word_and_add(quo.toString(),null);
+                    Integer cp_length = varnameinquotation(loop, quo, c);
+                    create_word_and_add(quo.toString(), null);
                     loop = loop + cp_length;//loop停在后面的引号的下一个字符
                     nowstatus = Coolean.mark;
                 }
             }
 
-            if (!isStop&&!quotation) {
+            if (!isStop && !quotation) {
                 toWord.append(c);
-                if(c=='\'') {
+                if (c == '\'') {
                     loop = loop + varnameinquotation(loop, toWord, c);
                     toWord.append(c);
                 }
@@ -159,15 +157,14 @@ public class Word_Segment {
         }
     }
 
-    private Integer varnameinquotation(int loopo, StringBuffer str,char stop) throws Exception {
+    private Integer varnameinquotation(int loopo, StringBuilder str, char stop) throws Exception {
         //loopo是引号所在的位置，单引号和双引号区间内不同种引号的识别情况
         int loop = 1;
         while (true) {
             if (loopo + loop == toSQL.length() - 1)
                 throw new Exception("没有终结符号的字符串");
 
-            if (toSQL.charAt(loopo + loop) == stop)
-            {
+            if (toSQL.charAt(loopo + loop) == stop) {
                 break;
             } else
                 str.append(toSQL.charAt(loopo + loop));

@@ -42,10 +42,10 @@ public abstract class baseCreater {
             String appendStr = strSpecification(ls, makeFiled(ls));
             addtoSet(ls, appendStr);
 
-            packFiled(ls,Return, appendStr);
+            packFiled(ls, Return, appendStr);
         }
         Return.deleteCharAt(Return.length() - 1);
-        return Return.append(packTail()).toString();
+        return Return.append(packTail()).append("\n").toString();
     }
 
     protected String strSpecification(ListStructure ls, String appendStr) {

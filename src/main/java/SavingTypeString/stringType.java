@@ -3,10 +3,11 @@ package SavingTypeString;
 import java.util.HashSet;
 
 public class stringType {
-    private static stringType st=new stringType();
+    private static stringType st = new stringType();
     private HashSet<String> typeSet;
-    private stringType(){
-        typeSet=new HashSet<>();
+
+    private stringType() {
+        typeSet = new HashSet<>();
         typeSet.add("c");
         typeSet.add("b");
         typeSet.add("s");
@@ -14,8 +15,7 @@ public class stringType {
         typeSet.add("m");
     }
 
-    public static boolean checkStringType(String s)
-    {
+    public static boolean checkStringType(String s) {
         return st.typeSet.contains(s);
     }
 }

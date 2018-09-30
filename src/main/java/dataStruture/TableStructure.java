@@ -1,6 +1,8 @@
 package dataStruture;
 
-import com.sun.istack.internal.NotNull;
+//import com.sun.istack.internal.NotNull;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;

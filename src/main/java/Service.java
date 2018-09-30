@@ -1,23 +1,20 @@
-import Utils.insert.CreateInsertSQLJDBC;
 import Utils.datastruc.CreateTableStruc;
 import Utils.datastruc.Fileloader;
 import Utils.env_properties;
-import Utils.insert.CreateInsertSQLFile;
-import Utils.insert.tF;
-import Utils.insert.textFileJDBC;
+import Utils.insert.CreateInsertSQLProcess;
 import dataStruture.TableStructure;
 
 import java.io.File;
 import java.util.Scanner;
 
 public class Service {
-    private static Scanner scanf=new Scanner(System.in);
+    private static Scanner scanf = new Scanner(System.in);
+
     public static void main(String[] args) throws Exception {
-        String filename=null,FileString;
-        String[] createSQLs=null;
+        String filename = null, FileString;
+        String[] createSQLs = null;
         Double linenumber = null;
-        for(int loop=0;loop<args.length;loop++)
-        {
+        for (int loop = 0; loop < args.length; loop++) {
             switch (args[loop]) {
                 case "-f":
                     filename = args[loop + 1];
@@ -54,30 +51,22 @@ public class Service {
                     break;
             }
         }
-        if(filename==null) {
+        if (filename == null) {
             System.out.println("输入create SQL");
             FileString = scanf.nextLine();
-        }
-        else
+        } else
             FileString = Fileloader.loadingFile(new File(filename));//args -f filename
-        if(linenumber==null) {
+        if (linenumber == null) {
             System.out.println("输入create number");
             linenumber = scanf.nextDouble();
         }
-        createSQLs=FileString.split(";");
+        createSQLs = FileString.split(";");
 
 
-        for(String SQL : createSQLs) {
+        for (String SQL : createSQLs) {
             TableStructure ts = CreateTableStruc.makeStructure(SQL + ';');
-            if (env_properties.getEnvironment("toDB").equals("jdbc"))
-            {
-                CreateInsertSQLJDBC sqljdbc=new CreateInsertSQLJDBC();
-                sqljdbc.CreateInsertSQLJDBC(ts,linenumber);
-            }
-            else {
-                CreateInsertSQLFile createInsertSQLFile = new CreateInsertSQLFile();
-                createInsertSQLFile.createInsertSQLFile(ts, linenumber);//args -n linenumber
-            }
+            CreateInsertSQLProcess createInsertSQLProcess = new CreateInsertSQLProcess(ts,linenumber);
+            createInsertSQLProcess.createInsertSQLFile();//args -n linenumber
         }
     }
 }

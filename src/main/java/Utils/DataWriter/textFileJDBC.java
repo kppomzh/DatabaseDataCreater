@@ -1,12 +1,12 @@
-package Utils.insert;
+package Utils.DataWriter;
 
 import Utils.dbconn.getConn;
 
-import java.io.IOException;
-import java.io.Serializable;
 import java.sql.SQLException;
 
-public class textFileJDBC implements tF {
+public class textFileJDBC extends tF {
+    private static textFileJDBC tf=new textFileJDBC();
+
     @Override
     public synchronized boolean WriteLine(String insert) {
         try {
@@ -33,5 +33,9 @@ public class textFileJDBC implements tF {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public static textFileJDBC getInstance() {
+        return tf;
     }
 }

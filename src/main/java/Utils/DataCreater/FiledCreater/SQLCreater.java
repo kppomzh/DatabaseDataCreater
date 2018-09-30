@@ -11,7 +11,7 @@ public class SQLCreater extends baseCreater {
 
     @Override
     protected String packHead(boolean isUnmake) {
-        StringBuffer table = new StringBuffer("insert into ");
+        StringBuilder table = new StringBuilder("insert into ");
         table.append(tableStructure.getTbname());
         if (isUnmake) {
             table.append('(');
