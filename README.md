@@ -28,7 +28,7 @@ Java:Java 1.8_181/Java 11
 5.写入方式为csv  
 6.生成条数5000000
 
- ![image](https://github.com/kiloline/DatabaseDataCreater/raw/master/screenshots/sample_test.png)
+ ![image](https://github.com/kiloline/DatabaseDataCreater/blob/master/sample_test.png)
 
 ## 程序参数详解
 -h:显示帮助。  
