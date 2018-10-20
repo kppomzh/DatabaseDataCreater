@@ -27,8 +27,8 @@ public class getConn {
     }
 
     private static Connection getConn() throws Exception {
-        Class.forName(DBjdbcDriverString.getJdbcDriverString(env_properties.getEnvironment("DBsoftware")));
-        String url=DBJdbcLinkString.getJdbcLinkString(env_properties.getEnvironment("DBsoftware"));
+        Class.forName(DBjdbcDriverString.getJdbcDriverString(env_properties.getEnvironment("DBsoftware").toLowerCase()));
+        String url=DBJdbcLinkString.getJdbcLinkString(env_properties.getEnvironment("DBsoftware").toLowerCase());
         return DriverManager.getConnection(url.
                     replace("{IP}",env_properties.getEnvironment("IP")).
                     replace("{port}",env_properties.getEnvironment("port")).
@@ -45,7 +45,7 @@ public class getConn {
     {
         try {
             getConn.stmt=getConn.conn.createStatement();
-            if(env_properties.getEnvironment("DBsoftware").equals("khan"))
+            if(env_properties.getEnvironment("DBsoftware").toLowerCase().equals("khan"))
                 getConn.stmt.executeUpdate("set dialect='oracle'");
         } catch (SQLException e) {
             e.printStackTrace();

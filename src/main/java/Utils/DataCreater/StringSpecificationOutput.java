@@ -1,4 +1,4 @@
-package Utils;
+package Utils.DataCreater;
 
 public class StringSpecificationOutput {
     public static String specNumber(String num, int intRange, int decRange) {

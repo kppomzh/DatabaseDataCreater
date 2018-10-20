@@ -1,19 +1,17 @@
 package dataStruture;
 
-//import com.sun.istack.internal.NotNull;
-
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class TableStructure implements Cloneable {
-    private int MaxListRange = 0;
-    private String tbname;
-    private StringBuilder listnamessb;
+    private int MaxListRange = 0;//本表中的最大字段长度
+    private String tbname;//表名
+    private StringBuilder listnamessb;//需要填充的字段名总和
     private List<ListStructure> listStructureList;
     private int readnum = -1;
-    private boolean unmake = false;
+    private boolean unmake = false;//是否存在不需要填充的字段
 
     public TableStructure() {
         listnamessb = new StringBuilder();
@@ -53,6 +51,7 @@ public class TableStructure implements Cloneable {
         return true;
     }
 
+    //取字段结构
     public ListStructure getNextStruc() {
         readnum++;
         if (readnum == listStructureList.size())

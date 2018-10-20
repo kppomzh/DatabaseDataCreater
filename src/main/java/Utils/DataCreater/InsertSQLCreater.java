@@ -5,6 +5,9 @@ import Utils.env_properties;
 import Utils.DataWriter.tF;
 import dataStruture.TableStructure;
 
+/**
+ * 产生独立线程和数据格式判断
+ */
 public class InsertSQLCreater implements Runnable {
 
     private double makenumber;
@@ -20,6 +23,10 @@ public class InsertSQLCreater implements Runnable {
                 bc = new csvCreater(tableStructure);
                 break;
             case "jdbc":
+                if(env_properties.getEnvironment("DBsoftware").toLowerCase().equals("mongodb")){
+                    bc = new MongoCreater(tableStructure);
+                    break;
+                }
             case "sql":
                 bc = new SQLCreater(tableStructure);
                 break;

@@ -9,6 +9,12 @@ import dataStruture.TableStructure;
 import java.util.List;
 
 public class CreateTableStruc {
+    /**
+     * 解析SQL格式过程
+     * @param createSQL 单个create table的SQL
+     * @return
+     * @throws Exception
+     */
     public static TableStructure makeStructure(String createSQL) throws Exception {
         Word_Segment ws = new Word_Segment();
         Fugue fugue = new Fugue();

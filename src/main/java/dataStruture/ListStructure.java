@@ -1,16 +1,19 @@
 package dataStruture;
 
+/**
+ * 表字段数据结构
+ */
 public class ListStructure implements Cloneable {
-    private String listname;
-    private String ListType;
-    private int[] Range;
-    private double[] Numberarea;
-    private boolean isSingal;
-    private boolean isDefault;
-    private boolean isInline;
-    private boolean unmake;
-    private String defaultType;
-    private String defaultStr;
+    private String listname;//字段名称
+    private String ListType;//字段数据类型
+    private int[] Range;//长度
+    private double[] Numberarea;//如果是数值型的话，定义取值范围
+    private boolean isSingal;//是否存在唯一/主键约束
+    private boolean isDefault;//是否采用默认值填充
+    private boolean isInline;//是否采用inline方式填充
+    private boolean unmake;//是否对本字段进行填充
+    private String defaultType;//默认字符串格式
+    private String defaultStr;//默认值
     private String[] inlineObject;
 
     public ListStructure(String listname, String ListType, boolean isSingal, boolean isDefault, String defaultStr) {

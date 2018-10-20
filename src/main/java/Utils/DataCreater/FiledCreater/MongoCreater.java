@@ -1,6 +1,5 @@
 package Utils.DataCreater.FiledCreater;
 
-import Utils.StringSpecificationOutput;
 import dataStruture.ListStructure;
 import dataStruture.TableStructure;
 

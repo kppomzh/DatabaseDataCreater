@@ -3,7 +3,6 @@ package Utils.DataCreater;
 import Utils.DataCreater.templet.Email;
 import Utils.DataCreater.templet.Telephone;
 import Utils.DataCreater.templet.chineseIDNumber;
-import Utils.env_properties;
 import Utils.privateRandom;
 
 public class RandomAdvanceDataCreater {

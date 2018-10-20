@@ -1,5 +1,5 @@
+import Utils.FileLoader;
 import Utils.datastruc.CreateTableStruc;
-import Utils.datastruc.Fileloader;
 import Utils.env_properties;
 import Utils.insert.CreateInsertSQLProcess;
 import dataStruture.TableStructure;
@@ -55,12 +55,12 @@ public class Service {
             System.out.println("输入create SQL");
             FileString = scanf.nextLine();
         } else
-            FileString = Fileloader.loadingFile(new File(filename));//args -f filename
+            FileString = FileLoader.loadFile(new File(filename));
         if (linenumber == null) {
             System.out.println("输入create number");
             linenumber = scanf.nextDouble();
         }
-        createSQLs = FileString.split(";");
+        createSQLs = FileString.replace("\r","").replace("\n","").split(";");
 
 
         for (String SQL : createSQLs) {

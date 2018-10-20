@@ -2,7 +2,7 @@ package Utils.DataCreater.FiledCreater;
 
 import Utils.DataCreater.RandomAdvanceDataCreater;
 import Utils.DataCreater.RandomBasicDataCreater;
-import Utils.StringSpecificationOutput;
+import Utils.DataCreater.StringSpecificationOutput;
 import Utils.env_properties;
 import Utils.privateRandom;
 import dataStruture.ListStructure;
@@ -20,16 +20,15 @@ public abstract class baseCreater {
     private Map<String, List> unique;
 
     public baseCreater(TableStructure tableStructure) {
+        this.tableStructure = tableStructure;
+        this.rbdc = new RandomBasicDataCreater(tableStructure.getMaxListRange());
+        this.radc = new RandomAdvanceDataCreater(rbdc);
+        this.unique = new HashMap<>();
         for (ListStructure ls : tableStructure.getStruc()) {
             if (ls.isSingal()) {
                 unique.put(ls.getListname(), new ArrayList());
             }
         }
-
-        this.tableStructure = tableStructure;
-        this.rbdc = new RandomBasicDataCreater(tableStructure.getMaxListRange());
-        this.radc = new RandomAdvanceDataCreater(rbdc);
-        this.unique = new HashMap<>();
     }
 
 
@@ -65,7 +64,7 @@ public abstract class baseCreater {
     protected void addtoSet(ListStructure ls, String appendStr) throws Exception {
         if (ls.isSingal()) {
             if (unique.get(ls.getListname()).contains(appendStr))
-                throw new Exception("ta");
+                throw new Exception("ta");//错误标记，用于一旦出现了重复的字段内容的时候重新生成数据
             else
                 unique.get(ls.getListname()).add(appendStr);
         }
@@ -103,9 +102,24 @@ public abstract class baseCreater {
         return appendStr;
     }
 
+    /**
+     * 依赖于不同的数据格式，一条数据插入时候的头部特殊格式
+     * @param isUnmake
+     * @return
+     */
     protected abstract String packHead(boolean isUnmake);
 
+    /**
+     * 依赖于不同的数据格式，各类型字段的特殊格式
+     * @param list
+     * @param out
+     * @param appendStr
+     */
     protected abstract void packFiled(ListStructure list, StringBuilder out, String appendStr);
 
+    /**
+     * 依赖于不同的数据格式，一条数据插入时候的尾部特殊格式
+     * @return
+     */
     protected abstract String packTail();
 }

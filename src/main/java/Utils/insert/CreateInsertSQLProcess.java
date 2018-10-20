@@ -2,14 +2,17 @@ package Utils.insert;
 
 import Utils.CircularLinkedList;
 import Utils.DataCreater.InsertSQLCreater;
-import Utils.DataWriter.*;
+import Utils.DataWriter.ApacheFileWriter;
+import Utils.DataWriter.tF;
+import Utils.DataWriter.textFileJDBC;
+import Utils.DataWriter.textFileWriter;
 import Utils.env_properties;
 import dataStruture.TableStructure;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class CreateInsertSQLProcess {
     private static final int basicThreads = Integer.valueOf(env_properties.getEnvironment("nCPU"));

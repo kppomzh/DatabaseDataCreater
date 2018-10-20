@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
+        <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
+    nexus-maven-repository-index.gz
     <groupId>zhzm</groupId>
     <artifactId>DBDF</artifactId>
-    <version>1.1.1</version>
+    <version>1.1.2</version>
     <build>
         <plugins>
             <plugin>
@@ -75,6 +75,11 @@
             <artifactId>commons-io</artifactId>
             <version>RELEASE</version>
         </dependency>
+        <dependency>
+            <groupId>com.ibm.icu</groupId>
+            <artifactId>icu4j</artifactId>
+            <version>RELEASE</version>
+        </dependency>
 
         <!--jdbc jars-->
         <dependency>
@@ -87,11 +92,11 @@
             <artifactId>postgresql</artifactId>
             <version>RELEASE</version>
         </dependency>
-        <dependency>
-            <groupId>oracle</groupId>
-            <artifactId>ojdbc8</artifactId>
-            <version>12.2.0.1</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>oracle</groupId>-->
+            <!--<artifactId>ojdbc8</artifactId>-->
+            <!--<version>12.2.0.1</version>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>com.microsoft.sqlserver</groupId>
             <artifactId>mssql-jdbc</artifactId>
