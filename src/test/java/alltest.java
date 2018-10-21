@@ -1,3 +1,9 @@
+import org.apache.commons.io.FileUtils;
+import org.junit.Test;
+
+import java.io.File;
+import java.io.IOException;
+
 //这里除了参数是手动写死的之外其他部分和正式的没有区别
 public class alltest {
     final static int ci=1;
@@ -13,4 +19,9 @@ public class alltest {
         }
         System.out.println(all/ci+" min");
     }
+
+//    @Test
+//    public void readfile() throws IOException {
+//        System.out.print(FileUtils.readFileToString(new File("po m.xml"),"utf-8"));
+//    }
 }
