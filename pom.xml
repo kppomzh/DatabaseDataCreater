@@ -16,7 +16,7 @@
                     <archive>
                         <manifest>
                             <!-- 主函数的入口 -->
-                            <mainClass>Service</mainClass>
+                            <mainClass>main.Service</mainClass>
                             <!-- 打包时 MANIFEST.MF文件不记录的时间戳版本 -->
                             <useUniqueVersions>true</useUniqueVersions>
                         </manifest>

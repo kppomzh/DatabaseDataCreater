@@ -43,10 +43,21 @@ public class env_properties {
             load = true;
         } finally //可以通过finally加载默认参数，防止程序崩溃
         {
-            if (load) {
-                exit(1);
-            }
+            if(load)
+                loadDefaultProp();
         }
+    }
+
+    private void loadDefaultProp(){
+        env.setProperty("toDB","sql");
+        env.setProperty("baseFileDir",".\\");
+        env.setProperty("Optimal","false");
+        env.setProperty("asynchronous","false");
+        env.setProperty("TOTAL_THREADS","1");
+        env.setProperty("defaultProportion","0.5");
+        env.setProperty("canbeNegative","false");
+        env.setProperty("WriterEngine","default");
+        System.out.println("默认参数已加载。");
     }
 
     public static String getEnvironment(String envstring) {

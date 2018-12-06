@@ -1,3 +1,5 @@
+package main;
+
 public class help {
     static String help="本程序的作用是根据给定的建立数据库表的SQL（create语句），自动的生成给定行数的数据，\n" +
             "这些数据可以以insert语句的方式产生，也可以是逗号隔开的格式通过数据库外部表或load工具来利用。支持通过JDBC直接导入数据。支持json。\n" +

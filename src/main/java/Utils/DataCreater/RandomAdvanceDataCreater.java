@@ -34,7 +34,7 @@ public class RandomAdvanceDataCreater {
         if (range < 18)
             throw new Exception("身份证号所在字段长度不能小于18");
         StringBuilder middle = new StringBuilder(18);
-        middle.append(chineseIDNumber.getRandomLocalPrefix());
+        middle.append(chineseIDNumber.getInstance().getRandomLocalPrefix());
         middle.append(rbdc.getDate(false));
         middle.append(rbdc.getFixNumber(3, 0, false));
         int checkNum = 0;

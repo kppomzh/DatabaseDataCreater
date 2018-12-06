@@ -1,3 +1,5 @@
+package main;
+
 import Utils.FileLoader;
 import Utils.datastruc.CreateTableStruc;
 import Utils.env_properties;

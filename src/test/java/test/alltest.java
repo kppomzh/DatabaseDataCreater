@@ -1,3 +1,6 @@
+package test;
+
+import main.Service;
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 
@@ -20,8 +23,8 @@ public class alltest {
         System.out.println(all/ci+" min");
     }
 
-//    @Test
-//    public void readfile() throws IOException {
-//        System.out.print(FileUtils.readFileToString(new File("po m.xml"),"utf-8"));
-//    }
+    @Test
+    public void readfile() throws IOException {
+        System.out.print(FileUtils.readFileToString(new File("pom.xml"),"utf-8"));
+    }
 }

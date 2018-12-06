@@ -2,10 +2,11 @@
 ### 简介
 本程序的作用是根据给定的建立数据库表的SQL（create语句），自动的生成给定行数的数据，这些数据可以以insert语句的方式产生，也可以是逗号隔开的csv格式以便通过数据库外部表或load工具来利用。支持通过JDBC直接导入数据。支持生成json字符串。
 ## 最简化使用方法
-1.下载https://github.com/kiloline/DatabaseDataCreater/releases/download/1.1.1/DBDF-1.1.1.zip  
+该方法可以不需要config.properties的配置文件。
+1.下载https://github.com/kiloline/DatabaseDataCreater/releases/download/1.1.2/DBDF-1.1.2.zip
 2.解压  
 3.命令行定位到jar包所在位置  
-4.输入命令：java -jar DBDF-1.1.1-jar-with-dependencies.jar  
+4.输入命令：java -jar DBDF-1.1.2-jar-with-dependencies.jar
 5.按照提示输入create命令和输出条数  
 6.在jar包所在的文件夹下就可以找到和表名一致的.sql文件，里面是相应条数的insert数据  
 7.复制粘贴运行三连  
@@ -118,7 +119,7 @@ DB2
 PostgreSQL  
 SQLite  
 H2  
-MongoDB正在支持……  
+MongoDB
 
 ## 注意事项
 1.关于数据库连接选项的设置这里暂时不提供，请用配置文件实现。  
