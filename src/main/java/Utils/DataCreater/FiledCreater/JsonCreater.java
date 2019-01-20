@@ -1,7 +1,7 @@
 package Utils.DataCreater.FiledCreater;
 
-import dataStruture.ListStructure;
-import dataStruture.TableStructure;
+import dataStructure.ListStructure;
+import dataStructure.TableStructure;
 
 public class JsonCreater extends baseCreater {
     public JsonCreater(TableStructure tableStructure) {

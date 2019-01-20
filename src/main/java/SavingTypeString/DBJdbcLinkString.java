@@ -17,6 +17,7 @@ public class DBJdbcLinkString {
         DBjdbcLinkCorresponding.put("sqlite", "jdbc:sqlite:{dbname}");
         DBjdbcLinkCorresponding.put("h2", "jdbc:h2:tcp://{IP}:{port}/{dbname}");
         DBjdbcLinkCorresponding.put("khan", "jdbc:khandb://{IP}:{port}/{dbname}");
+        DBjdbcLinkCorresponding.put("presto", "jdbc:presto://{IP}:{port}/{dbname}/default");
 //        DBjdbcLinkCorresponding.put("asl","");
 //        DBjdbcDriverCorresponding.put("","");
     }

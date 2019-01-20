@@ -25,15 +25,21 @@ public class Word_Segment {
             boolean quotation = (c == '\"');
             boolean Stop = isStop | charStop | quotation | (toWord.length() != 0 && status.equals(Coolean.stop));
 
+            boolean isRegular=false;
+
             if (Stop) { //
                 String isWord = toWord.toString().toLowerCase();//统一转换成小写
                 if (isWord.length() != 0) {
                     create_word_and_add(isWord, null);
                     toWord.delete(0, toWord.length());
+
+                    if(isWord.equalsIgnoreCase("regulartype")){
+                        isRegular=true;
+                    }
                 }
                 if (quotation) {
                     StringBuilder quo = new StringBuilder();
-//                    create_word_and_add(isWord, null);
+
                     Integer cp_length = varnameinquotation(loop, quo, c);
                     create_word_and_add(quo.toString(), null);
                     loop = loop + cp_length;//loop停在后面的引号的下一个字符
@@ -47,6 +53,12 @@ public class Word_Segment {
                     loop = loop + varnameinquotation(loop, toWord, c);
                     toWord.append(c);
                 }
+            }
+
+            if(isRegular){
+                loop = loop + varnameinquotation(loop, toWord, '$');
+                create_word_and_add(toWord.toString(),null);
+                toWord.delete(0, toWord.length());
             }
 
             status = nowstatus;
@@ -85,6 +97,7 @@ public class Word_Segment {
             case '?':
             case '*':
             case '+':
+            case '|':
                 //类正则表达式
             case '0':
             case '1':

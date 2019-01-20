@@ -1,5 +1,8 @@
 package Utils.DataCreater;
 
+/**
+ * 检查不同类型字符串的格式是否正确，主要用于一些自定义格式和默认值
+ */
 public class StringSpecificationOutput {
     public static String specNumber(String num, int intRange, int decRange) {
         String[] nums = num.split("\\.");
@@ -7,7 +10,7 @@ public class StringSpecificationOutput {
         if (nums[0].toCharArray()[0] == '-' || nums[0].toCharArray()[0] == '+') {
             intRange++;
         }
-        if (nums[0].length() > intRange) {
+        if (nums[0].length() > intRange&& intRange>1) {
             nums[0] = nums[0].substring(0, intRange - 1);
         }
         Return = nums[0];

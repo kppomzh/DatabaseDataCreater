@@ -1,8 +1,8 @@
 package Utils.DataCreater.FiledCreater;
 
 import Utils.DataCreater.StringSpecificationOutput;
-import dataStruture.ListStructure;
-import dataStruture.TableStructure;
+import dataStructure.ListStructure;
+import dataStructure.TableStructure;
 
 public class SQLCreater extends baseCreater {
     public SQLCreater(TableStructure tableStructure) {

@@ -1,4 +1,4 @@
-package dataStruture;
+package dataStructure;
 
 import java.util.Map;
 

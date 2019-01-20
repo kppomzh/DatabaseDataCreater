@@ -1,6 +1,8 @@
-package dataStruture;
+package dataStructure;
 
-import org.jetbrains.annotations.NotNull;
+import com.sun.istack.NotNull;
+//import com.sun.istack.internal.NotNull;
+import dataStructure.RegularClasses.Regular;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,18 +20,14 @@ public class TableStructure implements Cloneable {
         listStructureList = new ArrayList<>();
     }
 
-    public void addlist(@NotNull String listname,
-                        String ListType, String defaultDataType,
-                        boolean isSingal, boolean isDefault,
-                        String defaultStr,
-                        int[] Range, double[] Numberarea,
-                        List<String> inlineObject, boolean unmake) {
+    public void addlist(@NotNull String listname, String ListType, String defaultDataType, boolean isSingal, boolean isDefault, boolean isStringType, String defaultStr, int[] Range, double[] Numberarea, List<String> inlineObject, boolean unmake, boolean isRegular, Regular regular) {
         if (Range[0] > MaxListRange)
             MaxListRange = Range[0];
-        ListStructure ls = new ListStructure(listname, ListType, isSingal, isDefault, defaultStr);
-        ls.setDefaultType(defaultDataType);
+        ListStructure ls = new ListStructure(listname, ListType, isSingal, isDefault, isRegular, defaultStr);
+        ls.setDefaultType(defaultDataType,isStringType);
         ls.setRange(Range);
         ls.setNumberarea(Numberarea);
+        ls.setRegularStr(regular);
         if (inlineObject.size() != 0)
             ls.setInlineObject(inlineObject.toArray(new String[0]));
         ls.setUnmake(unmake);

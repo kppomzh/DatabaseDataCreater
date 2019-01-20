@@ -27,10 +27,12 @@ public class RandomBasicDataCreater {
 
     public RandomBasicDataCreater(int maxStringLength) {
         rangeLength = Double.valueOf(Math.sqrt(maxStringLength)).intValue() * 2;
+        if(rangeLength<100)
+            rangeLength=100;
     }
 
     String reinitStr(int sl, int min, int max) {
-        return new String(basicCharArrayFill(sl * rangeLength, 0, sl * rangeLength, min, max));
+        return basicCharArrayFill(sl * rangeLength, 0, sl * rangeLength, min, max);
     }
 
     private void reinitAllStr() {
@@ -55,7 +57,7 @@ public class RandomBasicDataCreater {
 
     private void reinitMarkStr() {
         markusages = 511;
-        quickMarkStr = reinitStr(16, 62, 77);
+        quickMarkStr = reinitStr(16, 63, 77);
     }
 
     public String getDate(boolean outuse) {
@@ -123,7 +125,7 @@ public class RandomBasicDataCreater {
         boolean canbeNegative = (false & env_properties.getEnvironment("canbeNegative").equals("true")
                 & privateRandom.RandomBool())
                 | Numberarea[1] < 0;
-        if (intRange < 0)
+        if (intRange <= 0)
             intRange = privateRandom.RandomNumber(1, 10).intValue();
         Double intS, intMin = 0d, intMax = Math.pow(10, intRange) - 1, decMax = Math.pow(10, decRange) - 1;
         StringBuilder sb = new StringBuilder();
@@ -190,6 +192,7 @@ public class RandomBasicDataCreater {
         return sb.toString();
     }
 
+    //快速获取基本字符串的方法，例如纯粹大写、小写、数字等
     private String basegetStr(int range) {
         int piecewise;
         StringBuilder sb = new StringBuilder();
@@ -200,7 +203,7 @@ public class RandomBasicDataCreater {
         for (int loop = 0; loop < piecewise; loop++) {
             int sublength = privateRandom.RandomNumber(1, rangeLength).intValue();
             int substrart = privateRandom.RandomNumber(0, rangeLength - sublength - 1).intValue();
-            sb.append(quickStr, substrart, substrart + sublength);
+            sb.append(quickStr.substring(substrart,substrart + sublength));
         }
 
         if (sb.length() < range) {
@@ -214,40 +217,40 @@ public class RandomBasicDataCreater {
 
     //获取不带引号、可以用作对象名称的字符串，并且强制启用SQL优化
     public String getNameStr(int range) {
-        return basicCharArrayFill(strRangeOptimal(range), 0, range, 0, 62);
+        return getArbitraryCharacter(strRangeOptimal(range), "\\w");
     }
 
-    public String getArbitraryCharacter(int strRange, char type) {
+    public static String getArbitraryCharacter(int strRange, String type) {
         char[] str = new char[strRange];
         int min = 0, max = c.length - 1;
 
         switch (type) {
-            case 'c':
-                min = 0;
-                max = 51;
+            case "\\d":
+                min = 52;
+                max = 61;
                 break;
-            case 'b':
-                if (uppusages == 0)
-                    reinitUppStr();
-                quickStr = quickUppStr;
-                uppusages--;
-                return basegetStr(strRange);
-            case 's':
-                if (lowusages == 0)
-                    reinitLowStr();
-                quickStr = quickLowStr;
-                lowusages--;
-                return basegetStr(strRange);
-            case 'm':
-                if (markusages == 0)
-                    reinitMarkStr();
-                quickStr = quickMarkStr;
-                markusages--;
-                return basegetStr(strRange);
-            case 'n':
-                return getFixNumber(strRange, 0, false);
-            case 'z':
-                return CNCharArrayFill(strRange);
+            case "\\w"://[a-zA-Z0-9_]
+                min = 0;
+                max = 62;
+                break;
+            case "\\W":
+                min=63;
+                max=77;
+                break;
+            case "\\s"://空格
+                min=32;
+                max=32;
+                break;
+            case "\\S":
+                min=0;
+                max=77;
+                break;
+            case "\\num"://正整数
+                return privateRandom.RandomNumber(0,100000).toString();
+            case "\\z":
+                min=0x4e00;
+                max=0x9fa5;
+                break;
         }
 
         return basicCharArrayFill(strRange, 0, strRange, min, max);
@@ -258,15 +261,6 @@ public class RandomBasicDataCreater {
 
         for (int loop = start; loop < end; loop++) {
             str[loop] = c[privateRandom.RandomNumber(min, max).intValue()];
-        }
-        return new String(str);
-    }
-
-    private static String CNCharArrayFill(int range) {
-        char[] str = new char[range];
-
-        for (int loop = 0; loop < range; loop++) {
-            str[loop] = (char) privateRandom.RandomNumber(0x4e00, 0x9fa5).intValue();
         }
         return new String(str);
     }
@@ -283,6 +277,7 @@ public class RandomBasicDataCreater {
         return range;
     }
 
+    //日期补0
     private static char[] less10give0(int i) {
         if (i < 10)
             return new char[]{'0'};
@@ -290,6 +285,12 @@ public class RandomBasicDataCreater {
             return new char[]{};
     }
 
+
+    /**
+     * Java默认双精度浮点值转字符串
+     * @param d
+     * @return
+     */
     private static String Double2String(Double d) {
         String s[] = d.toString().split("\\.");
         if (s[1].toString().indexOf("E") == -1)

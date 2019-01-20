@@ -9,9 +9,10 @@ import java.util.Properties;
 import static java.lang.System.exit;
 
 public class env_properties {
-    private static final env_properties init = new env_properties();
-    private static Properties env;
+    protected static final env_properties init = new env_properties();
+    protected static Properties env;
 
+    protected env_properties(String str){}
     private env_properties() {
         boolean load = false;
         env = new Properties();

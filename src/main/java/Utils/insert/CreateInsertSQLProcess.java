@@ -7,7 +7,7 @@ import Utils.DataWriter.tF;
 import Utils.DataWriter.textFileJDBC;
 import Utils.DataWriter.textFileWriter;
 import Utils.env_properties;
-import dataStruture.TableStructure;
+import dataStructure.TableStructure;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
@@ -21,6 +21,10 @@ public class CreateInsertSQLProcess {
     private TableStructure ts;
     private int[] linenumber;
 
+    /**
+     * @param ts 每个表的解析信息
+     * @param linenumber 总的生成行数
+     */
     public CreateInsertSQLProcess(TableStructure ts, double linenumber) {
         this.ts = ts;
         this.linenumber = new int[TOTAL_THREADS];

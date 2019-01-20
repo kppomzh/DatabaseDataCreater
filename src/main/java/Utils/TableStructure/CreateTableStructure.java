@@ -1,14 +1,14 @@
-package Utils.datastruc;
+package Utils.TableStructure;
 
 import CreateSQLParser.Lex.Word;
 import CreateSQLParser.Lex.Word_Segment;
 import CreateSQLParser.Parser.Fugue;
 import CreateSQLParser.Plan.InsertPlanMaker;
-import dataStruture.TableStructure;
+import dataStructure.TableStructure;
 
 import java.util.List;
 
-public class CreateTableStruc {
+public class CreateTableStructure {
     /**
      * 解析SQL格式过程
      * @param createSQL 单个create table的SQL

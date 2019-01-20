@@ -5,8 +5,8 @@ import Utils.DataCreater.RandomBasicDataCreater;
 import Utils.DataCreater.StringSpecificationOutput;
 import Utils.env_properties;
 import Utils.privateRandom;
-import dataStruture.ListStructure;
-import dataStruture.TableStructure;
+import dataStructure.ListStructure;
+import dataStructure.TableStructure;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,6 +32,12 @@ public abstract class baseCreater {
     }
 
 
+    /**
+     * 生成对应数据形式的插入内容
+     *
+     * @return
+     * @throws Exception
+     */
     public String makeinsert() throws Exception {
         StringBuilder Return = new StringBuilder(packHead(tableStructure.isUnmake()));
         while (this.tableStructure.hasNext()) {
@@ -61,6 +67,13 @@ public abstract class baseCreater {
         }
     }
 
+    /**
+     * 用于唯一约束检测，每一个线程会分配一个
+     *
+     * @param ls
+     * @param appendStr
+     * @throws Exception
+     */
     protected void addtoSet(ListStructure ls, String appendStr) throws Exception {
         if (ls.isSingal()) {
             if (unique.get(ls.getListname()).contains(appendStr))
@@ -77,7 +90,15 @@ public abstract class baseCreater {
             appendStr = ls.getInlineObject(num);
         } else if ((!ls.isSingal()) && ls.isDefault() && privateRandom.RandomNumber(0, 1) <= 2 * Double.valueOf(env_properties.getEnvironment("defaultProportion"))) {
             appendStr = ls.getDefaultStr();//当存在类似唯一约束的情况时将屏蔽默认值
-        } else if (ls.getDefaultType().equals("")) {
+        } else if (ls.isStringType()) {
+            if (!ls.getListType().equals("string"))
+                throw new Exception("非字符串类型不能使用stringtype关键字");
+            appendStr = radc.returnAdvancedString(ls.getDefaultType(), ls.getRange()[0]);
+        } else if (ls.isRegular()) {
+            if (!ls.getListType().equals("string"))
+                throw new Exception("非字符串类型不能使用regulartype关键字");
+            appendStr = ls.getRegularStr();
+        }else if (ls.getDefaultType().equals("")) {
             switch (ls.getListType()) {
                 case "number":
                     appendStr = rbdc.getNumber(ls.getRange()[0], ls.getRange()[1], ls.getNumberarea());
@@ -94,16 +115,13 @@ public abstract class baseCreater {
                             rbdc.getStr(ls.getRange()[0]), ls.getRange()[0]);
                     break;
             }
-        } else {
-            if (!ls.getListType().equals("string"))
-                throw new Exception("非字符串类型不能使用stringtype关键字");
-            appendStr = radc.returnAdvancedString(ls.getDefaultType(), ls.getRange()[0]);
         }
         return appendStr;
     }
 
     /**
      * 依赖于不同的数据格式，一条数据插入时候的头部特殊格式
+     *
      * @param isUnmake
      * @return
      */
@@ -111,6 +129,7 @@ public abstract class baseCreater {
 
     /**
      * 依赖于不同的数据格式，各类型字段的特殊格式
+     *
      * @param list
      * @param out
      * @param appendStr
@@ -119,6 +138,7 @@ public abstract class baseCreater {
 
     /**
      * 依赖于不同的数据格式，一条数据插入时候的尾部特殊格式
+     *
      * @return
      */
     protected abstract String packTail();

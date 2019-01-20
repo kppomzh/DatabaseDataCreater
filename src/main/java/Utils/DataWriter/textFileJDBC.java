@@ -1,6 +1,6 @@
 package Utils.DataWriter;
 
-import Utils.dbconn.getConn;
+import Utils.DBConn.getConn;
 
 import java.sql.SQLException;
 

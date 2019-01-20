@@ -3,6 +3,7 @@ package CreateSQLParser.Parser;
 import CreateSQLParser.Lex.Word;
 import SavingTypeString.DataType;
 import SavingTypeString.stringType;
+import Utils.DataCreater.templet.CustomStringtypeConfigLoader;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -13,6 +14,7 @@ public class Fugue {
     Set<String> mark;
     Set<String> data;
     Set<String> multi;
+    CustomStringtypeConfigLoader cscl;
 
     public void init() {
         mark = new HashSet<>();
@@ -29,6 +31,7 @@ public class Fugue {
         mark.add("unique");
         mark.add("stringtype");
         mark.add("numberarea");
+        mark.add("regulartype");
         mark.add("unmake");
         mark.add(";");
 
@@ -61,7 +64,7 @@ public class Fugue {
             } else if (mark.contains(w.getName())) {
                 if (w.getName().equals("{"))
                     inlineOpen = true;
-                if (w.getName().equals("}"))
+                else if (w.getName().equals("}"))
                     inlineOpen = false;
                 continue;
             } else {
@@ -101,8 +104,16 @@ public class Fugue {
                         w.setName("defaultStr");
                         break;
                     case "stringtype":
+                        if(cscl.getCustomStringtypes().containsKey(w.getName())){
+                            w.setSubstance(cscl.getCustomStringtypes().getProperty(w.getName()));
+                            w.setName("isRegular");
+                        }
                         w.setSubstance(w.getName());
                         w.setName("defaultdatatype");
+                        break;
+                    case "regulartype":
+                        w.setSubstance(w.getName());
+                        w.setName("isRegular");
                         break;
                     default:
                         break;

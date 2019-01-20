@@ -1,31 +1,50 @@
-package dataStruture;
+package dataStructure;
+
+import dataStructure.RegularClasses.Regular;
 
 /**
  * 表字段数据结构
  */
 public class ListStructure implements Cloneable {
-    private String listname;//字段名称
-    private String ListType;//字段数据类型
-    private int[] Range;//长度
-    private double[] Numberarea;//如果是数值型的话，定义取值范围
-    private boolean isSingal;//是否存在唯一/主键约束
-    private boolean isDefault;//是否采用默认值填充
-    private boolean isInline;//是否采用inline方式填充
+    private String listname;
+    private String ListType;
+    private int[] Range;
+    private double[] Numberarea;
+    private boolean isSingal;
     private boolean unmake;//是否对本字段进行填充
+
+    private boolean isStringType;//已命名的默认字符串格式
     private String defaultType;//默认字符串格式
+
+    private boolean isDefault;
     private String defaultStr;//默认值
+
+    private boolean isRegular;
+    private Regular regularStructure;
+
+    private boolean isInline;//是否采用inline方式填充
     private String[] inlineObject;
 
-    public ListStructure(String listname, String ListType, boolean isSingal, boolean isDefault, String defaultStr) {
+    /**
+     * @param listname 字段名称
+     * @param ListType 字段数据类型
+     * @param isSingal 是否存在唯一/主键约束
+     * @param isDefault 是否采用默认值填充
+     * @param isRegular 是否用正则表达式生成值
+     * @param defaultStr 是否用默认值填充
+     */
+    public ListStructure(String listname, String ListType, boolean isSingal, boolean isDefault, boolean isRegular, String defaultStr) {
         this.listname = listname;
         this.isSingal = isSingal;
         this.ListType = ListType;
         this.isDefault = isDefault;
+        this.isRegular = isRegular;
         this.defaultStr = defaultStr;
     }
 
-    public void setDefaultType(String defaultType) {
+    public void setDefaultType(String defaultType,boolean isStringType) {
         this.defaultType = defaultType;
+        this.isStringType=isStringType;
     }
 
     public void setRange(int[] range) {
@@ -102,5 +121,21 @@ public class ListStructure implements Cloneable {
 
     public void setUnmake(boolean unmake) {
         this.unmake = unmake;
+    }
+
+    public boolean isRegular() {
+        return isRegular;
+    }
+
+    public String getRegularStr() {
+        return regularStructure.getGeneratedString();
+    }
+
+    public void setRegularStr(Regular regular) {
+        this.regularStructure = regular;
+    }
+
+    public boolean isStringType() {
+        return isStringType;
     }
 }

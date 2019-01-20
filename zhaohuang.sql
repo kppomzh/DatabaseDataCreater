@@ -15,7 +15,7 @@ create table zhzm_DBDF_test(
     direction int(1) default 0,
     stream_dir int(1),
     cap_ip string(16) stringtype b_ip default "192.168.0.1",
-    addr_list string(50) {"ÖĞ¹ú ±±¾© µçĞÅ¿í´ø¹âÏË","ÖĞ¹ú ±±¾© Á¬Í¨¿í´ø¹âÏË","ÖĞ¹ú ±±¾© ÌúÍ¨¿í´ø¹âÏË"},
-    user_region varchar(4) stringtype n4,
+    addr_list string(50) {"ä¸­å›½ åŒ—äº¬ ç”µä¿¡å®½å¸¦å…‰çº¤","ä¸­å›½ åŒ—äº¬ è¿é€šå®½å¸¦å…‰çº¤","ä¸­å›½ åŒ—äº¬ é“é€šå®½å¸¦å…‰çº¤"},
+    user_region varchar(40) regulartype (\-)?\d+(\.\d{1,2})?$,
     isinsert boolean 
 );

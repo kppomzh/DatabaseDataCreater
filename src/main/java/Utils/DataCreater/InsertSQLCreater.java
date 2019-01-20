@@ -1,9 +1,10 @@
 package Utils.DataCreater;
 
 import Utils.DataCreater.FiledCreater.*;
+import Utils.Factorys.FiledCreaterFactory;
 import Utils.env_properties;
 import Utils.DataWriter.tF;
-import dataStruture.TableStructure;
+import dataStructure.TableStructure;
 
 /**
  * 产生独立线程和数据格式判断
@@ -18,25 +19,7 @@ public class InsertSQLCreater implements Runnable {
     public InsertSQLCreater(String tablename, TableStructure tableStructure, double makenumber, tF writer) {
         this.makenumber = makenumber;
         this.writer = writer;
-        switch (env_properties.getEnvironment("toDB")) {
-            case "csv":
-                bc = new csvCreater(tableStructure);
-                break;
-            case "jdbc":
-                if(env_properties.getEnvironment("DBsoftware").toLowerCase().equals("mongodb")){
-                    bc = new MongoCreater(tableStructure);
-                    break;
-                }
-            case "sql":
-                bc = new SQLCreater(tableStructure);
-                break;
-            case "json":
-                bc = new JsonCreater(tableStructure);
-                break;
-            case "mongo":
-                bc = new MongoCreater(tableStructure);
-                break;
-        }
+        bc= FiledCreaterFactory.getFiledCreater(tableStructure);
     }
 
     @Override

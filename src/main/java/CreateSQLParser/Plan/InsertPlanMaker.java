@@ -1,24 +1,28 @@
 package CreateSQLParser.Plan;
 
 import CreateSQLParser.Lex.Word;
-import dataStruture.TableStructure;
+import dataStructure.RegularClasses.Regular;
+import dataStructure.TableStructure;
 
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
 public class InsertPlanMaker {
+    int[] range;
+    double[] numberarea;
+    boolean rangeEnd , isDefault , isSingal,
+            setInline , isUnmake , isRegular,isStringType;
+    int arraylocal, na;
+    List<String> inlineObject;
+    Regular regular;
+    String listname , type , defaultDataType , defaultStr ;
+
     public TableStructure makeStrusture(List<Word> words) throws Exception {
         TableStructure structure = new TableStructure();
 
         Iterator<Word> iwords = words.iterator();
-        int[] range = new int[10];
-        double[] numberarea = new double[2];
-        boolean rangeEnd = false, isDefault = false, isSingal = false,
-                setInline = false, isUnmake = false;
-        int arraylocal = 0, na = 0;
-        List<String> inlineObject = new LinkedList<>();
-        String listname = null, type = "string", defaultDataType = "", defaultStr = null;
+        init();
 
         for (; iwords.hasNext(); ) {
             Word w = iwords.next();
@@ -61,8 +65,14 @@ public class InsertPlanMaker {
                 case "unmake":
                     isUnmake = true;
                     break;
+                case "isRegular":
+                    isRegular = true;
+                    regular=RegularPlanMaker.makeRegular(w.getSubstance());
+                    break;
                 case "defaultdatatype":
+                    isStringType=true;
                     defaultDataType = w.getSubstance();
+                    break;
                 case ")":
                     if (rangeEnd)
                         rangeEnd = false;
@@ -73,17 +83,10 @@ public class InsertPlanMaker {
                         if (numberarea[0] > numberarea[1])
                             throw new Exception("数值型设定范围必须由小到大。");
                         structure.addlist(listname, type,
-                                defaultDataType, isSingal, isDefault, defaultStr,
-                                range, numberarea, inlineObject, isUnmake);
-                        arraylocal = 0;
-                        na = 0;
-                        numberarea = new double[2];
-                        range = new int[10];
-                        defaultDataType = "";
-                        isSingal = false;
-                        isDefault = false;
-                        isUnmake = false;
-                        inlineObject = new LinkedList<>();
+                                defaultDataType, isSingal, isDefault,isStringType, defaultStr,
+                                range, numberarea, inlineObject, isUnmake, isRegular,
+                                regular);
+                        init();
                     }
                     break;
                 case "{":
@@ -95,5 +98,16 @@ public class InsertPlanMaker {
             }
         }
         return structure;
+    }
+
+    private void init(){
+        range = new int[10];
+        arraylocal = 0; na = 0;
+        numberarea = new double[2];
+        regular=null;
+        inlineObject = new LinkedList<>();
+        listname = null; type = "string"; defaultDataType = ""; defaultStr = null;
+        rangeEnd = false; isDefault = false; isSingal = false;
+        setInline = false; isUnmake = false; isRegular = false;isStringType=false;
     }
 }

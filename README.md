@@ -15,12 +15,11 @@
 #### 硬件环境
 CPU:Intel i7-7700HQ 3.4~3.5Ghz  
 Memory:16G DDR4 2400Mhz  
-SSD:LITEON CX2  
-HDD:ST1000LM024 HN-M101M  
+SSD:WDS480G2G0B 西数绿盘 480G SATA SSD
 
 #### 软件环境以及测试条件
 OS:Windows10 1803  
-Java:Java 1.8_181/Java 11  
+Java:Java 1.8_201/Java 11.0.2  
 测试条件:  
 1.4线程  
 2.异步写入  
@@ -50,7 +49,7 @@ int
 float  
 double  
 decimal  
-  
+
 2.字符型  
 varchar  
 varchar2  
@@ -59,11 +58,11 @@ nvarchar
 nvarchar2  
 string  
 text  
-  
+
 3.日期型  
 date  
 timestamp  
-  
+
 4.布尔型  
 boolean  
 bool
@@ -87,8 +86,34 @@ bool
 例如"name varchar(10) {"aaa","bbb"}"，这样的话那么这个字段里的值就只有aaa和bbb。  
 该方式优先级最高，会覆盖primary key/unique约束、默认值、stringtype、numberarea等方式。
 
-#### 2.stringtype for free  
-跟随stringtype关键字使用，支持以下几种：字母 c、大写字母 b、小写字母 s、数字 n、（特定）标点符号 m、Unicode汉字 z，字母后面加上数字表示生成数量，另外可以用单引号表达特定字符串，比如'http://'，就可以在特定位置生成http://字符串。  
+#### 2.regulartype
+即通过正则表达式生成规定格式的字符串，关键字是regulartype。  
+因为标准的正则表达式当中，很多元字符对于生成字符串是没有用的，所以在这里的元字符是有所简化的版本；另外，现在的正则解析不支持反斜杠转义。   
+元字符定义：  
+\*，匹配前面的子表达式零次或多次。 等价于{0,}。  
++，匹配前面的子表达式一次或多次。+ 等价于 {1,}。  
+?，匹配前面的子表达式零次或一次。 等价于{0,1}。  
+{n}，匹配前面的子表达式确定次数。  
+{n,}，匹配前面的子表达式至少n次，至多(n+1)5次。  
+{n,m}，匹配前面的子表达式至少n次，至多m次，n<=m。在逗号和两个数之间不能有空格。  
+x|y，匹配x子表达式或者y子表达式，选择其一来生成字符串。  
+[xyz]，字符集合，匹配中括号所包含的任意一个字符。  
+[a-z]，字符范围。匹配指定范围内的任意字符。  
+\d，匹配一个数字。   
+\s，匹配一个空格。   
+\S，匹配所有非空白字符。（不全）   
+\w，匹配范围包含大小写字母、数字、下划线。   
+\W，匹配非字母数字下划线。   
+\num，匹配一个10^6以内的正整数。   
+\z，匹配一个Unicode汉字，但不保证你认识。   
+()，子表达式。  
+最后在正则表达式结束的时候一定要用'$'作为结束标记。  
+
+#### 3.stringtype for free  
+
+本质上仍然是正则表达式，使用properties配置文件来对应名称和正则表达式。配置文件位置在config.properties文件的CustomStringtypeConf选项中进行指定，两个文件之间用';'进行分隔。
+
+
 
 ## 配置文件config.properties的参数设置
 ### 数据库连接部分参数

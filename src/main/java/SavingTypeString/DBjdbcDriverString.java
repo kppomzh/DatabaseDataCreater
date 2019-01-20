@@ -17,6 +17,7 @@ public class DBjdbcDriverString {
         DBjdbcDriverCorresponding.put("sqlite", "org.sqlite.JDBC");
         DBjdbcDriverCorresponding.put("h2", "org.h2.Driver");
         DBjdbcDriverCorresponding.put("khan", "com.khandb.Driver");
+        DBjdbcDriverCorresponding.put("presto","com.facebook.presto.jdbc.PrestoDriver");
 //        DBjdbcDriverCorresponding.put("asl","");
 //        DBjdbcDriverCorresponding.put("","");
     }

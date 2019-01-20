@@ -1,15 +1,13 @@
-package Utils.dbconn;
+package Utils.DBConn;
 
 import SavingTypeString.DBJdbcLinkString;
 import SavingTypeString.DBjdbcDriverString;
 import Utils.env_properties;
 
-import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Properties;
 
 public class getConn {
     private static final getConn getConn=new getConn();

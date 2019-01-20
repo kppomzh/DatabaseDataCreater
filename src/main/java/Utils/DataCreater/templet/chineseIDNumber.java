@@ -1,7 +1,7 @@
 package Utils.DataCreater.templet;
 
 import Utils.privateRandom;
-import dataStruture.KVEntryImpl;
+import dataStructure.KVEntryImpl;
 
 import java.util.ArrayList;
 

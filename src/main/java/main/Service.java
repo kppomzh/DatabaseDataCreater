@@ -1,10 +1,10 @@
 package main;
 
 import Utils.FileLoader;
-import Utils.datastruc.CreateTableStruc;
+import Utils.TableStructure.CreateTableStructure;
 import Utils.env_properties;
 import Utils.insert.CreateInsertSQLProcess;
-import dataStruture.TableStructure;
+import dataStructure.TableStructure;
 
 import java.io.File;
 import java.util.Scanner;
@@ -66,7 +66,7 @@ public class Service {
 
 
         for (String SQL : createSQLs) {
-            TableStructure ts = CreateTableStruc.makeStructure(SQL + ';');
+            TableStructure ts = CreateTableStructure.makeStructure(SQL + ';');
             CreateInsertSQLProcess createInsertSQLProcess = new CreateInsertSQLProcess(ts,linenumber);
             createInsertSQLProcess.createInsertSQLFile();//args -n linenumber
         }
