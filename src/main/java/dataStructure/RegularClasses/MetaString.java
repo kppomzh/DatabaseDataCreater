@@ -10,7 +10,7 @@ public class MetaString implements Regular {
     private ArrayList<Regular> regularList;
     private ArrayList<Integer> OrSeparatorLocal;
     private LengthExpression length;
-    private Regular last=new OrSeparator();
+    private Regular last;
 
     public MetaString(){
         regularList=new ArrayList<>();

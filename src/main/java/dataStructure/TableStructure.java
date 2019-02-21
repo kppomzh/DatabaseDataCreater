@@ -1,7 +1,6 @@
 package dataStructure;
 
 import com.sun.istack.NotNull;
-//import com.sun.istack.internal.NotNull;
 import dataStructure.RegularClasses.Regular;
 
 import java.util.ArrayList;

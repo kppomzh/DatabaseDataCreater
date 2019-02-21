@@ -19,13 +19,6 @@ public class CustomStringtypeConfigLoader{
 
     private CustomStringtypeConfigLoader(){
         String regularpath = "";
-//        if (this.getClass().getResource(this.getClass().getSimpleName() + ".class").toString().startsWith("file:")) {
-//            regularpath = regularsonpath;
-//        } else if (this.getClass().getResource(this.getClass().getSimpleName() + ".class").toString().startsWith("jar:")) {
-//            int firstIndex = System.getProperty("java.class.path").lastIndexOf(System.getProperty("path.separator")) + 1;
-//            int lastIndex = System.getProperty("java.class.path").lastIndexOf(File.separator) + 1;
-//            regularpath = System.getProperty("java.class.path").substring(firstIndex, lastIndex) + regularsonpath;
-//        }
 
         LinkedList<File> confiles=new LinkedList<>();
 //        Collections.addAll(confiles,getFiles(new File(regularpath)));

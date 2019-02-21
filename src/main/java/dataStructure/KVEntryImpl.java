@@ -3,9 +3,8 @@ package dataStructure;
 import java.util.Map;
 
 public class KVEntryImpl<K,V> implements Map.Entry<K,V> {
-    //    int hash;
-    K key;
-    V value;
+    private K key;
+    private V value;
     public KVEntryImpl(K key, V value)
     {
         this.key =key;
