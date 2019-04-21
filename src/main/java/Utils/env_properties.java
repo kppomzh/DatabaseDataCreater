@@ -6,8 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
-import static java.lang.System.exit;
-
 public class env_properties {
     protected static final env_properties init = new env_properties();
     protected static Properties env;

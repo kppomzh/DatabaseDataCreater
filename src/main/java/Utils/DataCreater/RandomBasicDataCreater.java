@@ -217,37 +217,37 @@ public class RandomBasicDataCreater {
 
     //获取不带引号、可以用作对象名称的字符串，并且强制启用SQL优化
     public String getNameStr(int range) {
-        return getArbitraryCharacter(strRangeOptimal(range), "\\w");
+        return getArbitraryCharacter(strRangeOptimal(range), 'w');
     }
 
-    public static String getArbitraryCharacter(int strRange, String type) {
+    public static String getArbitraryCharacter(int strRange, char type) {
         char[] str = new char[strRange];
         int min = 0, max = c.length - 1;
 
         switch (type) {
-            case "\\d":
+            case 'd':
                 min = 52;
                 max = 61;
                 break;
-            case "\\w"://[a-zA-Z0-9_]
+            case 'w'://[a-zA-Z0-9_]
                 min = 0;
                 max = 62;
                 break;
-            case "\\W":
+            case 'W':
                 min=63;
                 max=77;
                 break;
-            case "\\s"://空格
+            case 's'://空格
                 min=32;
                 max=32;
                 break;
-            case "\\S":
+            case 'S':
                 min=0;
                 max=77;
                 break;
-            case "\\num"://正整数
+            case 'n'://正整数
                 return privateRandom.RandomNumber(0,100000).toString();
-            case "\\z":
+            case 'z':
                 min=0x4e00;
                 max=0x9fa5;
                 break;

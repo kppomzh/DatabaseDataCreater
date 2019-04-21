@@ -1,9 +1,8 @@
 package Utils.DataCreater;
 
-import Utils.DataCreater.FiledCreater.*;
-import Utils.Factorys.FiledCreaterFactory;
-import Utils.env_properties;
+import Utils.DataCreater.FiledCreater.baseCreater;
 import Utils.DataWriter.tF;
+import Utils.Factorys.FiledCreaterFactory;
 import dataStructure.TableStructure;
 
 /**

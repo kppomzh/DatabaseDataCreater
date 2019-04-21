@@ -5,46 +5,17 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>zhzm</groupId>
     <artifactId>DBDF</artifactId>
-    <version>1.1.3</version>
+    <version>1.2.0</version>
+
     <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>3.1.1</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <!-- 主函数的入口 -->
-                            <mainClass>main.Service</mainClass>
-                            <!-- 打包时 MANIFEST.MF文件不记录的时间戳版本 -->
-                            <useUniqueVersions>false</useUniqueVersions>
-                        </manifest>
-
-                    </archive>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.0</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                    <compilerArguments>
-                        <bootclasspath>C:/Program Files/Java/jdk/jre/lib/rt.jar</bootclasspath>
-                        <extdirs>lib/</extdirs>
-                    </compilerArguments>
+                    <release>11</release>
+                    <fork>true</fork>
                 </configuration>
             </plugin>
         </plugins>
@@ -80,20 +51,26 @@
         <dependency>
             <groupId>com.ibm.icu</groupId>
             <artifactId>icu4j</artifactId>
-            <version>63.1</version>
+            <version>64.2</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-assembly-plugin</artifactId>
-            <version>3.1.1</version>
-            <type>maven-plugin</type>
+            <groupId>xyz.calvinwilliams</groupId>
+            <artifactId>okjson</artifactId>
+            <version>0.0.9.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.57</version>
+        </dependency>
+
+        <!-- System util -->
 
         <!--jdbc jars-->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.13</version>
+            <version>8.0.15</version>
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
@@ -103,33 +80,33 @@
         <dependency>
             <groupId>com.eurodyn.qlack2.util</groupId>
             <artifactId>qlack2-util-drivers-ojdbc8</artifactId>
-            <version>2.3.9</version>
+            <version>2.3.11</version>
         </dependency>
         <dependency>
             <groupId>com.microsoft.sqlserver</groupId>
             <artifactId>mssql-jdbc</artifactId>
-            <version>7.0.0.jre8</version>
+            <version>7.3.0.jre11-preview</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.ops4j.pax.jdbc</groupId>
             <artifactId>pax-jdbc-db2</artifactId>
-            <version>1.3.2</version>
+            <version>1.3.5</version>
         </dependency>
         <dependency>
             <groupId>org.xerial</groupId>
             <artifactId>sqlite-jdbc</artifactId>
-            <version>3.25.2</version>
+            <version>3.27.2.1</version>
         </dependency>
         <dependency>
             <groupId>com.facebook.presto</groupId>
             <artifactId>presto-jdbc</artifactId>
-            <version>0.215</version>
+            <version>0.218</version>
         </dependency>
         <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongo-java-driver</artifactId>
-            <version>3.9.1</version>
+            <version>3.10.2</version>
         </dependency>
         <dependency>
             <groupId>org.apache.hive</groupId>

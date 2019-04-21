@@ -3,10 +3,10 @@ package dataStructure.RegularClasses;
 import Utils.DataCreater.RandomBasicDataCreater;
 
 public class SingalMetaChar implements Regular {
-    private String MetaChar;
+    private char MetaChar;
     private LengthExpression length;
 
-    public SingalMetaChar(String metaChar){
+    public SingalMetaChar(char metaChar){
         MetaChar=metaChar;
         try {
             length=new LengthExpression(1);

@@ -2,7 +2,6 @@ package CreateSQLParser.Parser;
 
 import CreateSQLParser.Lex.Word;
 import SavingTypeString.DataType;
-import SavingTypeString.stringType;
 import Utils.DataCreater.templet.CustomStringtypeConfigLoader;
 
 import java.util.HashSet;

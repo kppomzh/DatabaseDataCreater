@@ -1,11 +1,9 @@
 package Utils.DataCreater;
 
-import Utils.DataCreater.templet.*;
-import Utils.Factorys.getRegularElementsFactory;
+import Utils.DataCreater.templet.Email;
+import Utils.DataCreater.templet.Telephone;
+import Utils.DataCreater.templet.chineseIDNumber;
 import Utils.privateRandom;
-import dataStructure.KVEntryImpl;
-
-import java.util.*;
 
 public class RandomAdvanceDataCreater {
     private RandomBasicDataCreater rbdc;
@@ -68,7 +66,7 @@ public class RandomAdvanceDataCreater {
     }
 
     public StringBuilder ch_word(int strRange) {
-        return new StringBuilder(strRange).append(rbdc.getArbitraryCharacter(strRange, "z"));
+        return new StringBuilder(strRange).append(rbdc.getArbitraryCharacter(strRange, 'z'));
     }
 
     public StringBuilder a_ip(int range) throws Exception {

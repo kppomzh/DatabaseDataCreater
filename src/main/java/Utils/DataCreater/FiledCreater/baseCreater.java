@@ -50,7 +50,9 @@ public abstract class baseCreater {
             packFiled(ls, Return, appendStr);
         }
         Return.deleteCharAt(Return.length() - 1);
-        return Return.append(packTail()).append("\n").toString();
+        String insert=Return.append(packTail()).append("\n").toString();
+        Return=null;
+        return insert;
     }
 
     protected String strSpecification(ListStructure ls, String appendStr) {

@@ -1,8 +1,5 @@
 package Utils;
 
-import java.math.BigInteger;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.util.Random;
 
 public class privateRandom {
@@ -10,7 +7,7 @@ public class privateRandom {
     static {
         rm=new Random();
     }
-    private final static Integer[] primelist = {7, 3, 2, 5};//长度任意可变，里面的数最好都是连续质数，并且最大的数一定要放在最前面
+    private final static Integer[] primelist = {19, 7, 11, 5};//长度任意可变，里面的数最好都是连续质数，并且最大的数一定要放在最前面
 
     /**
      * 获取指定区间内随机数值，取值范围是[start,end)
