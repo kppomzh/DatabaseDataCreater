@@ -1,6 +1,5 @@
 package test;
 
-import com.alibaba.fastjson.JSON;
 import xyz.calvinwilliams.okjson.OKJSON;
 
 import java.io.*;
@@ -19,10 +18,6 @@ public class mergeFiles {
         map.put("bbb",123);
 
         String s=OKJSON.objectToString(map,4);
-        System.out.println(s);
-        s=OKJSON.objectToString(map,6);
-        System.out.println(s);
-        s= JSON.toJSONString(map);
         System.out.println(s);
     }
 

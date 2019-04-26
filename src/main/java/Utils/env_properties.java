@@ -31,7 +31,9 @@ public class env_properties {
                 path = path.substring(firstIndex, lastIndex) + "config.properties";
                 FIS = new FileInputStream(path);
                 env.load(FIS);
-            } else return;
+            } else {
+                throw new IOException();
+            }
             FIS.close();
         } catch (FileNotFoundException ex) {
             System.out.println("环境配置文件不存在！");
@@ -60,7 +62,7 @@ public class env_properties {
     }
 
     public static String getEnvironment(String envstring) {
-        return init.env.getProperty(envstring);
+        return init.env.getProperty(envstring).strip();
     }
 
     public static void setEnvironment(String envName, String envstring) {

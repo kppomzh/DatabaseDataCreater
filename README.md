@@ -1,5 +1,5 @@
 # DatabaseDataCreater：一个用于从create table的SQL当中自动生成自定义的insert数据的工具
-###今后将不再提供Java8的测试和支持，全面转移到Java11直到下一个Java LTS为止
+### 今后将不再提供Java8的测试和支持，全面转移到Java11直到下一个Java LTS为止
 ### 简介
 本程序的作用是根据给定的建立数据库表的SQL（create语句），自动的生成给定行数的数据，这些数据可以以insert语句的方式产生，也可以是逗号隔开的csv格式以便通过数据库外部表或load工具来利用。支持通过JDBC直接导入数据。支持生成json字符串。
 ## 最简化使用方法
@@ -19,7 +19,7 @@ Memory:16G DDR4 2400Mhz
 SSD:WDS480G2G0B 西数绿盘 480G SATA SSD
 
 #### 软件环境以及测试条件
-OS:Windows10 1809  
+OS:Windows10 1809/1903  
 Java:Java 11.0.3  
 测试条件:  
 1.4线程  
@@ -31,7 +31,8 @@ Java:Java 11.0.3
   
  ![image](https://github.com/kiloline/DatabaseDataCreater/blob/master/sample_test.png)  
 
-####性能变化
+#### 性能变化
+在每条CSV多出10个字符的情况下，对比上一个版本的生成速度均有小幅提高。似乎Windows10 1809下的运行性能更高一点，原因不明。  
 
 ## 程序参数详解
 -h:显示帮助。  
