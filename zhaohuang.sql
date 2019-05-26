@@ -15,7 +15,7 @@ create table zhzm_DBDF_test(
     direction int(1) default 0,
     stream_dir int(1),
     cap_ip string(16) stringtype b_ip default "192.168.0.1",
-    addr_list string(50) {"中国 北京 电信宽带光纤","中国 北京 连通宽带光纤","中国 北京 铁通宽带光纤"},
+    addr_list string(50) {"中国 北京 电信宽带光纤","中国 北京 联通宽带光纤","中国 北京 铁通宽带光纤"},
     user_region varchar(40) regulartype (-)?\d+(.\d{1,2})?$,
     Regulartest varchar2(44) regulartype \d\w\W\S\\\)\(\|[\-\]]$,
     isinsert boolean 

@@ -36,4 +36,9 @@ public class SingalMetaChar implements Regular {
         return sb.toString();
     }
 
+    @Override
+    public int getRegularLength() {
+        return 1;
+    }
+
 }

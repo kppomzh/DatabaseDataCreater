@@ -19,15 +19,15 @@ public class CustomStringtypeConfigLoader{
     private CustomStringtypeConfigLoader(){
         String regularpath = "";
 
-        LinkedList<File> confiles=new LinkedList<>();
+        File[] confiles;
 //        Collections.addAll(confiles,getFiles(new File(regularpath)));
         String[] pathsa= env_properties.getEnvironment("CustomStringtypeConf").split(";");
-        Collections.addAll(confiles,getFiles(pathsa));
+        confiles=getFiles(pathsa);
 
         custom=new Properties();
-        for(File f:confiles){
+        for(int i=0;i<confiles.length;i++){
             try {
-                custom.load(new FileInputStream(f));
+                custom.load(new FileInputStream(confiles[i]));
             } catch (Exception e) {
                 continue;
             }

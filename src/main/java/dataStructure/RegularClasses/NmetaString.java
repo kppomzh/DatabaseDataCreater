@@ -32,4 +32,9 @@ public class NmetaString implements Regular {
         }
         return sb.toString();
     }
+
+    @Override
+    public int getRegularLength() {
+        return str.length();
+    }
 }

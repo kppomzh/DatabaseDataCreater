@@ -13,7 +13,7 @@ public class alltest {
             long time = System.currentTimeMillis();
 
 //        Service.main(new String[]{"-n","20000000","-f","zhaohuang.sql","-a","-o","E:/"});
-            Service.main(new String[]{"-n", "5000000", "-f", "zhaohuang.sql"});
+            Service.main(new String[]{"-n", "500", "-f", "zhaohuang.sql"});
 //        Service.main(new String[]{"-h"});
             all=all+(System.currentTimeMillis()-time)/1000.0/60.0;
             System.out.println("loop"+loop+":"+(System.currentTimeMillis()-time));

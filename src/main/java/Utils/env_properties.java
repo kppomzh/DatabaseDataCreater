@@ -10,14 +10,16 @@ public class env_properties {
     protected static final env_properties init = new env_properties();
     protected static Properties env;
 
-    protected env_properties(String str){}
+    protected env_properties(String str) {
+    }
+
     private env_properties() {
         boolean load = false;
         env = new Properties();
         FileInputStream FIS;
         String path = null;
         try {
-            env.setProperty("nCPU", String.valueOf(Runtime.getRuntime().availableProcessors() - 1));
+            env.setProperty("nCPU", String.valueOf(Runtime.getRuntime().availableProcessors()));
 
             if (this.getClass().getResource(this.getClass().getSimpleName() + ".class")
                     .toString().startsWith("file:")) {
@@ -44,21 +46,36 @@ public class env_properties {
             load = true;
         } finally //可以通过finally加载默认参数，防止程序崩溃
         {
-            if(load)
-                loadDefaultProp();
+            loadDefaultProp();
         }
     }
 
-    private void loadDefaultProp(){
-        env.setProperty("toDB","sql");
-        env.setProperty("baseFileDir",".\\");
-        env.setProperty("Optimal","false");
-        env.setProperty("asynchronous","false");
-        env.setProperty("TOTAL_THREADS","1");
-        env.setProperty("defaultProportion","0.5");
-        env.setProperty("canbeNegative","false");
-        env.setProperty("WriterEngine","default");
-        System.out.println("默认参数已加载。");
+    private void loadDefaultProp() {
+        if (!env.containsKey("toDB")) {
+            env.setProperty("toDB", "sql");
+        }
+        if (!env.containsKey("baseFileDir")) {
+            env.setProperty("baseFileDir", ".\\");
+        }
+        if (!env.containsKey("Optimal")) {
+            env.setProperty("Optimal", "false");
+        }
+        if (!env.containsKey("asynchronous")) {
+            env.setProperty("asynchronous", "false");
+        }
+        if (!env.containsKey("TOTAL_THREADS")) {
+            env.setProperty("TOTAL_THREADS", "1");
+        }
+        if (!env.containsKey("defaultProportion")) {
+            env.setProperty("defaultProportion", "0.5");
+        }
+        if (!env.containsKey("canbeNegative")) {
+            env.setProperty("canbeNegative", "false");
+        }
+        if (!env.containsKey("WriterEngine")) {
+            env.setProperty("WriterEngine", "default");
+        }
+//        System.out.println("默认参数已加载。");
     }
 
     public static String getEnvironment(String envstring) {

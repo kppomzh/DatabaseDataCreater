@@ -43,4 +43,9 @@ public class BracketExpression implements Regular {
         }
         return new String(str);
     }
+
+    @Override
+    public int getRegularLength() {
+        return markFiled.length();
+    }
 }

@@ -1,5 +1,10 @@
 package dataStructure.RegularClasses;
 
+import CreateSQLParser.Lex.Word;
+import Exception.RegularException.BaseException;
+import Exception.RegularException.DoubleOrSeparatorException;
+import Exception.RegularException.LengthDefineException;
+import Exception.RegularException.NullMetaStringException;
 import Utils.privateRandom;
 import dataStructure.KVEntryImpl;
 
@@ -31,7 +36,7 @@ public class MetaString implements Regular {
         return "MetaString";
     }
 
-    public MetaString addElement(Regular element){
+    public MetaString addElement(Regular element, Word word) throws BaseException {
         switch(element.getRealName()){
             //元字符串长度不进入列表
             case "LengthExpression":
@@ -41,13 +46,27 @@ public class MetaString implements Regular {
                     last.getRealName().equals("SingalMetaChar")){
                     last.setLength((LengthExpression) element);
                 }
+                else{
+                    throw new LengthDefineException(word,"只能对以下成分定义长度：元字符串、字符集合、固定字符串、转义元字符。");
+                }
                 break;
             case "OrSeparator":
+                if(last==null||last.getRealName().equals("OrSeparator")){
+                    throw new DoubleOrSeparatorException(word);
+                }
                 OrSeparatorLocal.add(OrSeparatorLocal.size()-1,regularList.size());
-            case "MetaString":
-            case "SingalMetaChar":
+                OrSeparatorLocal.set(OrSeparatorLocal.size()-1,regularList.size());
+                break;
             case "BracketExpression":
+            case "MetaString":
+                if(element.getRegularLength()==0){
+                    throw new NullMetaStringException(word);
+                }
             case "NmetaString":
+                if(element.getRegularLength()==0){
+                    return this;
+                }
+            case "SingalMetaChar":
                 regularList.add(element);
                 OrSeparatorLocal.set(OrSeparatorLocal.size()-1,regularList.size());
         }
@@ -78,5 +97,10 @@ public class MetaString implements Regular {
                 sb.append(r.getGeneratedString());
             }
         return sb.toString();
+    }
+
+    @Override
+    public int getRegularLength() {
+        return regularList.size();
     }
 }

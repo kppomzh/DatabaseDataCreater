@@ -65,8 +65,8 @@ public class Service {
         createSQLs = FileString.replace("\r","").replace("\n","").split(";");
 
 
-        for (String SQL : createSQLs) {
-            TableStructure ts = CreateTableStructure.makeStructure(SQL + ';');
+        for (int i = 0; i < createSQLs.length; i++) {
+            TableStructure ts = CreateTableStructure.makeStructure(createSQLs[i] + ';');
             CreateInsertSQLProcess createInsertSQLProcess = new CreateInsertSQLProcess(ts,linenumber);
             createInsertSQLProcess.createInsertSQLFile();//args -n linenumber
         }

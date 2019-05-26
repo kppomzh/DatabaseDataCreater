@@ -33,7 +33,7 @@ public class getRegularElementsFactory {
         return regularElements.contains(element);
     }
 
-    public Regular makeRegularElement(char element){
+    public Regular makeRegularElement(char element) {
         Regular r = null;
         switch (element){
             case 'd':
@@ -47,26 +47,14 @@ public class getRegularElementsFactory {
                 break;
 
             case '?':
-                try {
-                    r=new LengthExpression(0,1);
-                    break;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                r=new LengthExpression(0,1);
+                break;
             case '+':
-                try {
-                    r=new LengthExpression(1,null);
-                    break;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                r=new LengthExpression(1,null);
+                break;
             case '*':
-                try {
-                    r=new LengthExpression(0,null);
-                    break;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                r=new LengthExpression(0,null);
+                break;
         }
         return r;
     }

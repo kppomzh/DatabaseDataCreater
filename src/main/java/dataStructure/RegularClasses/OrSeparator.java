@@ -15,4 +15,9 @@ public class OrSeparator implements Regular {
     public String getGeneratedString() {
         return null;
     }
+
+    @Override
+    public int getRegularLength() {
+        return 0;
+    }
 }

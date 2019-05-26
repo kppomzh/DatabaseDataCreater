@@ -67,7 +67,12 @@ public class InsertPlanMaker {
                     break;
                 case "isRegular":
                     isRegular = true;
-                    regular=RegularPlanMaker.makeRegular(w.getSubstance());
+                    try {
+                        regular = RegularPlanMaker.makeRegular(w);
+                    }
+                    catch (StringIndexOutOfBoundsException e){
+                        throw new Exception("正则表达式有未结束的子表达式。");
+                    }
                     break;
                 case "defaultdatatype":
                     isStringType=true;

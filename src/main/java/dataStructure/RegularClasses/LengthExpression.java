@@ -1,23 +1,17 @@
 package dataStructure.RegularClasses;
 
+import CreateSQLParser.Lex.Word;
 import Utils.privateRandom;
 
 public class LengthExpression implements Regular {
     private Integer minlength,maxlength=null;
 
-    public LengthExpression(Integer replaceNum) throws Exception {
-        if(replaceNum<0)
-            throw new Exception("正则表达式的元字符最小长度不能小于0。");
+    public LengthExpression(Integer replaceNum){
         minlength=replaceNum;
     }
-    public LengthExpression(Integer minlength,Integer maxlength) throws Exception {
-        if(minlength<0)
-            throw new Exception("正则表达式的元字符最小长度不能小于0。");
+    public LengthExpression(Integer minlength,Integer maxlength){
         this.minlength=minlength;
         this.maxlength=(maxlength==null?(minlength+1)*5:maxlength);
-        if(this.maxlength>=0&&this.minlength>this.maxlength){
-            throw new Exception("正则表达式的元字符最小长度不能大于最大长度。");
-        }
     }
 
     @Override
@@ -34,6 +28,11 @@ public class LengthExpression implements Regular {
     @Override
     public String getGeneratedString() {
         return null;
+    }
+
+    @Override
+    public int getRegularLength() {
+        return 1;
     }
 
     public int getReplaceNum(){

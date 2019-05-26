@@ -7,6 +7,7 @@ public class Word_Segment {
     LinkedList<Word> LW;//主SQL序列
     Coolean status;
     String toSQL;
+    int nowline=0,nowlist=0;
 
     public Word_Segment() {
         LW = new LinkedList<>();
@@ -71,7 +72,11 @@ public class Word_Segment {
     private Coolean c_BuildWord(char c) throws Exception {
         switch (c) {
             case '\n':
+                nowline++;
+                nowlist=0;
+                return Coolean.stop;
             case ' ':
+                nowlist++;
             case '\r':
             case ';':
                 //识别为stop的时候不将当前字符列为单词
@@ -191,8 +196,9 @@ public class Word_Segment {
     //生成简单SQL关键字的方法
     private void create_word_and_add(String name, String substance) {
         Word word;
-        word = new Word(name, substance, status.equals(Coolean.mark));
+        word = new Word(name, substance, status.equals(Coolean.mark),nowline,nowlist);
         LW.add(word);
+        nowlist=nowlist+name.length();
     }
 
     //通过status和nowstatus的取值和相互关系得出是否继续读入字符
