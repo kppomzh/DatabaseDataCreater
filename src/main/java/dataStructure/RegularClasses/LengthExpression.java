@@ -36,6 +36,6 @@ public class LengthExpression implements Regular {
     }
 
     public int getReplaceNum(){
-        return (maxlength==null?minlength: privateRandom.RandomNumber(minlength,maxlength+1).intValue());
+        return (maxlength==null?minlength: privateRandom.RandomInteger(minlength,maxlength+1));
     }
 }

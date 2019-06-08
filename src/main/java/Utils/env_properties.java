@@ -75,6 +75,9 @@ public class env_properties {
         if (!env.containsKey("WriterEngine")) {
             env.setProperty("WriterEngine", "default");
         }
+        if (!env.containsKey("longerInsert")) {
+            env.setProperty("longerInsert", "false");
+        }
 //        System.out.println("默认参数已加载。");
     }
 

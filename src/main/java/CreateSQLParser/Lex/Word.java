@@ -23,8 +23,9 @@ public class Word {
         this.name = name;
     }
 
-    public void setSubstance(String substance) {
+    public Word setSubstance(String substance) {
         this.substance = substance;
+        return this;
     }
 
     public String getName() {

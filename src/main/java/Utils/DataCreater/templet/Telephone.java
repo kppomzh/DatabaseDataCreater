@@ -8,6 +8,6 @@ public abstract class Telephone {
             "159", "178", "182", "183", "184", "187", "188", "198"};
 
     public static String getRandomPrefix() {
-        return Prefix[privateRandom.RandomNumber(0, Prefix.length - 1).intValue()];
+        return Prefix[privateRandom.RandomInteger(0, Prefix.length - 1)];
     }
 }

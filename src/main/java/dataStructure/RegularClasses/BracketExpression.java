@@ -38,8 +38,8 @@ public class BracketExpression implements Regular {
         int Stringlength=length.getReplaceNum();
         char[] str=new char[Stringlength];
         for(int loop=0;loop<Stringlength;loop++){
-            str[loop]=markFiled.charAt(privateRandom.RandomNumber(
-                    0,markFiled.length()).intValue());
+            str[loop]=markFiled.charAt(privateRandom.RandomInteger(
+                    0,markFiled.length()));
         }
         return new String(str);
     }

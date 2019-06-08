@@ -61,24 +61,24 @@ public class RandomBasicDataCreater {
     }
 
     public String getDate(boolean outuse) {
-        int year = privateRandom.RandomNumber(1970, 2050).intValue();
-        int month = privateRandom.RandomNumber(1, 12).intValue();
+        int year = privateRandom.RandomInteger(1970, 2050);
+        int month = privateRandom.RandomInteger(1, 12);
         int date;
-        int hour = privateRandom.RandomNumber(0, 23).intValue();
-        int minute = privateRandom.RandomNumber(0, 59).intValue();
-        int second = privateRandom.RandomNumber(0, 59).intValue();
+        int hour = privateRandom.RandomInteger(0, 23);
+        int minute = privateRandom.RandomInteger(0, 59);
+        int second = privateRandom.RandomInteger(0, 59);
         switch (month) {
             case 2:
-                date = privateRandom.RandomNumber(1, 28).intValue();
+                date = privateRandom.RandomInteger(1, 28);
                 break;
             case 4:
             case 6:
             case 9:
             case 11:
-                date = privateRandom.RandomNumber(1, 30).intValue();
+                date = privateRandom.RandomInteger(1, 30);
                 break;
             default:
-                date = privateRandom.RandomNumber(1, 31).intValue();
+                date = privateRandom.RandomInteger(1, 31);
         }
 
         StringBuilder sb = new StringBuilder();
@@ -126,7 +126,7 @@ public class RandomBasicDataCreater {
                 & privateRandom.RandomBool())
                 | Numberarea[1] < 0;
         if (intRange <= 0)
-            intRange = privateRandom.RandomNumber(1, 10).intValue();
+            intRange = privateRandom.RandomInteger(1, 10);
         Double intS, intMin = 0d, intMax = Math.pow(10, intRange) - 1, decMax = Math.pow(10, decRange) - 1;
         StringBuilder sb = new StringBuilder();
 
@@ -143,12 +143,12 @@ public class RandomBasicDataCreater {
 
         if (decRange > 1)
             Numberarea[1] = Numberarea[1] - 1;
-        intS = privateRandom.RandomNumber(intMin, intMax);
+        intS = privateRandom.RandomDouble(intMin, intMax);
 
         sb.append(Double2String(intS));
         if (decRange > 0) {
             sb.append('.');
-            Double decS = privateRandom.RandomNumber(0, decMax);
+            Double decS = privateRandom.RandomDouble(0, decMax);
             sb.append(Double2String(decS));
         }
 
@@ -201,13 +201,13 @@ public class RandomBasicDataCreater {
         piecewise = Double.valueOf(Math.sqrt(range)).intValue();
 
         for (int loop = 0; loop < piecewise; loop++) {
-            int sublength = privateRandom.RandomNumber(1, rangeLength).intValue();
-            int substrart = privateRandom.RandomNumber(0, rangeLength - sublength - 1).intValue();
+            int sublength = privateRandom.RandomInteger(1, rangeLength);
+            int substrart = privateRandom.RandomInteger(0, rangeLength - sublength - 1);
             sb.append(quickStr.substring(substrart,substrart + sublength));
         }
 
         if (sb.length() < range) {
-            int substrart = privateRandom.RandomNumber(0, rangeLength - range + sb.length() - 1).intValue();
+            int substrart = privateRandom.RandomInteger(0, rangeLength - range + sb.length() - 1);
             sb.append(quickStr, substrart, substrart + range - sb.length());
         }
 
@@ -246,7 +246,7 @@ public class RandomBasicDataCreater {
                 max=77;
                 break;
             case 'n'://正整数
-                return privateRandom.RandomNumber(0,100000).toString();
+                return String.valueOf(privateRandom.RandomInteger(0,100000));
             case 'z':
                 min=0x4e00;
                 max=0x9fa5;
@@ -260,19 +260,19 @@ public class RandomBasicDataCreater {
         char[] str = new char[range];
 
         for (int loop = start; loop < end; loop++) {
-            str[loop] = c[privateRandom.RandomNumber(min, max).intValue()];
+            str[loop] = c[privateRandom.RandomInteger(min, max)];
         }
         return new String(str);
     }
 
     private static int strRangeOptimal(int range) {
         if (range < 1) {
-            range = privateRandom.RandomNumber(1, 10).intValue();
+            range = privateRandom.RandomInteger(1, 10);
         } else if (env_properties.getEnvironment("Optimal").equals("true")) {
             if (range < 32 && range > 8)
-                range = range - privateRandom.RandomNumber(1, 8).intValue();
+                range = range - privateRandom.RandomInteger(1, 8);
             else if (range >= 32)
-                range = privateRandom.RandomNumber(1, range >> 3).intValue();
+                range = privateRandom.RandomInteger(1, range >> 3);
         }
         return range;
     }
@@ -288,6 +288,8 @@ public class RandomBasicDataCreater {
 
     /**
      * Java默认双精度浮点值转字符串
+     * 用于处理大数科学计数法表示转换常规表示
+     * 只保留整数部分，方便计算位数
      * @param d
      * @return
      */
@@ -295,15 +297,17 @@ public class RandomBasicDataCreater {
         String s[] = d.toString().split("\\.");
         if (s[1].toString().indexOf("E") == -1)
             return s[0];
+
         String s1[] = s[1].split("E");
+        StringBuilder res=new StringBuilder(s[0]);
+        res.append(s1[0]);
         int length = Integer.valueOf(s1[1]);
-        if (s1[0].length() < length) {
-            StringBuilder sb = new StringBuilder();
-            for (int loop = 0; loop < length - s1[0].length(); loop++) {
-                sb.append('0');
-            }
-            s1[0] = s1[0] + sb.toString();
+
+        if(s1[0].length() < length) {
+            Double lowercase = privateRandom.RandomGaussian() * Math.pow(10, s1[0].length());
+            res.append(Double2String(lowercase));
         }
-        return s[0] + s1[0].substring(0, Math.abs(Integer.valueOf(s1[1])));
+
+        return res.toString();
     }
 }

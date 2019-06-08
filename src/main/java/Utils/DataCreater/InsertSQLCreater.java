@@ -3,6 +3,7 @@ package Utils.DataCreater;
 import Utils.DataCreater.FiledCreater.baseCreater;
 import Utils.DataWriter.tF;
 import Utils.Factorys.FiledCreaterFactory;
+import Utils.env_properties;
 import dataStructure.TableStructure;
 
 /**
@@ -10,30 +11,31 @@ import dataStructure.TableStructure;
  */
 public class InsertSQLCreater implements Runnable {
 
-    private double makenumber;
+    private int makenumber;
     private tF writer;
 
     private baseCreater bc;
+    private int partCreatemax=1;
 
-    public InsertSQLCreater(String tablename, TableStructure tableStructure, double makenumber, tF writer) {
+    public InsertSQLCreater(String tablename, TableStructure tableStructure, int makenumber, tF writer) {
         this.makenumber = makenumber;
         this.writer = writer;
         bc= FiledCreaterFactory.getFiledCreater(tableStructure);
+        if(env_properties.getEnvironment("longerInsert").equals("true")){
+            partCreatemax=Integer.valueOf(env_properties.getEnvironment("longerInsertNumber"));
+        }
     }
 
     @Override
     public void run() {
-        for (double loop = 0; loop < makenumber; loop++) {
-            try {
-                String toWrite = bc.makeinsert();
-                writer.WriteLine(toWrite);
-            } catch (Exception e) {
-                if (e.getMessage().equals("ta")) {
-                    loop--;
-                    continue;
-                } else
-                    throw new RuntimeException(e.getMessage());
-            }
+        while(makenumber>=partCreatemax){
+            String toWrite = bc.makeinsert(partCreatemax);
+            writer.WriteLine(toWrite);
+            makenumber-=partCreatemax;
+        }
+
+        if(makenumber>0) {
+            writer.WriteLine(bc.makeinsert(makenumber));
         }
     }
 }

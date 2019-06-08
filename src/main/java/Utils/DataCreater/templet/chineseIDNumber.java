@@ -25,6 +25,6 @@ public class chineseIDNumber {
 
     public String getRandomLocalPrefix() {
         return numberAddress.get(
-                privateRandom.RandomNumber(0, localPrefix.length - 1).intValue()).getKey();
+                privateRandom.RandomInteger(0, localPrefix.length - 1)).getKey();
     }
 }

@@ -2,6 +2,9 @@ package Exception.RegularException;
 
 import CreateSQLParser.Lex.Word;
 
+/**
+ * @author Shimo Tsuki
+ */
 public abstract class BaseException extends Exception {
     protected StringBuilder errMessage;
     public BaseException(Word word){

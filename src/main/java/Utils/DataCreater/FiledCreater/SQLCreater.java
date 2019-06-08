@@ -18,27 +18,44 @@ public class SQLCreater extends baseCreater {
             table.append(tableStructure.getListnames());
             table.append(')');
         }
-        return table.append(" values(").toString();
+        return table.append(" values").toString();
     }
 
     @Override
-    protected void packFiled(ListStructure list, StringBuilder out, String appendStr) {
-        switch (list.getListType()) {
-            case "date":
-                out.append(StringSpecificationOutput.specDate(appendStr));
-                break;
-            case "string":
-                out.append("\'").append(appendStr).append("\'");
-                break;
-            default:
-                out.append(appendStr);
-                break;
+    protected void packFiled(TableStructure table, StringBuilder out) throws Exception {
+        ListStructure list;
+        String appendStr;
+
+        out.append('(');
+        while (this.tableStructure.hasNext()) {
+            list = tableStructure.getNextStruc();
+            if (list.isUnmake()) {
+                continue;
+            }
+            appendStr = strSpecification(list, makeFiled(list));
+            while(!addtoSet(list, appendStr)){
+                appendStr = strSpecification(list, makeFiled(list));
+            }
+
+            switch (list.getListType()) {
+                case "date":
+                    out.append(StringSpecificationOutput.specDate(appendStr));
+                    break;
+                case "string":
+                    out.append("\'").append(appendStr).append("\'");
+                    break;
+                default:
+                    out.append(appendStr);
+                    break;
+            }
+            out.append(',');
         }
-        out.append(',');
+        out.deleteCharAt(out.length()-1);
+        out.append(')').append(',');
     }
 
     @Override
     protected String packTail() {
-        return ");";
+        return ";";
     }
 }

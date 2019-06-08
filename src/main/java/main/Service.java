@@ -26,7 +26,7 @@ public class Service {
                     linenumber = Double.valueOf(args[loop + 1]);
                     loop++;
                     break;
-                case "-set":
+                case "--set":
                     env_properties.setEnvironment(args[loop + 1].split(",")[0], args[loop + 1].split(",")[1]);
                     loop++;
                     break;
@@ -51,6 +51,9 @@ public class Service {
                 case "-a":
                     env_properties.setEnvironment("asynchronous", "true");
                     break;
+                case "-L":
+                    env_properties.setEnvironment("longerInsert", "true");
+                    break;
             }
         }
         if (filename == null) {
@@ -62,7 +65,7 @@ public class Service {
             System.out.println("输入create number");
             linenumber = scanf.nextDouble();
         }
-        createSQLs = FileString.replace("\r","").replace("\n","").split(";");
+        createSQLs = FileString.replace("\r","").split(";");
 
 
         for (int i = 0; i < createSQLs.length; i++) {

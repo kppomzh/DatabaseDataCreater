@@ -8,6 +8,6 @@ public abstract class Email {
             "@sina.com"};
 
     public static String getRandomEmailSuffix() {
-        return emailSuffix[privateRandom.RandomNumber(0, emailSuffix.length - 1).intValue()];
+        return emailSuffix[privateRandom.RandomInteger(0, emailSuffix.length - 1)];
     }
 }

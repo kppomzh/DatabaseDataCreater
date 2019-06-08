@@ -72,67 +72,67 @@ public class RandomAdvanceDataCreater {
     public StringBuilder a_ip(int range) throws Exception {
         if (range < 15) throw new Exception("IP地址所在字段长度不能小于15");
         StringBuilder sb = new StringBuilder();
-        sb.append(privateRandom.RandomNumber(1, 125).intValue());
+        sb.append(privateRandom.RandomInteger(1, 125));
         return ip_end(sb);
     }
 
     public StringBuilder b_ip(int range) throws Exception {
         if (range < 15) throw new Exception("IP地址所在字段长度不能小于15");
         StringBuilder sb = new StringBuilder();
-        sb.append(privateRandom.RandomNumber(128, 191).intValue());
+        sb.append(privateRandom.RandomInteger(128, 191));
         return ip_end(sb);
     }
 
     public StringBuilder c_ip(int range) throws Exception {
         if (range < 15) throw new Exception("IP地址所在字段长度不能小于15");
         StringBuilder sb = new StringBuilder();
-        sb.append(privateRandom.RandomNumber(192, 223).intValue());
+        sb.append(privateRandom.RandomInteger(192, 223));
         return ip_end(sb);
     }
 
     public StringBuilder d_ip(int range) throws Exception {
         if (range < 15) throw new Exception("IP地址所在字段长度不能小于15");
         StringBuilder sb = new StringBuilder();
-        sb.append(privateRandom.RandomNumber(224, 239).intValue());
+        sb.append(privateRandom.RandomInteger(224, 239));
         return ip_end(sb);
     }
 
     public StringBuilder e_ip(int range) throws Exception {
         if (range < 15) throw new Exception("IP地址所在字段长度不能小于15");
         StringBuilder sb = new StringBuilder();
-        sb.append(privateRandom.RandomNumber(240, 255).intValue());
+        sb.append(privateRandom.RandomInteger(240, 255));
         return ip_end(sb);
     }
 
     private StringBuilder ip_end(StringBuilder sb) {
         sb.append('.');
-        sb.append(privateRandom.RandomNumber(0, 255).intValue());
+        sb.append(privateRandom.RandomInteger(0, 255));
         sb.append('.');
-        sb.append(privateRandom.RandomNumber(0, 255).intValue());
+        sb.append(privateRandom.RandomInteger(0, 255));
         sb.append('.');
-        sb.append(privateRandom.RandomNumber(0, 255).intValue());
+        sb.append(privateRandom.RandomInteger(0, 255));
         return sb;
     }
 
 
     public StringBuilder warp_latitude(int range) {
         StringBuilder sb = new StringBuilder();
-        sb.append(privateRandom.RandomNumber(0, 89).intValue());
+        sb.append(privateRandom.RandomInteger(0, 89));
         sb.append('°');
-        sb.append(privateRandom.RandomNumber(0, 60).intValue());
+        sb.append(privateRandom.RandomInteger(0, 60));
         sb.append('′');
-        sb.append(privateRandom.RandomNumber(0, 60).intValue());
+        sb.append(privateRandom.RandomInteger(0, 60));
         sb.append('″');
         if (privateRandom.RandomBool()) sb.append('N');
         else sb.append('S');
 
         sb.append(',');
 
-        sb.append(privateRandom.RandomNumber(0, 179).intValue());
+        sb.append(privateRandom.RandomInteger(0, 179));
         sb.append('°');
-        sb.append(privateRandom.RandomNumber(0, 60).intValue());
+        sb.append(privateRandom.RandomInteger(0, 60));
         sb.append('′');
-        sb.append(privateRandom.RandomNumber(0, 60).intValue());
+        sb.append(privateRandom.RandomInteger(0, 60));
         sb.append('″');
         if (privateRandom.RandomBool()) sb.append('E');
         else sb.append('W');

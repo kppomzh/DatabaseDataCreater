@@ -38,17 +38,17 @@ public abstract class baseCreater {
      * @return
      * @throws Exception
      */
-    public String makeinsert() throws Exception {
+    public String makeinsert(int makenum) {
         StringBuilder Return = new StringBuilder(packHead(tableStructure.isUnmake()));
-        while (this.tableStructure.hasNext()) {
-            ListStructure ls = tableStructure.getNextStruc();
-            if (ls.isUnmake())
-                continue;
-            String appendStr = strSpecification(ls, makeFiled(ls));
-            addtoSet(ls, appendStr);
 
-            packFiled(ls, Return, appendStr);
+        for(int loop=0;loop<makenum;loop++){
+            try {
+                packFiled(tableStructure, Return);
+            } catch (Exception e) {
+                throw new RuntimeException(e.getMessage());
+            }
         }
+
         Return.deleteCharAt(Return.length() - 1);
         String insert=Return.append(packTail()).append("\n").toString();
         Return=null;
@@ -74,23 +74,24 @@ public abstract class baseCreater {
      *
      * @param ls
      * @param appendStr
-     * @throws Exception
      */
-    protected void addtoSet(ListStructure ls, String appendStr) throws Exception {
+    protected boolean addtoSet(ListStructure ls, String appendStr) {
         if (ls.isSingal()) {
-            if (unique.get(ls.getListname()).contains(appendStr))
-                throw new Exception("ta");//错误标记，用于一旦出现了重复的字段内容的时候重新生成数据
-            else
+            if (unique.get(ls.getListname()).contains(appendStr)) {
+                return false;//错误标记，用于一旦出现了重复的字段内容的时候重新生成数据
+            } else {
                 unique.get(ls.getListname()).add(appendStr);
+            }
         }
+        return true;
     }
 
-    private String makeFiled(ListStructure ls) throws Exception {
+    protected String makeFiled(ListStructure ls) throws Exception {
         String appendStr = null;
         if (ls.isInline()) {//inline覆盖掉所有其他设置
-            int num = privateRandom.RandomNumber(0, ls.getInlinelength()).intValue();
+            int num = privateRandom.RandomInteger(0, ls.getInlinelength());
             appendStr = ls.getInlineObject(num);
-        } else if ((!ls.isSingal()) && ls.isDefault() && privateRandom.RandomNumber(0, 1) <= 2 * Double.valueOf(env_properties.getEnvironment("defaultProportion"))) {
+        } else if ((!ls.isSingal()) && ls.isDefault() && privateRandom.RandomDouble(0, 1) <= 2 * Double.valueOf(env_properties.getEnvironment("defaultProportion"))) {
             appendStr = ls.getDefaultStr();//当存在类似唯一约束的情况时将屏蔽默认值
         } else if (ls.isStringType()) {
             if (!ls.getListType().equals("string"))
@@ -132,11 +133,10 @@ public abstract class baseCreater {
     /**
      * 依赖于不同的数据格式，各类型字段的特殊格式
      *
-     * @param list
+     * @param table
      * @param out
-     * @param appendStr
      */
-    protected abstract void packFiled(ListStructure list, StringBuilder out, String appendStr);
+    protected abstract void packFiled(TableStructure table, StringBuilder out) throws Exception;
 
     /**
      * 依赖于不同的数据格式，一条数据插入时候的尾部特殊格式

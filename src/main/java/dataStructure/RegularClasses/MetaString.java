@@ -84,7 +84,7 @@ public class MetaString implements Regular {
     public String getGeneratedString() {
         List<Regular> makeString=this.regularList;
         if(OrSeparatorLocal.size()!=2){
-            int section= privateRandom.RandomNumber(0,OrSeparatorLocal.size()).intValue();
+            int section= privateRandom.RandomInteger(0,OrSeparatorLocal.size());
             int start=OrSeparatorLocal.get(section)+1;
             int end=OrSeparatorLocal.get(section+1)-1;
             makeString=regularList.subList(start,end);
@@ -92,10 +92,11 @@ public class MetaString implements Regular {
 
         int Stringlength=length.getReplaceNum();
         StringBuilder sb=new StringBuilder();
-        for(int loop=0;loop<Stringlength;loop++)
+        for(int loop=0;loop<Stringlength;loop++) {
             for(Regular r:makeString){
                 sb.append(r.getGeneratedString());
             }
+        }
         return sb.toString();
     }
 

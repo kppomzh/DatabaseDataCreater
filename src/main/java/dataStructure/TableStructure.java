@@ -1,6 +1,5 @@
 package dataStructure;
 
-import com.sun.istack.NotNull;
 import dataStructure.RegularClasses.Regular;
 
 import java.util.ArrayList;
@@ -19,7 +18,7 @@ public class TableStructure implements Cloneable {
         listStructureList = new ArrayList<>();
     }
 
-    public void addlist(@NotNull String listname, String ListType, String defaultDataType, boolean isSingal, boolean isDefault, boolean isStringType, String defaultStr, int[] Range, double[] Numberarea, List<String> inlineObject, boolean unmake, boolean isRegular, Regular regular) {
+    public void addlist(String listname, String ListType, String defaultDataType, boolean isSingal, boolean isDefault, boolean isStringType, String defaultStr, int[] Range, double[] Numberarea, List<String> inlineObject, boolean unmake, boolean isRegular, Regular regular) {
         if (Range[0] > MaxListRange)
             MaxListRange = Range[0];
         ListStructure ls = new ListStructure(listname, ListType, isSingal, isDefault, isRegular, defaultStr);

@@ -15,19 +15,33 @@ public class JsonCreater extends baseCreater {
 
     @Override
     protected String packHead(boolean isUnmake) {
-//        return ",";
-        return "{";
+        return "";
     }
 
     @Override
-    protected void packFiled(ListStructure list, StringBuilder out, String appendStr) {
-//        k_vMap.put(list.getListname(),appendStr);
-        out.append("\n\"").append(list.getListname()).append("\": \"").append(appendStr).append("\",");
+    protected void packFiled(TableStructure table, StringBuilder out) throws Exception {
+        ListStructure list;
+        String appendStr;
+
+        out.append('{');
+        while (this.tableStructure.hasNext()) {
+            list = tableStructure.getNextStruc();
+            if (list.isUnmake()) {
+                continue;
+            }
+            appendStr = strSpecification(list, makeFiled(list));
+            while (!addtoSet(list, appendStr)) {
+                appendStr = strSpecification(list, makeFiled(list));
+            }
+
+            out.append("\n\"").append(list.getListname()).append("\": \"").append(appendStr).append("\",");
+        }
+        out.deleteCharAt(out.length()-1);
+        out.append("\n}\n");
     }
 
     @Override
     protected String packTail() {
-//        return JSON.toJSONString(k_vMap);
-        return "\n}";
+        return "";
     }
 }

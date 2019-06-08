@@ -14,17 +14,33 @@ public class csvCreater extends baseCreater {
     }
 
     @Override
-    protected void packFiled(ListStructure list, StringBuilder out, String appendStr) {
-        switch (list.getListType()) {
-            case "string":
-            case "date":
-                out.append('\'').append(appendStr).append("\'");
-                break;
-            default:
-                out.append(appendStr);
-                break;
+    protected void packFiled(TableStructure table, StringBuilder out) throws Exception {
+        ListStructure list;
+        String appendStr;
+
+        while (this.tableStructure.hasNext()) {
+            list = tableStructure.getNextStruc();
+            if (list.isUnmake()) {
+                continue;
+            }
+            appendStr = strSpecification(list, makeFiled(list));
+            while (!addtoSet(list, appendStr)) {
+                appendStr = strSpecification(list, makeFiled(list));
+            }
+
+            switch (list.getListType()) {
+                case "string":
+                case "date":
+                    out.append('\'').append(appendStr).append("\'");
+                    break;
+                default:
+                    out.append(appendStr);
+                    break;
+            }
+            out.append(',');
         }
-        out.append(',');
+        out.deleteCharAt(out.length()-1);
+        out.append('\n');
     }
 
     @Override

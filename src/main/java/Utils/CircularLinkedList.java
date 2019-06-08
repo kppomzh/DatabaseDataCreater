@@ -1,7 +1,5 @@
 package Utils;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.*;
 
 public class CircularLinkedList<E> implements List<E> {
@@ -27,21 +25,18 @@ public class CircularLinkedList<E> implements List<E> {
         return false;
     }
 
-    @NotNull
     @Override
     public Iterator<E> iterator() {
         return null;
     }
 
-    @NotNull
     @Override
     public Object[] toArray() {
         return new Object[0];
     }
 
-    @NotNull
     @Override
-    public <T> T[] toArray(@NotNull T[] a) {
+    public <T> T[] toArray(T[] a) {
         return null;
     }
 
@@ -67,18 +62,18 @@ public class CircularLinkedList<E> implements List<E> {
     }
 
     @Override
-    public boolean containsAll(@NotNull Collection<?> c) {
+    public boolean containsAll(Collection<?> c) {
         return false;
     }
 
     @Override
-    public boolean addAll(@NotNull Collection<? extends E> c) {
+    public boolean addAll(Collection<? extends E> c) {
         addAll(size,c);
         return true;
     }
 
     @Override
-    public boolean addAll(int index, @NotNull Collection<? extends E> c) {
+    public boolean addAll(int index, Collection<? extends E> c) {
         Node<E> pred, succ;
         if (index == size) {
             succ = null;
@@ -103,12 +98,12 @@ public class CircularLinkedList<E> implements List<E> {
     }
 
     @Override
-    public boolean removeAll(@NotNull Collection<?> c) {
+    public boolean removeAll(Collection<?> c) {
         return false;
     }
 
     @Override
-    public boolean retainAll(@NotNull Collection<?> c) {
+    public boolean retainAll(Collection<?> c) {
         return false;
     }
 
@@ -198,19 +193,16 @@ public class CircularLinkedList<E> implements List<E> {
         return -1;
     }
 
-    @NotNull
     @Override
     public ListIterator<E> listIterator() {
         return null;
     }
 
-    @NotNull
     @Override
     public ListIterator<E> listIterator(int index) {
         return null;
     }
 
-    @NotNull
     @Override
     public List<E> subList(int fromIndex, int toIndex) {
         return null;

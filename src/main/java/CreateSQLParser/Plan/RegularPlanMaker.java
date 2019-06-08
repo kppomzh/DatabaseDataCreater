@@ -13,50 +13,70 @@ public class RegularPlanMaker {
         MetaString root = new MetaString(), temp = root;
         StringBuilder sb = new StringBuilder();
         String regularStr = regular.getSubstance();
+        Word tempreg=null;
 
         int loop = 0;
 
         for (; loop < regularStr.length(); loop++) {
             switch (regularStr.charAt(loop)) {
                 case '(':
-                    temp.addElement(new NmetaString(sb.toString()),regular);
+                    temp.addElement(new NmetaString(sb.toString()),
+                            new Word("regularPart", sb.toString(), false, regular.getLine(), regular.getList() + loop-sb.toString().length()));
                     sb = new StringBuilder();
                     metaStack.push(temp);
                     temp = new MetaString();
                     break;
                 case '{':
-                    temp.addElement(new NmetaString(sb.toString()),regular);
+                    tempreg=new Word("regularPart","{",false,regular.getLine(),regular.getList()+loop);
+                    temp.addElement(new NmetaString(sb.toString()),
+                            new Word("regularPart", sb.toString(), false, regular.getLine(), regular.getList() + loop-sb.toString().length()));
                     sb = new StringBuilder();
 
                     //此后第一个逗号位置
                     int local1 = regularStr.indexOf(",", loop);
                     int local2 = regularStr.indexOf("}", loop);
+                    if(local2!=-1){
+                        tempreg.setSubstance(regularStr.substring(loop, local2));
+                    }
+                    else{
+                        throw new NullEndpointException(tempreg);
+                    }
+
                     if (local1 != -1 && local1 < local2) {
                         int minlength = Integer.valueOf(regularStr.substring(loop + 1, local1));
                         String maxlengthS = regularStr.
                                 substring(local1 + 1, local2);
                         int maxlength = maxlengthS.equals("") ? null : Integer.valueOf(maxlengthS);
                         if(minlength<0)
-                            throw new LengthDefineException(regular,"正则表达式的元字符最小长度不能小于0。");
+                            throw new LengthDefineException(new Word("regularPart",String.valueOf(minlength),false,regular.getLine(),regular.getList()+loop),"正则表达式的元字符最小长度不能小于0。");
                         if(maxlength>=0&&minlength>maxlength){
-                            throw new LengthDefineException(regular,"正则表达式的元字符最小长度不能大于最大长度。");
+                            throw new LengthDefineException(tempreg,"正则表达式的元字符最小长度不能大于最大长度。");
                         }
-                        temp.addElement(new LengthExpression(minlength, maxlength),regular);
+                        temp.addElement(new LengthExpression(minlength, maxlength),tempreg);
                     } else {
                         int replaceNum = Integer.valueOf(regularStr.substring(loop + 1, local2));
                         if(replaceNum<0)
-                            throw new LengthDefineException(regular,"正则表达式的元字符最小长度不能小于0。");
-                        temp.addElement(new LengthExpression(replaceNum),regular);
+                            throw new LengthDefineException(new Word("regularPart",String.valueOf(replaceNum),false,regular.getLine(),regular.getList()+loop),"正则表达式的元字符最小长度不能小于0。");
+                        temp.addElement(new LengthExpression(replaceNum),tempreg);
                     }
                     loop = local2;
                     break;
                 case '[':
-                    temp.addElement(new NmetaString(sb.toString()),regular);
+                    tempreg = new Word("regularPart", "[", false, regular.getLine(), regular.getList() + loop);
+                    temp.addElement(new NmetaString(sb.toString()),
+                            new Word("regularPart", sb.toString(), false, regular.getLine(), regular.getList() + loop-sb.toString().length()));
                     sb = new StringBuilder();
 
                     int local = regularStr.indexOf("]", loop);
+                    if(local!=-1){
+                        tempreg.setSubstance(regularStr.substring(loop, local));
+                    }
+                    else{
+                        throw new NullEndpointException(tempreg);
+                    }
+
                     if(local==loop+1){
-                        throw new NullBracketException(regular);
+                        throw new NullBracketException(tempreg.setSubstance("[]"));
                     }
                     BracketExpression be = new BracketExpression();
                     char tempC;
@@ -73,37 +93,39 @@ public class RegularPlanMaker {
                                 be.addFiled(tempC, regularStr.charAt(loopi + 1));
                                 loopi = loopi + 2;
                             } else
-                                throw new BucketFiledException(regular,regularStr.substring(loopi - 1, loopi + 1));//临时替代
+                                throw new BucketFiledException(tempreg,regularStr.substring(loop,local));
                         } else {
                             be.addFiled(tempC);
                         }
                     }
-                    temp.addElement(be,regular);
+                    temp.addElement(be,new Word("regularPart",be.getRealName(),false,regular.getLine(),regular.getList()+loop));
                     loop = local;
                     break;
                 case ')':
-                    temp.addElement(new NmetaString(sb.toString()),regular);
+                    tempreg=new Word("regularPart",")",false,regular.getLine(),regular.getList()+loop);
+                    temp.addElement(new NmetaString(sb.toString()),new Word("regularPart",sb.toString(),false,regular.getLine(),regular.getList()+loop-sb.toString().length()));
                     sb = new StringBuilder();
 
-                    temp = metaStack.pop().addElement(temp,regular);
+                    temp = metaStack.pop().addElement(temp,tempreg);
                     break;
                 case '|':
-                    temp.addElement(new NmetaString(sb.toString()),regular);
+                    tempreg=new Word("regularPart","|",false,regular.getLine(),regular.getList()+loop);
+                    temp.addElement(new NmetaString(sb.toString()),tempreg);
                     sb = new StringBuilder();
 
-                    temp.addElement(new OrSeparator(),regular);
+                    temp.addElement(new OrSeparator(),tempreg);
                     break;
                 case '\\':
-                    temp.addElement(new NmetaString(sb.toString()),regular);
+                    temp.addElement(new NmetaString(sb.toString()),new Word("regularPart",sb.toString(),false,regular.getLine(),regular.getList()+loop-sb.toString().length()));
                     sb = new StringBuilder();
                     loop = EscapeCharacterProcess(sb, temp, loop, regularStr);
                     if(loop==-1){
-                        throw new EscapeCharacterException(regular,"非法的转义字符");
+                        throw new EscapeCharacterException(new Word("regularPart",sb.toString(),false,regular.getLine(),regular.getList()+loop),"非法的转义字符");
                     }
                     break;
                 default:
                     if(getRegularElementsFactory.getInstance().checkREle(regularStr.charAt(loop))){
-                        temp.addElement(getRegularElementsFactory.getInstance().makeRegularElement(regularStr.charAt(loop)),regular);
+                        temp.addElement(getRegularElementsFactory.getInstance().makeRegularElement(regularStr.charAt(loop)),new Word("regularPart",String.valueOf(regularStr.charAt(loop)),false,regular.getLine(),regular.getList()+loop));
                         sb=new StringBuilder();
                     }
                     else
@@ -111,7 +133,7 @@ public class RegularPlanMaker {
                     break;
             }
         }
-        temp.addElement(new NmetaString(sb.toString()),regular);
+        temp.addElement(new NmetaString(sb.toString()),new Word("regularPart",sb.toString(),false,regular.getLine(),regular.getList()+loop));
 
         return root;
     }

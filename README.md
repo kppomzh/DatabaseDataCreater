@@ -1,28 +1,30 @@
 # DatabaseDataCreater：一个用于从create table的SQL当中自动生成自定义的insert数据的工具
 ### 今后将不再提供Java8的测试和支持，全面转移到Java11直到下一个Java LTS为止
+### 由于看到了某笔记本的好价，于是将原来的机器出手换了个新的，但是实际测试时CPU性能不会提高太多
 ### 简介
-本程序的作用是根据给定的建立数据库表的SQL（create语句），自动的生成给定行数的数据，这些数据可以以insert语句的方式产生，也可以是逗号隔开的csv格式以便通过数据库外部表或load工具来利用。支持通过JDBC直接导入数据。支持生成json字符串。
+本程序的作用是根据给定的建立数据库表的SQL（create语句），自动的生成给定行数的数据，这些数据可以以insert语句的方式产生，
+也可以是逗号隔开的csv格式以便通过数据库外部表或load工具来利用。支持通过JDBC直接导入数据。支持生成json字符串。
 ## 最简化使用方法
 该方法可以不需要config.properties的配置文件。  
-1.下载https://github.com/kiloline/DatabaseDataCreater/releases/download/1.2.0/DBDF-1.2.0.zip  
+1.下载https://github.com/kiloline/DatabaseDataCreater/releases/download/1.3.0/DBDF-1.3.0.zip  
 2.解压  
 3.命令行定位到jar包所在位置  
-4.输入命令：java -jar DBDF-1.2.0-jar-with-dependencies.jar  
+4.输入命令：java -jar DBDF-1.3.0-jar-with-dependencies.jar  
 5.按照提示输入create命令和输出条数  
 6.在jar包所在的文件夹下就可以找到和表名一致的.sql文件，里面是相应条数的insert数据  
 7.复制粘贴运行三连  
 
 ## 当前版本性能测试
 #### 硬件环境
-CPU:Intel i7-7700HQ 3.4~3.5Ghz  
-Memory:16G DDR4 2400Mhz  
+CPU:Intel i7-9750H ~=4Ghz(4线程运行时)  
+Memory:16G DDR4 2666Mhz  
 SSD:WDS480G2G0B 西数绿盘 480G SATA SSD
 
 #### 软件环境以及测试条件
-OS:Windows10 1809/1903  
+OS:Windows10 1903  
 Java:Java 11.0.3  
 测试条件:  
-1.4线程  
+1.1/4/6线程  
 2.异步写入  
 3.默认值比例0.9  
 4.禁止SQL优化  
@@ -32,7 +34,8 @@ Java:Java 11.0.3
  ![image](https://github.com/kiloline/DatabaseDataCreater/blob/master/sample_test.png)  
 
 #### 性能变化
-在每条CSV多出10个字符的情况下，对比上一个版本的生成速度均有小幅提高。似乎Windows10 1809下的运行性能更高一点，原因不明。  
+每秒写入速度提高了约57%，但是并不是占用CPU越多越好；  
+实测在9750H上4线程跑的坠快坠吼的，3线程时相差无几，6线程性能几乎被单线程追上。  
 
 ## 程序参数详解
 -h:显示帮助。  
@@ -43,6 +46,7 @@ Java:Java 11.0.3
 -i:指定生成数据的载入方式，有"jdbc"、"sql"、"csv"、"json"、"mongo"五种方式。  
 -a:允许异步写（将一个表的insert拆分成多个sql文件），可以加快生成速度；在-t参数大于1时才有实际意义。  
 -O:允许SQL优化，将长度上限特别大的字段随机缩短长度，可以加快生成速度，或者模拟现实当中的字段长度。  
+-L:允许多联输出数据，例如一条insert内填充多行数据，默认一次生成1000行，生成行数暂时只能通过配置文件修改，该方法对Json、csv等方式无效。  
 
 ## 支持的SQL数据类型
 1.数值型  
@@ -79,14 +83,16 @@ bool
 
 ### 本程序默认的数据格式实现
 #### 1.stringtype
-可以在每个字段的后面加上stringtype关键字来指定当前字段的数据格式，包括ch_idcard（中国身份证号）、telephone（中国手机号）、email（电子邮件）、ch_word（汉字字符串）、a/b/c/d/e_ip（五种IP地址）、warp_latitude（经纬度）等几种数据。
+可以在每个字段的后面加上stringtype关键字来指定当前字段的数据格式，包括ch_idcard（中国身份证号）、telephone（中国手机号）、
+email（电子邮件）、ch_word（汉字字符串）、a/b/c/d/e_ip（五种IP地址）、warp_latitude（经纬度）等几种数据。
 #### 2.numberarea  
 可以在每个字段的后面加上numberarea关键来指定当前字段的数值范围，该方式仅对标记为数值型的字段适用。  
 例如numberarea 5~10，就会生成范围在{5,6,7,8,9,10}之内的任意数，根据字段类型也可以是浮点数。
 
 ### 如何自定义数据格式
 #### 1.inline方式  
-如果某个字段有多个确定值，只需要从中选择一个的话，可以用inline方式。多个值放在字段后面的一个大括号中，用逗号分开。需要注意的是这种方法不限制数据类型，但是字符型和日期型需要添加单引号，数值型不需要添加引号。  
+如果某个字段有多个确定值，只需要从中选择一个的话，可以用inline方式。多个值放在字段后面的一个大括号中，用逗号分开。  
+需要注意的是这种方法不限制数据类型，但是字符型和日期型需要添加单引号，数值型不需要添加引号。  
 例如"name varchar(10) {"aaa","bbb"}"，这样的话那么这个字段里的值就只有aaa和bbb。  
 该方式优先级最高，会覆盖primary key/unique约束、默认值、stringtype、numberarea等方式。
 
@@ -141,18 +147,21 @@ canbeNegative:是否允许数值型数据出现负数，当指定输入范围时
 Optimal:SQL优化，（伪）随机缩短字符串长度，避免超长字符串的变量生成导致长时间卡顿。   
 asynchronous:允许异步写文件以加快输出。  
 TOTAL_THREADS:总线程数量，当asynchronous为true的时候整个任务将会被分成和线程数量同等的多个文件。  
-defaultProportion:取值区间0~1，default值在整个字段中占用的默认比例，如果有使用default值的字段，加大该参数会适当的提高程序的性能，但是一定要按照实际的业务需求制定该参数的允许上限。  
+defaultProportion:取值区间0~1，default值在整个字段中占用的默认比例，如果有使用default值的字段，加大该参数会适当的提高程序的性能，
+但是一定要按照实际的业务需求制定该参数的允许上限。  
 WriterEngine:写文件使用的引擎，目前有default和apache两种，性能上差不多，不同条件下略有差异。  
 
 ## 已经支持通过JDBC直接发送数据的数据库
 Oracle  
-MySQL  
+MySQL（至少兼容MariaDB、TiDB、SequoiaDB三种）  
 SQLserver  
 DB2  
 PostgreSQL  
 SQLite  
 H2  
 MongoDB
+Presto
+Hive
 
 ## 注意事项
 1.关于数据库连接选项的设置这里暂时不提供，请用配置文件实现。  
