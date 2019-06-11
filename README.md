@@ -1,41 +1,44 @@
 # DatabaseDataCreater：一个用于从create table的SQL当中自动生成自定义的insert数据的工具
 ### 今后将不再提供Java8的测试和支持，全面转移到Java11直到下一个Java LTS为止
-### 由于看到了某笔记本的好价，于是将原来的机器出手换了个新的，但是实际测试时CPU性能不会提高太多
+#### 由于看到了某笔记本的好价，于是将原来的机器出手换了个新的，但是实际测试时可以通过限制功耗，CPU性能不会提高太多
+#### 由于hive的驱动严重依赖旧Java版本中的tools.jar，所以暂时从支持列表中除名。
 ### 简介
 本程序的作用是根据给定的建立数据库表的SQL（create语句），自动的生成给定行数的数据，这些数据可以以insert语句的方式产生，
 也可以是逗号隔开的csv格式以便通过数据库外部表或load工具来利用。支持通过JDBC直接导入数据。支持生成json字符串。
 ## 最简化使用方法
 该方法可以不需要config.properties的配置文件。  
-1.下载https://github.com/kiloline/DatabaseDataCreater/releases/download/1.3.0/DBDF-1.3.0.zip  
+1.下载https://github.com/kiloline/DatabaseDataCreater/releases/download/1.3.1/DBDF-1.3.1.zip  
 2.解压  
 3.命令行定位到jar包所在位置  
-4.输入命令：java -jar DBDF-1.3.0-jar-with-dependencies.jar  
+4.输入命令：java -jar DBDF-1.3.1-jar-with-dependencies.jar  
 5.按照提示输入create命令和输出条数  
 6.在jar包所在的文件夹下就可以找到和表名一致的.sql文件，里面是相应条数的insert数据  
 7.复制粘贴运行三连  
 
 ## 当前版本性能测试
 #### 硬件环境
-CPU:Intel i7-9750H ~=4Ghz(4线程运行时)  
+CPU:Intel i7-9750H ~=3.33Ghz(6线程运行时)  
 Memory:16G DDR4 2666Mhz  
 SSD:WDS480G2G0B 西数绿盘 480G SATA SSD
 
 #### 软件环境以及测试条件
 OS:Windows10 1903  
-Java:Java 11.0.3  
+Java:Java 11.0.3,Java 12.0.1  
 测试条件:  
-1.1/4/6线程  
+1.6线程  
 2.异步写入  
 3.默认值比例0.9  
 4.禁止SQL优化  
-5.写入方式为csv  
+5.写入方式为sql  
 6.生成条数5000000  
+7.多联输出开启
   
  ![image](https://github.com/kiloline/DatabaseDataCreater/blob/master/sample_test.png)  
 
 #### 性能变化
-每秒写入速度提高了约57%，但是并不是占用CPU越多越好；  
-实测在9750H上4线程跑的坠快坠吼的，3线程时相差无几，6线程性能几乎被单线程追上。  
+与上一个release版本(1.2.0),比较每秒写入速度提高了约200%，刨除增加了两个核心的因素，也有100%的增加。  
+解决了随机数生成瓶颈，比上一个Pre-release版本增加了约47%的写入速度，而且还是在CPU频率下降了15%的情况下做到的。  
+同时根据在台式机上的测试，3200Mhz的内存和2133Mhz的内存几乎没有任何性能区别。  
 
 ## 程序参数详解
 -h:显示帮助。  
@@ -46,7 +49,7 @@ Java:Java 11.0.3
 -i:指定生成数据的载入方式，有"jdbc"、"sql"、"csv"、"json"、"mongo"五种方式。  
 -a:允许异步写（将一个表的insert拆分成多个sql文件），可以加快生成速度；在-t参数大于1时才有实际意义。  
 -O:允许SQL优化，将长度上限特别大的字段随机缩短长度，可以加快生成速度，或者模拟现实当中的字段长度。  
--L:允许多联输出数据，例如一条insert内填充多行数据，默认一次生成1000行，生成行数暂时只能通过配置文件修改，该方法对Json、csv等方式无效。  
+-L:允许多联输出数据，例如一条insert内填充多行数据，默认一次生成10000行，生成行数暂时只能通过配置文件修改，该方法对Json、csv等方式无效。  
 
 ## 支持的SQL数据类型
 1.数值型  
@@ -161,7 +164,7 @@ SQLite
 H2  
 MongoDB
 Presto
-Hive
+~~Hive~~
 
 ## 注意事项
 1.关于数据库连接选项的设置这里暂时不提供，请用配置文件实现。  

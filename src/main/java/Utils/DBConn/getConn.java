@@ -10,10 +10,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class getConn {
-    private static final getConn getConn=new getConn();
-    private static Connection conn;
-    private static Statement stmt;
-    private getConn()  {
+    private Connection conn;
+    private Statement stmt;
+    public getConn()  {
         try {
             conn=getConn();
             refreshStmt();
@@ -35,16 +34,16 @@ public class getConn {
                 env_properties.getEnvironment("password"));
     }
 
-    public static Connection Conn()
-    {return getConn.conn;}
-    public static Statement Stmt()
-    {return getConn.stmt;}
-    public static void refreshStmt()
+    public Connection Conn()
+    {return conn;}
+    public Statement Stmt()
+    {return stmt;}
+    public void refreshStmt()
     {
         try {
-            getConn.stmt=getConn.conn.createStatement();
+            stmt=conn.createStatement();
             if(env_properties.getEnvironment("DBsoftware").toLowerCase().equals("khan"))
-                getConn.stmt.executeUpdate("set dialect='oracle'");
+                stmt.executeUpdate("set dialect='oracle'");
         } catch (SQLException e) {
             e.printStackTrace();
         }

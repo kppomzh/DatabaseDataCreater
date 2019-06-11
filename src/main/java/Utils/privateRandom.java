@@ -1,12 +1,17 @@
 package Utils;
 
-import java.util.Random;
+import java.math.BigInteger;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class privateRandom {
-    private static Random rm;
+    private static ThreadLocalRandom rm;
+    private static Lock lock;
+    private static int num=0;
     static {
-        rm=new Random(System.nanoTime());
+        rm=ThreadLocalRandom.current();
+        lock=new ReentrantLock();
     }
 
     public static void reSetRandom(){
@@ -20,10 +25,13 @@ public class privateRandom {
      * @return 双精度浮点
      */
     public static Double RandomDouble(double start, double end) {
-        if (start == end)
+        counter();
+        Double minunum=end - start;
+
+        if (minunum==0)
             return start;
 
-        double Return = Math.abs(rm.nextDouble());
+        double Return = Math.abs(rm.nextDouble()*Math.pow(10,minunum.toString().length()-3));
         if (Return > end - start) {
             Return = Return % (end - start);
         }
@@ -35,6 +43,8 @@ public class privateRandom {
     }
 
     public static int RandomInteger(int start,int end){
+        counter();
+
         if (start == end)
             return start;
         int Return = Math.abs(rm.nextInt()<<4);
@@ -46,5 +56,20 @@ public class privateRandom {
 
     public static double RandomGaussian(){
         return Math.abs(rm.nextGaussian());
+    }
+
+//    public static BigInteger RandomBInteger(String start,String end){
+//        BigInteger startInteger=new BigInteger(start),endInteger=new BigInteger(end);
+//
+//        BigInteger Return=new BigInteger(2,rm);
+//    }
+
+    private static void counter(){
+        if(num>20000000&&lock.tryLock()){
+            num=0;
+            reSetRandom();
+            lock.unlock();
+        }
+        num++;
     }
 }

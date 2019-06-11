@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>zhzm</groupId>
     <artifactId>DBDF</artifactId>
-    <version>1.3.0</version>
+    <version>1.3.1</version>
 
     <build>
         <resources>
@@ -15,13 +15,45 @@
                 <includes></includes>
             </resource>
         </resources>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.1.1</version>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <archive>
+                        <manifest>
+                            <mainClass>main.Service</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
     </build>
     <dependencies>
         <!--autoutil-->
         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>5.4.2</version>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13-beta-1</version>
             <scope>test</scope>
         </dependency>
 
@@ -35,16 +67,6 @@
             <groupId>com.ibm.icu</groupId>
             <artifactId>icu4j</artifactId>
             <version>64.2</version>
-        </dependency>
-        <dependency>
-            <groupId>xyz.calvinwilliams</groupId>
-            <artifactId>okjson</artifactId>
-            <version>0.0.9.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>1.2.57</version>
         </dependency>
 
         <!-- System util -->
@@ -69,7 +91,6 @@
             <groupId>com.microsoft.sqlserver</groupId>
             <artifactId>mssql-jdbc</artifactId>
             <version>7.3.0.jre11-preview</version>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.ops4j.pax.jdbc</groupId>
@@ -91,10 +112,10 @@
             <artifactId>mongo-java-driver</artifactId>
             <version>3.10.2</version>
         </dependency>
-        <dependency>
-            <groupId>org.apache.hive</groupId>
-            <artifactId>hive-jdbc</artifactId>
-            <version>3.1.1</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.apache.hive</groupId>-->
+<!--            <artifactId>hive-jdbc</artifactId>-->
+<!--            <version>2.3.5</version>-->
+<!--        </dependency>-->
     </dependencies>
 </project>

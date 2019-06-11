@@ -1,10 +1,7 @@
 package test;
 
 import Utils.privateRandom;
-import xyz.calvinwilliams.okjson.OKJSON;
 
-import java.io.*;
-import java.nio.channels.FileChannel;
 import java.util.*;
 
 public class DoubleMakerTest {

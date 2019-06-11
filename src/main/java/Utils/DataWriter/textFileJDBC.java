@@ -6,11 +6,12 @@ import java.sql.SQLException;
 
 public class textFileJDBC extends tF {
     private static textFileJDBC tf=new textFileJDBC();
+    getConn conn=new getConn();
 
     @Override
     public synchronized boolean WriteLine(String insert) {
         try {
-            getConn.Stmt().execute(insert);
+            conn.Stmt().execute(insert);
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -20,14 +21,14 @@ public class textFileJDBC extends tF {
 
     @Override
     public void closeWriter() throws SQLException {
-        getConn.Stmt().execute("commit;");
-        getConn.Stmt().close();
-        getConn.Conn().close();
+        conn.Stmt().execute("commit;");
+        conn.Stmt().close();
+        conn.Conn().close();
     }
 
     public synchronized boolean WriteCreateinJDBC(String create) {
         try {
-            getConn.Stmt().executeUpdate(create);
+            conn.Stmt().executeUpdate(create);
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
