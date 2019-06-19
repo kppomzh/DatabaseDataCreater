@@ -6,6 +6,7 @@ import Utils.Factorys.getRegularElementsFactory;
 import dataStructure.RegularClasses.*;
 
 import java.util.Stack;
+import Exception.BaseException;
 
 public class RegularPlanMaker {
     public static Regular makeRegular(Word regular) throws BaseException {

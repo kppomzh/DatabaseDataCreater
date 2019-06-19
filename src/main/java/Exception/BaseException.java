@@ -1,4 +1,4 @@
-package Exception.RegularException;
+package Exception;
 
 import CreateSQLParser.Lex.Word;
 

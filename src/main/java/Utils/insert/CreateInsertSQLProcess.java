@@ -57,7 +57,7 @@ public class CreateInsertSQLProcess {
 
     private void makePool(CircularLinkedList<tF> writerlist) throws CloneNotSupportedException {
         for (int loop = 0; loop < TOTAL_THREADS; loop++)
-            service.submit(new InsertSQLCreater(ts.getTbname(),
+            service.execute(new InsertSQLCreater(ts.getTbname(),
                     (TableStructure) ts.clone(),
                     linenumber[loop],
                     writerlist.getNext()));
@@ -66,7 +66,7 @@ public class CreateInsertSQLProcess {
     private tF getWriter(String tablename, String charset) throws IOException {
         String filename = env_properties.getEnvironment("baseFileDir") + tablename + "." + env_properties.getEnvironment("toDB");
         if (env_properties.getEnvironment("toDB").equals("jdbc")) {
-            return textFileJDBC.getInstance();
+            return new textFileJDBC();
         } else if (env_properties.getEnvironment("WriterEngine").equals("default")) {
             return new textFileWriter(filename);
         } else {

@@ -88,4 +88,8 @@ public class env_properties {
     public static void setEnvironment(String envName, String envstring) {
         init.env.setProperty(envName, envstring);
     }
+
+    public static Properties getJDBCEnv(){
+        return init.env;
+    }
 }

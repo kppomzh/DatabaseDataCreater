@@ -88,7 +88,7 @@ public class Fugue {
                 } else switch (last.getName()) {
                     case "table":
                         if (!w.getName().equals("String"))
-                            w.setSubstance(w.getName());
+                            w.setSubstance(w.getName().toLowerCase());
                         w.setName("tablename");
                         break;
                     case "(":

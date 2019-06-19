@@ -5,6 +5,8 @@ import Utils.DataCreater.templet.Telephone;
 import Utils.DataCreater.templet.chineseIDNumber;
 import Utils.privateRandom;
 
+import java.lang.reflect.InvocationTargetException;
+
 public class RandomAdvanceDataCreater {
     private RandomBasicDataCreater rbdc;
 
@@ -12,12 +14,18 @@ public class RandomAdvanceDataCreater {
         rbdc = r;
     }
 
-    public String returnAdvancedString(String methodString, int range) throws Exception {
-        StringBuilder advancedString = null;
+    public String returnAdvancedString(String methodString, int range) {
+        StringBuilder advancedString;
 
         try {
             advancedString = (StringBuilder) this.getClass().getMethod(methodString, int.class).invoke(this, range);
         } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+            return "";
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+            return "";
+        } catch (InvocationTargetException e) {
             e.printStackTrace();
             return "";
         }

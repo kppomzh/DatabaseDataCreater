@@ -1,5 +1,6 @@
 package Utils;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.locks.Lock;
@@ -9,13 +10,18 @@ public class privateRandom {
     private static ThreadLocalRandom rm;
     private static Lock lock;
     private static int num=0;
+    private static long changenum=0;
     static {
         rm=ThreadLocalRandom.current();
         lock=new ReentrantLock();
     }
 
     public static void reSetRandom(){
-        rm.setSeed(System.nanoTime());
+        try {
+            rm.setSeed(System.nanoTime());
+        }catch(java.lang.UnsupportedOperationException e){
+            changenum++;//"随机种子未重置。";
+        }
     }
 
     /**
@@ -31,7 +37,7 @@ public class privateRandom {
         if (minunum==0)
             return start;
 
-        double Return = Math.abs(rm.nextDouble()*Math.pow(10,minunum.toString().length()-3));
+        double Return = Math.abs(rm.nextDouble()*3);
         if (Return > end - start) {
             Return = Return % (end - start);
         }
@@ -54,15 +60,19 @@ public class privateRandom {
         return Return + start;
     }
 
-    public static double RandomGaussian(){
-        return Math.abs(rm.nextGaussian());
-    }
+    public static BigInteger RandomBInteger(BigInteger start, BigInteger end){
+        BigInteger sub=end.subtract(start).abs();
 
-//    public static BigInteger RandomBInteger(String start,String end){
-//        BigInteger startInteger=new BigInteger(start),endInteger=new BigInteger(end);
-//
-//        BigInteger Return=new BigInteger(2,rm);
-//    }
+        if (start.equals(end))
+            return start;
+        BigInteger res=new BigInteger(sub.bitLength()+1,rm);
+
+        if(res.compareTo(sub)==1){
+            res=res.mod(sub);
+        }
+
+        return res.add(start);
+    }
 
     private static void counter(){
         if(num>20000000&&lock.tryLock()){

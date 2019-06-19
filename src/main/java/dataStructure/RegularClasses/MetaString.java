@@ -1,12 +1,11 @@
 package dataStructure.RegularClasses;
 
 import CreateSQLParser.Lex.Word;
-import Exception.RegularException.BaseException;
+import Exception.BaseException;
 import Exception.RegularException.DoubleOrSeparatorException;
 import Exception.RegularException.LengthDefineException;
 import Exception.RegularException.NullMetaStringException;
 import Utils.privateRandom;
-import dataStructure.KVEntryImpl;
 
 import java.util.ArrayList;
 import java.util.List;

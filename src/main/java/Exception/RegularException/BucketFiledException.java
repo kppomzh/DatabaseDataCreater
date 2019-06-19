@@ -1,8 +1,9 @@
 package Exception.RegularException;
 
 import CreateSQLParser.Lex.Word;
+import Exception.BaseException;
 
-public class BucketFiledException extends BaseException{
+public class BucketFiledException extends BaseException {
 
     public BucketFiledException(Word word,String message){
         super(word);

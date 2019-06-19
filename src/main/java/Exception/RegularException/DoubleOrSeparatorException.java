@@ -1,6 +1,7 @@
 package Exception.RegularException;
 
 import CreateSQLParser.Lex.Word;
+import Exception.BaseException;
 
 public class DoubleOrSeparatorException extends BaseException {
     public DoubleOrSeparatorException(Word word) {

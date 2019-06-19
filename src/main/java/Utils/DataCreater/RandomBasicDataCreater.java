@@ -3,6 +3,9 @@ package Utils.DataCreater;
 import Utils.env_properties;
 import Utils.privateRandom;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+
 public class RandomBasicDataCreater {
     private static char[] c = {
             'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',//25
@@ -121,35 +124,42 @@ public class RandomBasicDataCreater {
         return sb.toString();
     }
 
-    public String getNumber(int intRange, int decRange, double[] Numberarea) {
+    public String getNumber(int intRange, int decRange, String[] Numberarea) {
+        BigInteger area1=Numberarea[0]==null?BigInteger.ZERO:new BigInteger(Numberarea[0]),
+                area2=Numberarea[1]==null?BigInteger.ZERO:new BigInteger(Numberarea[1]);
+
         boolean canbeNegative = (false & env_properties.getEnvironment("canbeNegative").equals("true")
                 & privateRandom.RandomBool())
-                | Numberarea[1] < 0;
+                | area2.compareTo(BigInteger.ZERO)==-1;
         if (intRange <= 0)
             intRange = privateRandom.RandomInteger(1, 10);
-        Double intS, intMin = 0d, intMax = Math.pow(10, intRange) - 1, decMax = Math.pow(10, decRange) - 1;
+        BigInteger intS, intMin=BigInteger.ZERO,
+                intMax = BigDecimal.valueOf(Math.pow(10, intRange) - 1).toBigInteger(),
+                decMax = decRange==0?BigInteger.ZERO:BigDecimal.valueOf(Math.pow(10, decRange) - 1).toBigInteger();
         StringBuilder sb = new StringBuilder();
 
-        if ((Numberarea[0] < 0 & privateRandom.RandomBool()) || canbeNegative) {
-            intMax = (-Numberarea[0] < intMax & (Numberarea[0] != 0 | Numberarea[1] != 0) ? -Numberarea[0] : intMax);
+        if ((area1.compareTo(BigInteger.ZERO)==-1 & privateRandom.RandomBool()) || canbeNegative) {
+            intMax = (area1.negate().compareTo(intMax) ==-1  &
+                    (area1.compareTo(BigInteger.ZERO) != 0 | area2.compareTo(BigInteger.ZERO) != 0) ? area1 : intMax);
             sb.append('-');
         } else
-            intMax = (Numberarea[1] < intMax & (Numberarea[0] != 0 | Numberarea[1] != 0) ? Numberarea[1] : intMax);
+            intMax = (area2.compareTo(intMax)==-1  &
+                    (area1.compareTo(BigInteger.ZERO) != 0 | area2.compareTo(BigInteger.ZERO) != 0) ? area2 : intMax);
 
-        if (Numberarea[1] < 0)
-            intMin = -Numberarea[1];
-        if (Numberarea[0] > 0)
-            intMin = Numberarea[0];
+        if (area2.compareTo(BigInteger.ZERO) ==-1)
+            intMin = area2.negate();
+        if (area1.compareTo(BigInteger.ZERO)==1)
+            intMin = area1;
 
         if (decRange > 1)
-            Numberarea[1] = Numberarea[1] - 1;
-        intS = privateRandom.RandomDouble(intMin, intMax);
+            intMax = area2.subtract(BigInteger.ONE);
+        intS = privateRandom.RandomBInteger(intMin, intMax);
 
-        sb.append(Double2String(intS));
+        sb.append(intS);
         if (decRange > 0) {
             sb.append('.');
-            Double decS = privateRandom.RandomDouble(0, decMax);
-            sb.append(Double2String(decS));
+            BigInteger decS = privateRandom.RandomBInteger(BigInteger.ZERO, decMax);
+            sb.append(decS);
         }
 
         return sb.toString();
@@ -221,7 +231,6 @@ public class RandomBasicDataCreater {
     }
 
     public static String getArbitraryCharacter(int strRange, char type) {
-        char[] str = new char[strRange];
         int min = 0, max = c.length - 1;
 
         switch (type) {
@@ -283,31 +292,5 @@ public class RandomBasicDataCreater {
             return new char[]{'0'};
         else
             return new char[]{};
-    }
-
-
-    /**
-     * Java默认双精度浮点值转字符串
-     * 用于处理大数科学计数法表示转换常规表示
-     * 只保留整数部分，方便计算位数
-     * @param d
-     * @return
-     */
-    private static String Double2String(Double d) {
-        String s[] = d.toString().split("\\.");
-        if (s[1].toString().indexOf("E") == -1)
-            return s[0];
-
-        String s1[] = s[1].split("E");
-        StringBuilder res=new StringBuilder(s[0]);
-        res.append(s1[0]);
-        int length = Integer.valueOf(s1[1]);
-
-        if(s1[0].length() < length) {
-            Double lowercase = privateRandom.RandomGaussian() * Math.pow(10, s1[0].length());
-            res.append(Double2String(lowercase));
-        }
-
-        return res.toString();
     }
 }

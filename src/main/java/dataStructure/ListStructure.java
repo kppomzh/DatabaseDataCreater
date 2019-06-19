@@ -9,7 +9,7 @@ public class ListStructure implements Cloneable {
     private String listname;
     private String ListType;
     private int[] Range;
-    private double[] Numberarea;
+    private String[] Numberarea;
     private boolean isSingal;
     private boolean unmake;//是否对本字段进行填充
 
@@ -51,7 +51,7 @@ public class ListStructure implements Cloneable {
         Range = range;
     }
 
-    public void setNumberarea(double[] numberarea) {
+    public void setNumberarea(String[] numberarea) {
         Numberarea = numberarea;
     }
 
@@ -88,7 +88,7 @@ public class ListStructure implements Cloneable {
         return listname;
     }
 
-    public double[] getNumberarea() {
+    public String[] getNumberarea() {
         return Numberarea;
     }
 

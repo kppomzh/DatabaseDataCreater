@@ -2,41 +2,33 @@ package Utils.DataWriter;
 
 import Utils.DBConn.getConn;
 
-import java.sql.SQLException;
+import java.io.IOException;
+import java.sql.Statement;
 
 public class textFileJDBC extends tF {
-    private static textFileJDBC tf=new textFileJDBC();
-    getConn conn=new getConn();
+    private getConn conn;
+    private Statement stmt;
+
+    public textFileJDBC(){
+        conn=new getConn();
+        stmt=conn.Stmt();
+    }
 
     @Override
-    public synchronized boolean WriteLine(String insert) {
+    public boolean WriteLine(String insert) {
         try {
-            conn.Stmt().execute(insert);
+            stmt.executeUpdate(insert);
             return true;
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
     }
 
     @Override
-    public void closeWriter() throws SQLException {
-        conn.Stmt().execute("commit;");
-        conn.Stmt().close();
+    public void closeWriter() throws Exception {
+        stmt.execute("commit;");
+        stmt.close();
         conn.Conn().close();
-    }
-
-    public synchronized boolean WriteCreateinJDBC(String create) {
-        try {
-            conn.Stmt().executeUpdate(create);
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    public static textFileJDBC getInstance() {
-        return tf;
     }
 }

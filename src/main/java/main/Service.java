@@ -12,7 +12,7 @@ import java.util.Scanner;
 public class Service {
     private static Scanner scanf = new Scanner(System.in);
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args){
         String filename = null, FileString;
         String[] createSQLs = null;
         Double linenumber = null;
@@ -56,22 +56,26 @@ public class Service {
                     break;
             }
         }
-        if (filename == null) {
-            System.out.println("输入create SQL");
-            FileString = scanf.nextLine();
-        } else
-            FileString = FileLoader.loadFile(new File(filename));
-        if (linenumber == null) {
-            System.out.println("输入create number");
-            linenumber = scanf.nextDouble();
-        }
-        createSQLs = FileString.replace("\r","").split(";");
 
+        try {
+            if (filename == null) {
+                System.out.println("输入create SQL");
+                FileString = scanf.nextLine();
+            } else
+                FileString = FileLoader.loadFile(new File(filename));
+            if (linenumber == null) {
+                System.out.println("输入create number");
+                linenumber = scanf.nextDouble();
+            }
+            createSQLs = FileString.replace("\r","").split(";");
 
-        for (int i = 0; i < createSQLs.length; i++) {
-            TableStructure ts = CreateTableStructure.makeStructure(createSQLs[i] + ';');
-            CreateInsertSQLProcess createInsertSQLProcess = new CreateInsertSQLProcess(ts,linenumber);
-            createInsertSQLProcess.createInsertSQLFile();//args -n linenumber
+            for (int i = 0; i < createSQLs.length; i++) {
+                TableStructure ts = CreateTableStructure.makeStructure(createSQLs[i] + ';');
+                CreateInsertSQLProcess createInsertSQLProcess = new CreateInsertSQLProcess(ts, linenumber);
+                createInsertSQLProcess.createInsertSQLFile();//args -n linenumber
+            }
+        }catch(Throwable t){
+            System.out.println(t.getMessage());
         }
     }
 }

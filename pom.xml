@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>zhzm</groupId>
     <artifactId>DBDF</artifactId>
-    <version>1.3.1</version>
+    <version>1.3.2</version>
 
     <build>
         <resources>
@@ -25,8 +25,8 @@
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
-
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>3.1.1</version>
                 <configuration>
@@ -39,12 +39,6 @@
                         </manifest>
                     </archive>
                 </configuration>
-                <executions>
-                    <execution>
-                        <id>make-assembly</id>
-                        <phase>package</phase>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
@@ -83,19 +77,14 @@
             <version>42.2.5</version>
         </dependency>
         <dependency>
-            <groupId>com.eurodyn.qlack2.util</groupId>
-            <artifactId>qlack2-util-drivers-ojdbc8</artifactId>
-            <version>2.3.13</version>
-        </dependency>
-        <dependency>
             <groupId>com.microsoft.sqlserver</groupId>
             <artifactId>mssql-jdbc</artifactId>
             <version>7.3.0.jre11-preview</version>
         </dependency>
         <dependency>
-            <groupId>org.ops4j.pax.jdbc</groupId>
-            <artifactId>pax-jdbc-db2</artifactId>
-            <version>1.3.5</version>
+            <groupId>com.ibm.db2</groupId>
+            <artifactId>jcc</artifactId>
+            <version>11.1.4.4</version>
         </dependency>
         <dependency>
             <groupId>org.xerial</groupId>
@@ -112,7 +101,23 @@
             <artifactId>mongo-java-driver</artifactId>
             <version>3.10.2</version>
         </dependency>
-<!--        <dependency>-->
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>mongodb-driver-reactivestreams</artifactId>
+            <version>1.11.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.199</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13-beta-1</version>
+            <scope>test</scope>
+        </dependency>
+        <!--        <dependency>-->
 <!--            <groupId>org.apache.hive</groupId>-->
 <!--            <artifactId>hive-jdbc</artifactId>-->
 <!--            <version>2.3.5</version>-->

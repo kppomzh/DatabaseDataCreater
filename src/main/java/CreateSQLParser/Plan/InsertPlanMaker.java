@@ -1,8 +1,12 @@
 package CreateSQLParser.Plan;
 
 import CreateSQLParser.Lex.Word;
+import Exception.TypeException.CompareException;
+import Exception.TypeException.MultiKeywordException;
+import Exception.TypeException.RegularinPlanException;
 import dataStructure.RegularClasses.Regular;
 import dataStructure.TableStructure;
+import Exception.BaseException;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -10,15 +14,15 @@ import java.util.List;
 
 public class InsertPlanMaker {
     int[] range;
-    double[] numberarea;
-    boolean rangeEnd , isDefault , isSingal,
+    String[] numberarea;
+    boolean rangeEnd , isDefault , isSingal,hasArray=false,
             setInline , isUnmake , isRegular,isStringType;
     int arraylocal, na;
     List<String> inlineObject;
     Regular regular;
     String listname , type , defaultDataType , defaultStr ;
 
-    public TableStructure makeStrusture(List<Word> words) throws Exception {
+    public TableStructure makeStrusture(List<Word> words) throws BaseException {
         TableStructure structure = new TableStructure();
 
         Iterator<Word> iwords = words.iterator();
@@ -32,11 +36,11 @@ public class InsertPlanMaker {
                     break;
                 case "not":
                     if (!iwords.next().getName().equals("null"))
-                        throw new Exception("多单词关键字：not null必须连用。");
+                        throw new MultiKeywordException(w,"多单词关键字：not null必须连用。");
                     break;
                 case "primary":
                     if (!iwords.next().getName().equals("key"))
-                        throw new Exception("多单词关键字：primary key必须连用。");
+                        throw new MultiKeywordException(w,"多单词关键字：primary key必须连用。");
                 case "unique":
                     isSingal = true;
                     break;
@@ -59,8 +63,11 @@ public class InsertPlanMaker {
                     defaultStr = w.getSubstance();
                     break;
                 case "numberange":
-                    numberarea[na] = Double.valueOf(w.getSubstance());
+                    numberarea[na] = w.getSubstance();
                     na++;
+                    if(na==2){
+                        hasArray=true;
+                    }
                     break;
                 case "unmake":
                     isUnmake = true;
@@ -71,7 +78,7 @@ public class InsertPlanMaker {
                         regular = RegularPlanMaker.makeRegular(w);
                     }
                     catch (StringIndexOutOfBoundsException e){
-                        throw new Exception("正则表达式有未结束的子表达式。");
+                        throw new RegularinPlanException(w,"正则表达式有未结束的子表达式。");
                     }
                     break;
                 case "defaultdatatype":
@@ -85,8 +92,11 @@ public class InsertPlanMaker {
                 case ";":
                 case ",":
                     if (!(rangeEnd || setInline)) {
-                        if (numberarea[0] > numberarea[1])
-                            throw new Exception("数值型设定范围必须由小到大。");
+                        if (hasArray&&Double.valueOf(numberarea[0]) > Double.valueOf(numberarea[1]))
+                            throw new CompareException(w,"数值型设定范围必须由小到大。");
+                        if(type.equals("int")&&range[1]!=0){
+                            throw new CompareException(w,"数值型设定范围必须由小到大。");
+                        }
                         structure.addlist(listname, type,
                                 defaultDataType, isSingal, isDefault,isStringType, defaultStr,
                                 range, numberarea, inlineObject, isUnmake, isRegular,
@@ -108,11 +118,11 @@ public class InsertPlanMaker {
     private void init(){
         range = new int[10];
         arraylocal = 0; na = 0;
-        numberarea = new double[2];
+        numberarea = new String[2];
         regular=null;
         inlineObject = new LinkedList<>();
         listname = null; type = "string"; defaultDataType = ""; defaultStr = null;
-        rangeEnd = false; isDefault = false; isSingal = false;
+        rangeEnd = false; isDefault = false; isSingal = false;hasArray=false;
         setInline = false; isUnmake = false; isRegular = false;isStringType=false;
     }
 }

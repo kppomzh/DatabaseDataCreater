@@ -9,13 +9,14 @@ public class DataType {
 
     private DataType() {
         type2typeCorresponding = new HashMap<>();
-        type2typeCorresponding.put("number", "number");
-        type2typeCorresponding.put("numeric", "number");
-        type2typeCorresponding.put("integer", "number");
-        type2typeCorresponding.put("int", "number");
-        type2typeCorresponding.put("float", "number");
-        type2typeCorresponding.put("double", "number");
-        type2typeCorresponding.put("decimal", "number");
+        type2typeCorresponding.put("integer", "int");
+        type2typeCorresponding.put("int", "int");
+
+        type2typeCorresponding.put("number", "decimal");
+        type2typeCorresponding.put("numeric", "decimal");
+        type2typeCorresponding.put("float", "decimal");
+        type2typeCorresponding.put("double", "decimal");
+        type2typeCorresponding.put("decimal", "decimal");
 
         type2typeCorresponding.put("varchar", "string");
         type2typeCorresponding.put("varchar2", "string");

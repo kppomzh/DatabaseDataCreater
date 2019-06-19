@@ -7,10 +7,10 @@
 也可以是逗号隔开的csv格式以便通过数据库外部表或load工具来利用。支持通过JDBC直接导入数据。支持生成json字符串。
 ## 最简化使用方法
 该方法可以不需要config.properties的配置文件。  
-1.下载https://github.com/kiloline/DatabaseDataCreater/releases/download/1.3.1/DBDF-1.3.1.zip  
+1.下载https://github.com/kiloline/DatabaseDataCreater/releases/download/1.3.2/DBDF-1.3.2.zip  
 2.解压  
 3.命令行定位到jar包所在位置  
-4.输入命令：java -jar DBDF-1.3.1-jar-with-dependencies.jar  
+4.输入命令：java -jar DBDF-1.3.2-jar-with-dependencies.jar  
 5.按照提示输入create命令和输出条数  
 6.在jar包所在的文件夹下就可以找到和表名一致的.sql文件，里面是相应条数的insert数据  
 7.复制粘贴运行三连  
@@ -36,9 +36,7 @@ Java:Java 11.0.3,Java 12.0.1
  ![image](https://github.com/kiloline/DatabaseDataCreater/blob/master/sample_test.png)  
 
 #### 性能变化
-与上一个release版本(1.2.0),比较每秒写入速度提高了约200%，刨除增加了两个核心的因素，也有100%的增加。  
-解决了随机数生成瓶颈，比上一个Pre-release版本增加了约47%的写入速度，而且还是在CPU频率下降了15%的情况下做到的。  
-同时根据在台式机上的测试，3200Mhz的内存和2133Mhz的内存几乎没有任何性能区别。  
+无  
 
 ## 程序参数详解
 -h:显示帮助。  
@@ -52,16 +50,18 @@ Java:Java 11.0.3,Java 12.0.1
 -L:允许多联输出数据，例如一条insert内填充多行数据，默认一次生成10000行，生成行数暂时只能通过配置文件修改，该方法对Json、csv等方式无效。  
 
 ## 支持的SQL数据类型
-1.数值型  
-number  
-numeric  
+1.整形数值型  
 integer  
 int  
+
+2.浮点数值型  
+number  
+numeric  
 float  
 double  
 decimal  
 
-2.字符型  
+3.字符型  
 varchar  
 varchar2  
 char  
@@ -70,11 +70,11 @@ nvarchar2
 string  
 text  
 
-3.日期型  
+4.日期型  
 date  
 timestamp  
 
-4.布尔型  
+5.布尔型  
 boolean  
 bool
 
@@ -169,11 +169,9 @@ Presto
 ## 注意事项
 1.关于数据库连接选项的设置这里暂时不提供，请用配置文件实现。  
 2.关于写文件引擎选项的设置这里暂时不提供，请用配置文件实现。  
-3.如果通过JDBC方式直接写入数据库的话，由于JDBC本身效率不佳，并且为了保证数据库一致性，并不会开启异步写；也就是-a参数是无效的。  
+3.目前numberarea功能仅支持定义整数形式，请不要随意加上小数点，会导致错误。  
 4.目前文件路径不能带空格，因为暂时没加对于单双引号的参数识别。  
 5.如果采用异步写的方式，primary key/unique约束在多个文件之间失效。如果建立基于全局的约束会导致性能下降。  
 6.过大的表尽量不要使用primary key/unique约束，会导致异常的内存占用和性能下降。  
 7.本工具不支持过分复杂的create，带有索引或者约束的SQL请将这些限制直接的写在对应字段后方，不要写在create括号的后面，否则会被掠过。  
 8.目前不支持注释，包括--和/* */  
-9.当前的多线程策略已经相对完善，在设置异步写入线程数的时候请尽量设置成CPU逻辑核心数量减一的倍数；尤其是Windows系统至少需要一
-个核心作为系统调节的核心，占用所有的逻辑核心并不见得就会带来最大的吞吐量。  

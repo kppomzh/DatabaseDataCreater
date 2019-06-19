@@ -1,6 +1,7 @@
 package test;
 
 import Utils.privateRandom;
+import org.junit.Test;
 
 import java.util.*;
 
@@ -11,7 +12,7 @@ public class DoubleMakerTest {
         System.out.println(d);
         System.out.println(d.isInfinite());
         System.out.println(Double2String(d));
-        System.out.println((privateRandom.RandomGaussian()%1));
+//        System.out.println((privateRandom.RandomGaussian()%1));
     }
 
     private static String Double2String(Double d) {
@@ -30,5 +31,10 @@ public class DoubleMakerTest {
         }
 
         return res.toString();
+    }
+
+    @Test
+    public void compile(){
+        System.out.println(Math.pow(10,1000)>Math.pow(10,1000)-1);
     }
 }

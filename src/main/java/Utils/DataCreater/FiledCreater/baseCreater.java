@@ -45,6 +45,7 @@ public abstract class baseCreater {
             try {
                 packFiled(tableStructure, Return);
             } catch (Exception e) {
+                System.out.println(Return.toString());
                 throw new RuntimeException(e.getMessage());
             }
         }
@@ -57,7 +58,8 @@ public abstract class baseCreater {
 
     protected String strSpecification(ListStructure ls, String appendStr) {
         switch (ls.getListType()) {
-            case "number":
+            case "decimal":
+            case "int":
                 return StringSpecificationOutput.specNumber(appendStr, ls.getRange()[0], ls.getRange()[1]);
             case "bool":
                 return StringSpecificationOutput.specBool(appendStr);
@@ -86,7 +88,7 @@ public abstract class baseCreater {
         return true;
     }
 
-    protected String makeFiled(ListStructure ls) throws Exception {
+    protected String makeFiled(ListStructure ls) throws ClassNotFoundException {
         String appendStr = null;
         if (ls.isInline()) {//inline覆盖掉所有其他设置
             int num = privateRandom.RandomInteger(0, ls.getInlinelength());
@@ -95,15 +97,18 @@ public abstract class baseCreater {
             appendStr = ls.getDefaultStr();//当存在类似唯一约束的情况时将屏蔽默认值
         } else if (ls.isStringType()) {
             if (!ls.getListType().equals("string"))
-                throw new Exception("非字符串类型不能使用stringtype关键字");
+                throw new ClassNotFoundException("非字符串类型不能使用stringtype关键字");
             appendStr = radc.returnAdvancedString(ls.getDefaultType(), ls.getRange()[0]);
         } else if (ls.isRegular()) {
             if (!ls.getListType().equals("string"))
-                throw new Exception("非字符串类型不能使用regulartype关键字");
+                throw new ClassNotFoundException("非字符串类型不能使用regulartype关键字");
             appendStr = ls.getRegularStr();
         }else if (ls.getDefaultType().equals("")) {
             switch (ls.getListType()) {
-                case "number":
+                case "int":
+                    appendStr=rbdc.getNumber(ls.getRange()[0], 0, ls.getNumberarea());
+                    break;
+                case "decimal":
                     appendStr = rbdc.getNumber(ls.getRange()[0], ls.getRange()[1], ls.getNumberarea());
                     break;
                 case "date":

@@ -5,8 +5,7 @@ import SavingTypeString.DBjdbcDriverString;
 import Utils.env_properties;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.Driver;
 import java.sql.Statement;
 
 public class getConn {
@@ -23,15 +22,17 @@ public class getConn {
         }
     }
 
-    private static Connection getConn() throws Exception {
-        Class.forName(DBjdbcDriverString.getJdbcDriverString(env_properties.getEnvironment("DBsoftware").toLowerCase()));
+    private Connection getConn() throws Exception {
+        System.setProperty("jdbc.driver",
+                DBjdbcDriverString.getJdbcDriverString(env_properties.getEnvironment("DBsoftware").toLowerCase()));
         String url=DBJdbcLinkString.getJdbcLinkString(env_properties.getEnvironment("DBsoftware").toLowerCase());
-        return DriverManager.getConnection(url.
-                    replace("{IP}",env_properties.getEnvironment("IP")).
-                    replace("{port}",env_properties.getEnvironment("port")).
-                    replace("{dbname}",env_properties.getEnvironment("database")),
-                env_properties.getEnvironment("user"),
-                env_properties.getEnvironment("password"));
+
+        Driver driver=DBjdbcDriverString.getJdbcDriver(env_properties.getEnvironment("DBsoftware").toLowerCase());
+        return driver.connect(url.
+                replace("{IP}",env_properties.getEnvironment("IP")).
+                replace("{port}",env_properties.getEnvironment("port")).
+                replace("{dbname}",env_properties.getEnvironment("database")),
+                env_properties.getJDBCEnv());
     }
 
     public Connection Conn()
@@ -44,7 +45,7 @@ public class getConn {
             stmt=conn.createStatement();
             if(env_properties.getEnvironment("DBsoftware").toLowerCase().equals("khan"))
                 stmt.executeUpdate("set dialect='oracle'");
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
