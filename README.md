@@ -153,6 +153,8 @@ TOTAL_THREADS:总线程数量，当asynchronous为true的时候整个任务将�
 defaultProportion:取值区间0~1，default值在整个字段中占用的默认比例，如果有使用default值的字段，加大该参数会适当的提高程序的性能，
 但是一定要按照实际的业务需求制定该参数的允许上限。  
 WriterEngine:写文件使用的引擎，目前有default和apache两种，性能上差不多，不同条件下略有差异。  
+longerInsert:长insert，将多条数据整合在一个insert中。针对JDBC方式会加快插入速度。  
+longerInsertNumber:长insert一次生成的条数，默认是10000。  
 
 ## 已经支持通过JDBC直接发送数据的数据库
 Oracle  
