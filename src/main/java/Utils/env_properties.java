@@ -82,7 +82,7 @@ public class env_properties {
     }
 
     public static String getEnvironment(String envstring) {
-        return init.env.getProperty(envstring);//.strip();
+        return init.env.getProperty(envstring).strip();
     }
 
     public static void setEnvironment(String envName, String envstring) {
