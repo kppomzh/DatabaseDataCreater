@@ -1,6 +1,5 @@
 package Utils;
 
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.locks.Lock;
@@ -60,11 +59,18 @@ public class privateRandom {
         return Return + start;
     }
 
+    /**
+     * 获取指定区间内随机数值，取值范围是[start,end]
+     * @param start 随机区间起始值
+     * @param end 随机区间终止值
+     * @return 大整数
+     */
     public static BigInteger RandomBInteger(BigInteger start, BigInteger end){
-        BigInteger sub=end.subtract(start).abs();
-
         if (start.equals(end))
             return start;
+
+        BigInteger sub=start.subtract(end).add(BigInteger.ONE);
+
         BigInteger res=new BigInteger(sub.bitLength()+1,rm);
 
         if(res.compareTo(sub)==1){
@@ -74,6 +80,9 @@ public class privateRandom {
         return res.add(start);
     }
 
+    /**
+     * 定期更换随机数种子
+     */
     private static void counter(){
         if(num>20000000&&lock.tryLock()){
             num=0;

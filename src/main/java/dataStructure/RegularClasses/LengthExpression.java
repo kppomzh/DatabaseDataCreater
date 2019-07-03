@@ -1,6 +1,5 @@
 package dataStructure.RegularClasses;
 
-import CreateSQLParser.Lex.Word;
 import Utils.privateRandom;
 
 public class LengthExpression implements Regular {

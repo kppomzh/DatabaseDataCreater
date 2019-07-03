@@ -8,6 +8,7 @@ import dataStructure.RegularClasses.Regular;
 import dataStructure.TableStructure;
 import Exception.BaseException;
 
+import java.math.BigDecimal;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -92,10 +93,10 @@ public class InsertPlanMaker {
                 case ";":
                 case ",":
                     if (!(rangeEnd || setInline)) {
-                        if (hasArray&&Double.valueOf(numberarea[0]) > Double.valueOf(numberarea[1]))
+                        if (hasArray&&new BigDecimal(numberarea[0]).compareTo(new BigDecimal(numberarea[1]))==1)
                             throw new CompareException(w,"数值型设定范围必须由小到大。");
                         if(type.equals("int")&&range[1]!=0){
-                            throw new CompareException(w,"数值型设定范围必须由小到大。");
+                            throw new CompareException(w,"整型数不能有小数范围的定义。");
                         }
                         structure.addlist(listname, type,
                                 defaultDataType, isSingal, isDefault,isStringType, defaultStr,

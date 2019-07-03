@@ -2,10 +2,7 @@ package Utils.insert;
 
 import Utils.CircularLinkedList;
 import Utils.DataCreater.InsertSQLCreater;
-import Utils.DataWriter.ApacheFileWriter;
-import Utils.DataWriter.tF;
-import Utils.DataWriter.textFileJDBC;
-import Utils.DataWriter.textFileWriter;
+import Utils.DataWriter.*;
 import Utils.env_properties;
 import dataStructure.TableStructure;
 
@@ -67,10 +64,13 @@ public class CreateInsertSQLProcess {
         String filename = env_properties.getEnvironment("baseFileDir") + tablename + "." + env_properties.getEnvironment("toDB");
         if (env_properties.getEnvironment("toDB").equals("jdbc")) {
             return new textFileJDBC();
-        } else if (env_properties.getEnvironment("WriterEngine").equals("default")) {
-            return new textFileWriter(filename);
-        } else {
-            return new ApacheFileWriter(filename, charset);
+        } else switch(env_properties.getEnvironment("WriterEngine")){
+            case "apache":
+                return new ApacheFileWriter(filename, charset);
+            case "sysout":
+                return new SystemoutWriter();
+            default :
+                return new textFileWriter(filename);
         }
     }
 }

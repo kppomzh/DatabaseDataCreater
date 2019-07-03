@@ -7,31 +7,22 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 public class RandomBasicDataCreater {
-    private static char[] c = {
-            'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',//25
+    private static char[] c = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',//25
             'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',//51
             '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',//52-61
             '_',//62
             '(', ')', '<', '>', '?', '~', '!', '^', '%', '#', '+', '-', '=', '@', '$'//63-77
     };
-    private String quickStr,
-            quickAllStr,
-            quickNumStr, //数字字符串
+    private String quickStr, quickAllStr, quickNumStr, //数字字符串
             quickUppStr, //大写字符串
             quickLowStr, //小写字符串
             quickMarkStr; //符号字符串
 
-    private int rangeLength,
-            strusages = 0,
-            numusages = 0,
-            uppusages = 0,
-            lowusages = 0,
-            markusages = 0;
+    private int rangeLength, strusages = 0, numusages = 0, uppusages = 0, lowusages = 0, markusages = 0;
 
     public RandomBasicDataCreater(int maxStringLength) {
         rangeLength = Double.valueOf(Math.sqrt(maxStringLength)).intValue() * 2;
-        if(rangeLength<100)
-            rangeLength=100;
+        if (rangeLength < 100) rangeLength = 100;
     }
 
     String reinitStr(int sl, int min, int max) {
@@ -100,81 +91,112 @@ public class RandomBasicDataCreater {
         sb.append(':');
         sb.append(less10give0(second));
         sb.append(second);
-        if (outuse)
-            switch (env_properties.getEnvironment("toDB")) {
-                case "sql":
-                case "jdbc":
-                    sb.insert(0, "to_date(\'");
-                    sb.append("\',\'yyyymmdd hh:mi:ss\')");
-                    break;
-                case "csv":
-                    sb.insert(4, '-');
-                    sb.insert(7, '-');
-                    break;
-                case "json":
-                    sb.insert(4, '-');
-                    sb.insert(7, '-');
-                    sb.insert(0, '"');
-                    sb.append('"');
-                    break;
-                default:
-                    break;
-            }
+        if (outuse) switch (env_properties.getEnvironment("toDB")) {
+            case "sql":
+            case "jdbc":
+                sb.insert(0, "to_date(\'");
+                sb.append("\',\'yyyymmdd hh:mi:ss\')");
+                break;
+            case "csv":
+                sb.insert(4, '-');
+                sb.insert(7, '-');
+                break;
+            case "json":
+                sb.insert(4, '-');
+                sb.insert(7, '-');
+                sb.insert(0, '"');
+                sb.append('"');
+                break;
+            default:
+                break;
+        }
 
         return sb.toString();
     }
 
     public String getNumber(int intRange, int decRange, String[] Numberarea) {
-        BigInteger area1=Numberarea[0]==null?BigInteger.ZERO:new BigInteger(Numberarea[0]),
-                area2=Numberarea[1]==null?BigInteger.ZERO:new BigInteger(Numberarea[1]);
+        String[] numberarea0 = Numberarea[0].split("\\."), numberarea1 = Numberarea[1].split("\\.");
 
-        boolean canbeNegative = (false & env_properties.getEnvironment("canbeNegative").equals("true")
-                & privateRandom.RandomBool())
-                | area2.compareTo(BigInteger.ZERO)==-1;
-        if (intRange <= 0)
-            intRange = privateRandom.RandomInteger(1, 10);
-        BigInteger intS, intMin=BigInteger.ZERO,
-                intMax = BigDecimal.valueOf(Math.pow(10, intRange) - 1).toBigInteger(),
-                decMax = decRange==0?BigInteger.ZERO:BigDecimal.valueOf(Math.pow(10, decRange) - 1).toBigInteger();
+        BigInteger area1 = Numberarea[0] == null ? BigInteger.ZERO : new BigInteger(numberarea0[0]), area2 = Numberarea[1] == null ? BigInteger.ZERO : new BigInteger(numberarea1[0]);
+
+        boolean canbeNegative = (false & env_properties.getEnvironment("canbeNegative").equals("true") & privateRandom.RandomBool()) | area2.compareTo(BigInteger.ZERO) == -1;
+        if (intRange <= 0) intRange = privateRandom.RandomInteger(1, 10);
+        BigInteger intS, intMin = BigInteger.ZERO,
+                intMax = BigDecimal.valueOf(Math.pow(10, intRange)).toBigInteger().subtract(BigInteger.ONE),
+                decMax = decRange == 0 ? BigInteger.ZERO : BigDecimal.valueOf(Math.pow(10, decRange)).toBigInteger().subtract(BigInteger.ONE);
         StringBuilder sb = new StringBuilder();
 
-        if ((area1.compareTo(BigInteger.ZERO)==-1 & privateRandom.RandomBool()) || canbeNegative) {
-            intMax = (area1.negate().compareTo(intMax) ==-1  &
-                    (area1.compareTo(BigInteger.ZERO) != 0 | area2.compareTo(BigInteger.ZERO) != 0) ? area1 : intMax);
+        if ((area1.compareTo(BigInteger.ZERO) == -1 & privateRandom.RandomBool()) || canbeNegative) {
+            intMax = (area1.negate().compareTo(intMax) == -1 & (area1.compareTo(BigInteger.ZERO) != 0 | area2.compareTo(BigInteger.ZERO) != 0) ? area1 : intMax);
             sb.append('-');
         } else
-            intMax = (area2.compareTo(intMax)==-1  &
-                    (area1.compareTo(BigInteger.ZERO) != 0 | area2.compareTo(BigInteger.ZERO) != 0) ? area2 : intMax);
+            intMax = (area2.compareTo(intMax) == -1 & (area1.compareTo(BigInteger.ZERO) != 0 | area2.compareTo(BigInteger.ZERO) != 0) ? area2 : intMax);
 
-        if (area2.compareTo(BigInteger.ZERO) ==-1)
-            intMin = area2.negate();
-        if (area1.compareTo(BigInteger.ZERO)==1)
-            intMin = area1;
+        if (area2.compareTo(BigInteger.ZERO) == -1) intMin = area2.negate();
+        if (area1.compareTo(BigInteger.ZERO) == 1) intMin = area1;
 
-        if (decRange > 1)
-            intMax = area2.subtract(BigInteger.ONE);
         intS = privateRandom.RandomBInteger(intMin, intMax);
 
-        sb.append(intS);
         if (decRange > 0) {
+            BigInteger decS;
+            boolean inlengthEquals=true;
+
+            decS = privateRandom.RandomBInteger(BigInteger.ZERO, decMax);
+            String decString=decS.toString();
+            if (intS.compareTo(intMin) == 0) {
+                //在intMin的时候，只有decString更长的情况下才更可能落在区间范围里
+                inlengthEquals=numberarea0[1].length()>decString.length();
+                if(numberarea0.length > 1){
+                    for (int i = 0; i < Math.min(decString.length(), numberarea0[1].length()); i++) {
+                        if(decString.charAt(i)<numberarea0[1].charAt(i)){
+                            inlengthEquals=true;
+                            break;
+                        }
+                        else if(decString.charAt(i)>numberarea0[1].charAt(i)){
+                            break;
+                        }
+                    }
+                }
+
+                if(inlengthEquals){
+                    intS.add(BigInteger.ONE);
+                }
+            } else if (intS.compareTo(intMax) == 0) {
+                //在intMax的时候，只有decString更短的情况下才更可能落在区间范围里
+                inlengthEquals=numberarea1[1].length()<decString.length();
+                if(numberarea1.length > 1){
+                    for (int i = 0; i < Math.min(decString.length(), numberarea1[1].length()); i++) {
+                        if(decString.charAt(i)>numberarea1[1].charAt(i)){
+                            inlengthEquals=true;
+                            break;
+                        }
+                        else if(decString.charAt(i)<numberarea1[1].charAt(i)){
+                            break;
+                        }
+                    }
+                }
+
+                if(inlengthEquals){
+                    intS.subtract(BigInteger.ONE);
+                }
+            }
+            sb.append(intS);
             sb.append('.');
-            BigInteger decS = privateRandom.RandomBInteger(BigInteger.ZERO, decMax);
             sb.append(decS);
+        } else {
+            sb.append(intS);
         }
 
         return sb.toString();
     }
 
     public String getBool() {
-        if (privateRandom.RandomBool())
-            return "true";
-        else
-            return "false";
+        if (privateRandom.RandomBool()) return "true";
+        else return "false";
     }
 
     public String getStr(int range) {
-        if (strusages == 0)
-            reinitAllStr();
+        if (strusages == 0) reinitAllStr();
         quickStr = quickAllStr;
         strusages--;
         return basegetStr(range);
@@ -182,8 +204,7 @@ public class RandomBasicDataCreater {
 
     //定长数值函数
     public String getFixNumber(int intRange, int decRange, boolean canbeNegative) {
-        if (numusages == 0)
-            reinitNumStr();
+        if (numusages == 0) reinitNumStr();
         quickStr = quickNumStr;
         numusages--;
         StringBuilder sb = new StringBuilder();
@@ -213,7 +234,7 @@ public class RandomBasicDataCreater {
         for (int loop = 0; loop < piecewise; loop++) {
             int sublength = privateRandom.RandomInteger(1, rangeLength);
             int substrart = privateRandom.RandomInteger(0, rangeLength - sublength - 1);
-            sb.append(quickStr.substring(substrart,substrart + sublength));
+            sb.append(quickStr.substring(substrart, substrart + sublength));
         }
 
         if (sb.length() < range) {
@@ -243,22 +264,22 @@ public class RandomBasicDataCreater {
                 max = 62;
                 break;
             case 'W':
-                min=63;
-                max=77;
+                min = 63;
+                max = 77;
                 break;
             case 's'://空格
-                min=32;
-                max=32;
+                min = 32;
+                max = 32;
                 break;
             case 'S':
-                min=0;
-                max=77;
+                min = 0;
+                max = 77;
                 break;
             case 'n'://正整数
-                return String.valueOf(privateRandom.RandomInteger(0,100000));
+                return String.valueOf(privateRandom.RandomInteger(0, 100000));
             case 'z':
-                min=0x4e00;
-                max=0x9fa5;
+                min = 0x4e00;
+                max = 0x9fa5;
                 break;
         }
 
@@ -269,7 +290,8 @@ public class RandomBasicDataCreater {
         char[] str = new char[range];
 
         for (int loop = start; loop < end; loop++) {
-            str[loop] = c[privateRandom.RandomInteger(min, max)];
+            int local = privateRandom.RandomInteger(min, max);
+            str[loop] = c[local];
         }
         return new String(str);
     }
@@ -278,19 +300,15 @@ public class RandomBasicDataCreater {
         if (range < 1) {
             range = privateRandom.RandomInteger(1, 10);
         } else if (env_properties.getEnvironment("Optimal").equals("true")) {
-            if (range < 32 && range > 8)
-                range = range - privateRandom.RandomInteger(1, 8);
-            else if (range >= 32)
-                range = privateRandom.RandomInteger(1, range >> 3);
+            if (range < 32 && range > 8) range = range - privateRandom.RandomInteger(1, 8);
+            else if (range >= 32) range = privateRandom.RandomInteger(1, range >> 3);
         }
         return range;
     }
 
     //日期补0
     private static char[] less10give0(int i) {
-        if (i < 10)
-            return new char[]{'0'};
-        else
-            return new char[]{};
+        if (i < 10) return new char[]{'0'};
+        else return new char[]{};
     }
 }

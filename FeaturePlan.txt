@@ -1,0 +1,2 @@
+1.探索objectpool
+2.改造numberarea使其支持浮点数范围

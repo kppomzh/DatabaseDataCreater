@@ -3,6 +3,7 @@ package test;
 import Utils.DBConn.getConn;
 import main.Service;
 import org.junit.Test;
+import Utils.env_properties;
 
 import java.sql.SQLException;
 
@@ -16,12 +17,14 @@ public class alltest {
         for(int loop=0;loop<ci;loop++) {
             long time = System.currentTimeMillis();
 
-            Service.main(new String[]{"-n", "5000", "-f", "zhaohuang.sql"});
+            Service.main(new String[]{"-n", "5000000", "-f", "zhaohuang.sql"});
             all=all+(System.currentTimeMillis()-time)/1000.0/60.0;
             System.out.println("loop"+loop+":"+(System.currentTimeMillis()-time));
 
-            getConn conn=new getConn();
-            conn.Stmt().executeUpdate("truncate table zhzm_dbdf_test");
+            if(env_properties.getEnvironment("toDB").equals("jdbc")) {
+                getConn conn=new getConn();
+                conn.Stmt().executeUpdate("truncate table zhzm_dbdf_test");
+            }
         }
         System.out.println("avg:"+all/ci+" min");
     }
