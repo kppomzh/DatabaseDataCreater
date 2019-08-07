@@ -1,5 +1,12 @@
 package main;
 
+import Utils.env_properties;
+import org.apache.maven.model.Model;
+import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
+
+import java.io.File;
+import java.io.FileReader;
+
 public class help {
     static String help="本程序的作用是根据给定的建立数据库表的SQL（create语句），自动的生成给定行数的数据，\n" +
             "这些数据可以以insert语句的方式产生，也可以是逗号隔开的格式通过数据库外部表或load工具来利用。支持通过JDBC直接导入数据。支持json。\n" +
@@ -15,6 +22,7 @@ public class help {
             "-f:指定输入的SQL文件目录，如果不指定的话将会询问对什么样的create创建数据\n" +
             "-n:指定输出的数据条数，如果不指定的话将会询问具体的输出条数\n" +
             "-h:显示帮助\n" +
+            "-v:显示当前工具版本\n" +
             "-o:指定保存输出数据的文件夹位置\n" +
             "-t:指定线程数量，请根据CPU核心数量来确定\n" +
             "-i:指定生成数据的载入方式，有\"jdbc\"、\"sql\"、\"csv\"、\"json\"四种方式。关于数据库连接选项的设置这里暂时不提供，请用配置文件实现。\n" +
@@ -23,6 +31,11 @@ public class help {
             "-L:允许多联输出数据，例如一条insert内填充多行数据，默认一次生成1000行，该方法对Json、csv等方式无效。\n" +
             "另外，如果通过JDBC方式直接写入数据库的话，由于JDBC本身效率不佳，并且为了保证数据库一致性，并不会开启异步写；\n" +
             "也就是-a参数是无效的。";
+
+
+    public static void printVersion(){
+        System.out.println(env_properties.getEnvironment("version"));
+    }
     public static void printHelpMessage()
     {
         System.out.println(help);

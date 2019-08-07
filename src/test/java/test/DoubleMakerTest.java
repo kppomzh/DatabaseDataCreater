@@ -33,8 +33,4 @@ public class DoubleMakerTest {
         return res.toString();
     }
 
-    @Test
-    public void compile(){
-        System.out.println(Math.pow(10,1000)>Math.pow(10,1000)-1);
-    }
 }

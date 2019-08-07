@@ -1,6 +1,7 @@
 package test;
 
 import Utils.privateRandom;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -31,6 +32,7 @@ public class RandomTest {
         return res;
     }
 
+//    @Ignore
     @Test
     public void getRandomTest(){
         RandomTest rt=new RandomTest();

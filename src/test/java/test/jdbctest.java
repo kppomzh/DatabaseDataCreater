@@ -4,12 +4,14 @@ import SavingTypeString.DBJdbcLinkString;
 import SavingTypeString.DBjdbcDriverString;
 import Utils.DBConn.getConn;
 import Utils.env_properties;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.sql.*;
 
 public class jdbctest {
     @Test
+//    @Ignore
     public void conntodbtest(String insert) throws SQLException {
         getConn conn=new getConn();
 
