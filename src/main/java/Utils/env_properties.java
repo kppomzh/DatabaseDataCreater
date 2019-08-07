@@ -1,10 +1,16 @@
 package Utils;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import org.apache.maven.model.Model;
+import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
+
+import java.io.*;
+import java.net.URL;
 import java.util.Properties;
+import java.util.Scanner;
+import java.util.jar.JarFile;
+import java.util.jar.JarInputStream;
+import java.util.jar.Manifest;
+import java.util.zip.ZipEntry;
 
 public class env_properties {
     protected static final env_properties init = new env_properties();
@@ -14,36 +20,53 @@ public class env_properties {
     }
 
     private env_properties() {
-        boolean load = false;
         env = new Properties();
         FileInputStream FIS;
-        String path = null;
+        InputStream pom;
+        String path;
         try {
             env.setProperty("nCPU", String.valueOf(Runtime.getRuntime().availableProcessors()));
 
-            if (this.getClass().getResource(this.getClass().getSimpleName() + ".class")
-                    .toString().startsWith("file:")) {
+            String classresource=this.getClass().getResource(this.getClass().getSimpleName() + ".class").toString();
+            if (classresource.startsWith("file:")) {
+                MavenXpp3Reader reader = new MavenXpp3Reader();
+                String myPom = System.getProperty("user.dir") + File.separator + "pom.xml";
+                try {
+                    Model model = reader.read(new FileReader(myPom));
+                    env.put("version", model.getVersion());
+                } catch (Exception e) {
+
+                }
+
                 FIS = new FileInputStream(new File("config.properties"));
                 env.load(FIS);
-            } else if (this.getClass().getResource(this.getClass().getSimpleName() + ".class")
-                    .toString().startsWith("jar:")) {
+            } else if (classresource.startsWith("jar:")) {
                 path = System.getProperty("java.class.path");
                 int firstIndex = path.lastIndexOf(System.getProperty("path.separator")) + 1;
                 int lastIndex = path.lastIndexOf(File.separator) + 1;
-                path = path.substring(firstIndex, lastIndex) + "config.properties";
+
+                String jarPath=path.substring(firstIndex);
+
+                path = jarPath.substring(0, lastIndex) + "config.properties";
                 FIS = new FileInputStream(path);
                 env.load(FIS);
+                try {
+                    JarFile jar=new JarFile(jarPath);
+                    ZipEntry je=jar.getEntry("META-INF/maven/zhzm/DBDF/pom.properties");
+                    pom =jar.getInputStream(je);
+                    env.load(pom);
+                    pom.close();
+                } catch (IOException e) {
+                    env.put("version","");
+                }
             } else {
                 throw new IOException();
             }
             FIS.close();
         } catch (FileNotFoundException ex) {
             System.out.println("环境配置文件不存在！");
-            System.out.println(path);
-            load = true;
         } catch (IOException ex) {
             System.out.println("环境配置文件无法读取！");
-            load = true;
         } finally //可以通过finally加载默认参数，防止程序崩溃
         {
             loadDefaultProp();
@@ -89,7 +112,7 @@ public class env_properties {
         init.env.setProperty(envName, envstring);
     }
 
-    public static Properties getJDBCEnv(){
+    public static Properties getJDBCEnv() {
         return init.env;
     }
 }

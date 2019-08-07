@@ -115,7 +115,7 @@ public class RandomBasicDataCreater {
     }
 
     public String getNumber(int intRange, int decRange, String[] Numberarea) {
-        String[] numberarea0 = Numberarea[0].split("\\."), numberarea1 = Numberarea[1].split("\\.");
+        String[] numberarea0 = Numberarea[0]==null?null:Numberarea[0].split("\\."), numberarea1 = Numberarea[1]==null?null: Numberarea[1].split("\\.");
 
         BigInteger area1 = Numberarea[0] == null ? BigInteger.ZERO : new BigInteger(numberarea0[0]), area2 = Numberarea[1] == null ? BigInteger.ZERO : new BigInteger(numberarea1[0]);
 

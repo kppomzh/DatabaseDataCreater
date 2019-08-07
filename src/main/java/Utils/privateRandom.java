@@ -73,7 +73,7 @@ public class privateRandom {
 
         BigInteger res=new BigInteger(sub.bitLength()+1,rm);
 
-        if(res.compareTo(sub)==1){
+        if(res.compareTo(sub)==1&&sub.compareTo(BigInteger.ZERO)==1){
             res=res.mod(sub);
         }
 

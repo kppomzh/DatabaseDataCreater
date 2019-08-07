@@ -7,10 +7,10 @@
 也可以是逗号隔开的csv格式以便通过数据库外部表或load工具来利用。支持通过JDBC直接导入数据。支持生成json字符串。
 ## 最简化使用方法
 该方法可以不需要config.properties的配置文件。  
-1.下载https://github.com/kiloline/DatabaseDataCreater/releases/download/1.3.2/DBDF-1.3.2.zip  
+1.下载https://github.com/kiloline/DatabaseDataCreater/releases/download/1.3.3/DBDF-1.3.3.zip  
 2.解压  
 3.命令行定位到jar包所在位置  
-4.输入命令：java -jar DBDF-1.3.2-jar-with-dependencies.jar  
+4.输入命令：java -jar DBDF-1.3.3.jar  
 5.按照提示输入create命令和输出条数  
 6.在jar包所在的文件夹下就可以找到和表名一致的.sql文件，里面是相应条数的insert数据  
 7.复制粘贴运行三连  
@@ -40,6 +40,7 @@ Java:Java 11.0.3,Java 12.0.1
 
 ## 程序参数详解
 -h:显示帮助。  
+-v:显示当前工具版本。   
 -f:指定输入的SQL文件位置，如果不指定的话将会询问对什么样的create创建数据。  
 -n:指定输出的数据条数，如果不指定的话将会询问具体的输出条数。  
 -o:指定保存输出数据的文件夹位置。  

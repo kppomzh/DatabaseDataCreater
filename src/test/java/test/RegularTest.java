@@ -4,6 +4,7 @@ import CreateSQLParser.Lex.Word;
 import CreateSQLParser.Plan.RegularPlanMaker;
 import dataStructure.RegularClasses.Regular;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class RegularTest {
@@ -17,6 +18,7 @@ public class RegularTest {
      */
     String[] toRegularTrue = {""};
 
+//    @Ignore
     @Test
     public void LengthDefineErrorTest() {
         Word regular = new Word("isRegular", toRegularError[0], false, 1, 0);

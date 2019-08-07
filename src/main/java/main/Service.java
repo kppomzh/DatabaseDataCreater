@@ -54,6 +54,10 @@ public class Service {
                 case "-L":
                     env_properties.setEnvironment("longerInsert", "true");
                     break;
+                case "-v":
+//                case "-version":
+                    help.printVersion();
+                    System.exit(0);
             }
         }
 
