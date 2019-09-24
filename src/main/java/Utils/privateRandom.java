@@ -1,5 +1,7 @@
 package Utils;
 
+import jdk.jfr.Unsigned;
+
 import java.math.BigInteger;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.locks.Lock;
@@ -50,12 +52,10 @@ public class privateRandom {
     public static int RandomInteger(int start,int end){
         counter();
 
-        if (start == end)
+        if (end<=start)
             return start;
-        int Return = Math.abs(rm.nextInt()<<4);
-        if (Return > end - start) {
-            Return = Return % (end - start);
-        }
+        int Return = rm.nextInt(end - start);
+
         return Return + start;
     }
 

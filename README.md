@@ -1,42 +1,44 @@
 # DatabaseDataCreater：一个用于从create table的SQL当中自动生成自定义的insert数据的工具
 ### 今后将不再提供Java8的测试和支持，全面转移到Java11直到下一个Java LTS为止
-#### 由于看到了某笔记本的好价，于是将原来的机器出手换了个新的，但是实际测试时可以通过限制功耗，CPU单核性能不会提高太多
 #### 由于hive的驱动严重依赖旧Java版本中的tools.jar，所以暂时从支持列表中除名。
 ### 简介
 本程序的作用是根据给定的建立数据库表的SQL（create语句），自动的生成给定行数的数据，这些数据可以以insert语句的方式产生，
 也可以是逗号隔开的csv格式以便通过数据库外部表或load工具来利用。支持通过JDBC直接导入数据。支持生成json字符串。
 ## 最简化使用方法
 该方法可以不需要config.properties的配置文件。  
-1.下载https://github.com/kiloline/DatabaseDataCreater/releases/download/1.3.3/DBDF-1.3.3.zip  
+1.下载https://github.com/kiloline/DatabaseDataCreater/releases/download/1.3.4/DBDF-1.3.4.zip  
 2.解压  
 3.命令行定位到jar包所在位置  
-4.输入命令：java -jar DBDF-1.3.3.jar  
+4.输入命令：java -jar DBDF-1.3.4.jar  
 5.按照提示输入create命令和输出条数  
 6.在jar包所在的文件夹下就可以找到和表名一致的.sql文件，里面是相应条数的insert数据  
 7.复制粘贴运行三连  
 
 ## 当前版本性能测试
 #### 硬件环境
-CPU:Intel i7-9750H ~=3.33Ghz(6线程运行时)  
+CPU:Intel i7-9750H ~=3.30Ghz(12线程运行时)  
 Memory:16G DDR4 2666Mhz  
-SSD:WDS480G2G0B 西数绿盘 480G SATA SSD
+SSD:建兴 CV8-8E512 500G SATA SSD
 
 #### 软件环境以及测试条件
 OS:Windows10 1903  
-Java:Java 11.0.3,Java 12.0.1  
+Java:Java 11.0.4+10,Java 13+33  
 测试条件:  
-1.6线程  
+1.12线程  
 2.异步写入  
 3.默认值比例0.9  
 4.禁止SQL优化  
 5.写入方式为sql  
-6.生成条数5000000  
+6.生成条数100000000  
 7.多联输出开启
   
- ![image](https://github.com/kiloline/DatabaseDataCreater/blob/master/sample_test.png)  
+ ![image](./sample_test.png)  
 
 #### 性能变化
-无  
+超线程对本程序的增益能达到35%+。  
+这次考虑把所有的算力都调动起来，最高速度冲击到了147M/s，一般在135M/s上下浮动，最低也不会低于120M/s  
+这次没有用之前的西数绿盘是因为IO压力已经超过了绿盘的处理能力，绿盘的响应时间一度高达数万毫秒，反复掉速等待主控清空SLC缓存。  
+以后性能继续改进的话就要考虑用大奶机的NVME盘做测试了。
 
 ## 程序参数详解
 -h:显示帮助。  

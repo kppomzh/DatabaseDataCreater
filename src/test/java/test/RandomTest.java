@@ -42,4 +42,13 @@ public class RandomTest {
 
         System.out.println(rt.RandomBDecimal("100","1000"));
     }
+
+    @Test
+    public void largeNum(){
+        for (int i = 0; i < Integer.MAX_VALUE; i++) {
+            int r=privateRandom.RandomInteger(42,63);
+            if(r<0)
+                System.out.println(r);
+        }
+    }
 }
