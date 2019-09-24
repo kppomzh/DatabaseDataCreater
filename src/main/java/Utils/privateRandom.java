@@ -52,10 +52,11 @@ public class privateRandom {
 
         if (start == end)
             return start;
-        int Return = Math.abs(rm.nextInt()<<4);
+        int Return = Math.abs((rm.nextInt()<<4)-1);
         if (Return > end - start) {
             Return = Return % (end - start);
         }
+
         return Return + start;
     }
 

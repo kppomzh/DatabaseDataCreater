@@ -17,7 +17,7 @@ import java.util.zip.ZipEntry;
 
 //这里除了参数是手动写死的之外其他部分和正式的没有区别
 public class alltest {
-    final static int ci = 10;
+    final static int ci = 5;
 
 //    @Ignore
     @Test
@@ -26,7 +26,7 @@ public class alltest {
         for (int loop = 0; loop < ci; loop++) {
             long time = System.currentTimeMillis();
 
-            Service.main(new String[]{"-n", "5000000", "-f", "zhaohuang.sql"});
+            Service.main(new String[]{"-n", "100000000", "-f", "zhaohuang.sql"});
             all = all + (System.currentTimeMillis() - time) / 1000.0 / 60.0;
             System.out.println("loop" + loop + ":" + (System.currentTimeMillis() - time));
 
