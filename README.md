@@ -6,7 +6,7 @@
 也可以是逗号隔开的csv格式以便通过数据库外部表或load工具来利用。支持通过JDBC直接导入数据。支持生成json字符串。
 ## 最简化使用方法
 该方法可以不需要config.properties的配置文件。  
-1.下载https://github.com/kiloline/DatabaseDataCreater/releases/download/1.3.4/DBDF-1.3.4.zip  
+1.下载https://github.com/kppomzh/DatabaseDataCreater/releases/download/V1.3.4/DBDF-1.3.4.zip  
 2.解压  
 3.命令行定位到jar包所在位置  
 4.输入命令：java -jar DBDF-1.3.4.jar  
