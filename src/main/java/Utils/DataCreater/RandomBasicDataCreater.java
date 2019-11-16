@@ -19,13 +19,15 @@ public class RandomBasicDataCreater {
             quickMarkStr; //符号字符串
 
     private int rangeLength, strusages = 0, numusages = 0, uppusages = 0, lowusages = 0, markusages = 0;
+    private BigInteger startPrimary;
 
-    public RandomBasicDataCreater(int maxStringLength) {
+    public RandomBasicDataCreater(int maxStringLength, BigInteger start){
         rangeLength = Double.valueOf(Math.sqrt(maxStringLength)).intValue() * 2;
         if (rangeLength < 100) rangeLength = 100;
+        startPrimary=start.subtract(BigInteger.ONE);
     }
 
-    String reinitStr(int sl, int min, int max) {
+    private String reinitStr(int sl, int min, int max) {
         return basicCharArrayFill(sl * rangeLength, 0, sl * rangeLength, min, max);
     }
 
@@ -200,6 +202,11 @@ public class RandomBasicDataCreater {
         quickStr = quickAllStr;
         strusages--;
         return basegetStr(range);
+    }
+
+    public BigInteger getPrimaryKey(){
+        startPrimary=startPrimary.add(BigInteger.ONE);
+        return startPrimary;
     }
 
     //定长数值函数

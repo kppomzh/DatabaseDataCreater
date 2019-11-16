@@ -17,7 +17,7 @@ import java.util.zip.ZipEntry;
 
 //这里除了参数是手动写死的之外其他部分和正式的没有区别
 public class alltest {
-    final static int ci = 5;
+    final static int ci = 1;
 
 //    @Ignore
     @Test
@@ -26,7 +26,7 @@ public class alltest {
         for (int loop = 0; loop < ci; loop++) {
             long time = System.currentTimeMillis();
 
-            Service.main(new String[]{"-n", "100000000", "-f", "zhaohuang.sql"});
+            Service.main(new String[]{"-n", "100", "-f", "zhaohuang.sql"});
             all = all + (System.currentTimeMillis() - time) / 1000.0 / 60.0;
             System.out.println("loop" + loop + ":" + (System.currentTimeMillis() - time));
 
@@ -50,7 +50,7 @@ public class alltest {
     @Test
     public void versiontest() throws SQLException, IOException {
 //        Service.main(new String[]{"-version"});
-        JarFile jar=new JarFile("D:\\Document\\OneDrive\\CodeRepo\\DatabaseDataCreater\\target\\DBDF-1.3.3.jar");
+        JarFile jar=new JarFile("D:\\Document\\OneDrive\\CodeRepo\\DatabaseDataCreater\\target\\DBDF-1.4.0.jar");
 
         //        for (Iterator<JarEntry> it = jar.entries().asIterator(); it.hasNext(); ) {
 //            JarEntry je = it.next();
@@ -66,5 +66,9 @@ public class alltest {
         pro.load(is);
 
         System.out.println(pro.get("version"));
+    }
+
+    public static void main(String... ar){
+        Service.main(new String[]{});
     }
 }

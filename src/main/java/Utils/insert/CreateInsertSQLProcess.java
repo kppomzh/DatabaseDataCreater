@@ -7,6 +7,7 @@ import Utils.env_properties;
 import dataStructure.TableStructure;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -28,6 +29,9 @@ public class CreateInsertSQLProcess {
         for (int loop = 1; loop < TOTAL_THREADS; loop++)
             this.linenumber[loop] = (int) linenumber / TOTAL_THREADS;
         this.linenumber[0] = (int) linenumber / TOTAL_THREADS + (int) linenumber % TOTAL_THREADS;
+        if(ts.isPrimary()){
+            ts.setPrimaryInterval(BigInteger.valueOf(TOTAL_THREADS>1?this.linenumber[1]:this.linenumber[0]));
+        }
     }
 
     public void createInsertSQLFile() throws Exception {

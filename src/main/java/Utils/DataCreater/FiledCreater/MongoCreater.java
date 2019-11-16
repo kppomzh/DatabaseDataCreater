@@ -24,20 +24,25 @@ public class MongoCreater extends baseCreater {
             if (list.isUnmake()) {
                 continue;
             }
-            appendStr = strSpecification(list, makeFiled(list));
-            while(!addtoSet(list, appendStr)){
-                appendStr = strSpecification(list, makeFiled(list));
+            if(list.isPrimary()){
+                out.append(rbdc.getPrimaryKey());
             }
+            else {
+                appendStr = strSpecification(list, makeFiled(list));
+                while (!addtoSet(list, appendStr)) {
+                    appendStr = strSpecification(list, makeFiled(list));
+                }
 
-            out.append("\n\"").append(list.getListname()).append("\":");
-            switch (list.getListType()) {
-                case "string":
-                case "date":
-                    out.append('\"').append(appendStr).append("\"");
-                    break;
-                default:
-                    out.append(appendStr);
-                    break;
+                out.append("\n\"").append(list.getListname()).append("\":");
+                switch (list.getListType()) {
+                    case "string":
+                    case "date":
+                        out.append('\"').append(appendStr).append("\"");
+                        break;
+                    default:
+                        out.append(appendStr);
+                        break;
+                }
             }
             out.append(',');
         }

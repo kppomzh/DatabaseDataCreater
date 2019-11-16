@@ -29,12 +29,17 @@ public class JsonCreater extends baseCreater {
             if (list.isUnmake()) {
                 continue;
             }
-            appendStr = strSpecification(list, makeFiled(list));
-            while (!addtoSet(list, appendStr)) {
-                appendStr = strSpecification(list, makeFiled(list));
+            if(list.isPrimary()){
+                out.append("\n\"").append(list.getListname()).append("\": \"").append(rbdc.getPrimaryKey()).append("\",");
             }
+            else {
+                appendStr = strSpecification(list, makeFiled(list));
+                while (!addtoSet(list, appendStr)) {
+                    appendStr = strSpecification(list, makeFiled(list));
+                }
 
-            out.append("\n\"").append(list.getListname()).append("\": \"").append(appendStr).append("\",");
+                out.append("\n\"").append(list.getListname()).append("\": \"").append(appendStr).append("\",");
+            }
         }
         out.deleteCharAt(out.length()-1);
         out.append("\n}\n");

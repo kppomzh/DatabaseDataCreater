@@ -1,5 +1,5 @@
 create table zhzm_DBDF_test(
-    CFG_ID int(10),
+    CFG_ID int(10) primary key,
     FOUND_TIME int(12) numberarea 1514736000~1522512000,
     found_time_partition numeric(9) numberarea 420760~422919,
     RECV_TIME int(12) numberarea 7776000000~7777000000,

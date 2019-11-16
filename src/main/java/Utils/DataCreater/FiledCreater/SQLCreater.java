@@ -32,21 +32,26 @@ public class SQLCreater extends baseCreater {
             if (list.isUnmake()) {
                 continue;
             }
-            appendStr = strSpecification(list, makeFiled(list));
-            while(!addtoSet(list, appendStr)){
-                appendStr = strSpecification(list, makeFiled(list));
+            if(list.isPrimary()){
+                out.append(rbdc.getPrimaryKey());
             }
+            else {
+                appendStr = strSpecification(list, makeFiled(list));
+                while (!addtoSet(list, appendStr)) {
+                    appendStr = strSpecification(list, makeFiled(list));
+                }
 
-            switch (list.getListType()) {
-                case "date":
-                    out.append(StringSpecificationOutput.specDate(appendStr));
-                    break;
-                case "string":
-                    out.append("\'").append(appendStr).append("\'");
-                    break;
-                default:
-                    out.append(appendStr);
-                    break;
+                switch (list.getListType()) {
+                    case "date":
+                        out.append(StringSpecificationOutput.specDate(appendStr));
+                        break;
+                    case "string":
+                        out.append("\'").append(appendStr).append("\'");
+                        break;
+                    default:
+                        out.append(appendStr);
+                        break;
+                }
             }
             out.append(',');
         }

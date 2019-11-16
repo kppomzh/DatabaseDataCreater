@@ -1,6 +1,7 @@
 package CreateSQLParser.Plan;
 
 import CreateSQLParser.Lex.Word;
+import Exception.DataException.TableStrucDataException;
 import Exception.TypeException.CompareException;
 import Exception.TypeException.MultiKeywordException;
 import Exception.TypeException.RegularinPlanException;
@@ -17,13 +18,13 @@ public class InsertPlanMaker {
     int[] range;
     String[] numberarea;
     boolean rangeEnd , isDefault , isSingal,hasArray=false,
-            setInline , isUnmake , isRegular,isStringType;
+            setInline , isUnmake , isRegular,isStringType,isPrimary;
     int arraylocal, na;
     List<String> inlineObject;
     Regular regular;
     String listname , type , defaultDataType , defaultStr ;
 
-    public TableStructure makeStrusture(List<Word> words) throws BaseException {
+    public TableStructure makeStrusture(List<Word> words) throws BaseException, TableStrucDataException {
         TableStructure structure = new TableStructure();
 
         Iterator<Word> iwords = words.iterator();
@@ -42,6 +43,8 @@ public class InsertPlanMaker {
                 case "primary":
                     if (!iwords.next().getName().equals("key"))
                         throw new MultiKeywordException(w,"多单词关键字：primary key必须连用。");
+                    isPrimary = true;
+                    break;
                 case "unique":
                     isSingal = true;
                     break;
@@ -101,7 +104,7 @@ public class InsertPlanMaker {
                         structure.addlist(listname, type,
                                 defaultDataType, isSingal, isDefault,isStringType, defaultStr,
                                 range, numberarea, inlineObject, isUnmake, isRegular,
-                                regular);
+                                regular, isPrimary);
                         init();
                     }
                     break;
@@ -125,5 +128,6 @@ public class InsertPlanMaker {
         listname = null; type = "string"; defaultDataType = ""; defaultStr = null;
         rangeEnd = false; isDefault = false; isSingal = false;hasArray=false;
         setInline = false; isUnmake = false; isRegular = false;isStringType=false;
+        isPrimary=false;
     }
 }

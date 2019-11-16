@@ -14,14 +14,14 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class baseCreater {
-    private RandomBasicDataCreater rbdc;
+    protected RandomBasicDataCreater rbdc;
     private RandomAdvanceDataCreater radc;
     protected TableStructure tableStructure;
     private Map<String, List> unique;
 
     public baseCreater(TableStructure tableStructure) {
         this.tableStructure = tableStructure;
-        this.rbdc = new RandomBasicDataCreater(tableStructure.getMaxListRange());
+        this.rbdc = new RandomBasicDataCreater(tableStructure.getMaxListRange(), tableStructure.getStartPrimary());
         this.radc = new RandomAdvanceDataCreater(rbdc);
         this.unique = new HashMap<>();
         for (ListStructure ls : tableStructure.getStruc()) {

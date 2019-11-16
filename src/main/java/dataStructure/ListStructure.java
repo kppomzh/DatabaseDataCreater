@@ -10,7 +10,7 @@ public class ListStructure implements Cloneable {
     private String ListType;
     private int[] Range;
     private String[] Numberarea;
-    private boolean isSingal;
+    private boolean isSingal,isPrimary;
     private boolean unmake;//是否对本字段进行填充
 
     private boolean isStringType;//已命名的默认字符串格式
@@ -29,14 +29,16 @@ public class ListStructure implements Cloneable {
      * @param listname 字段名称
      * @param ListType 字段数据类型
      * @param isSingal 是否存在唯一/主键约束
+     * @param isPrimary
      * @param isDefault 是否采用默认值填充
      * @param isRegular 是否用正则表达式生成值
      * @param defaultStr 是否用默认值填充
      */
-    public ListStructure(String listname, String ListType, boolean isSingal, boolean isDefault, boolean isRegular, String defaultStr) {
+    public ListStructure(String listname, String ListType, boolean isSingal, boolean isPrimary, boolean isDefault, boolean isRegular, String defaultStr) {
         this.listname = listname;
         this.isSingal = isSingal;
         this.ListType = ListType;
+        this.isPrimary = isPrimary;
         this.isDefault = isDefault;
         this.isRegular = isRegular;
         this.defaultStr = defaultStr;
@@ -137,5 +139,9 @@ public class ListStructure implements Cloneable {
 
     public boolean isStringType() {
         return isStringType;
+    }
+
+    public boolean isPrimary() {
+        return isPrimary;
     }
 }

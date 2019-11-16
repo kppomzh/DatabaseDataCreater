@@ -1,7 +1,9 @@
 package dataStructure;
 
+import Exception.DataException.TableStrucDataException;
 import dataStructure.RegularClasses.Regular;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,16 +14,25 @@ public class TableStructure implements Cloneable {
     private List<ListStructure> listStructureList;
     private int readnum = -1;
     private boolean unmake = false;//是否存在不需要填充的字段
+    private boolean hasPrimary = false;
+    private BigInteger startPrimary,primaryInterval;
 
     public TableStructure() {
         listnamessb = new StringBuilder();
         listStructureList = new ArrayList<>();
+        startPrimary=BigInteger.ZERO;
     }
 
-    public void addlist(String listname, String ListType, String defaultDataType, boolean isSingal, boolean isDefault, boolean isStringType, String defaultStr, int[] Range, String[] Numberarea, List<String> inlineObject, boolean unmake, boolean isRegular, Regular regular) {
+    public void addlist(String listname, String ListType, String defaultDataType, boolean isSingal, boolean isDefault, boolean isStringType, String defaultStr, int[] Range, String[] Numberarea, List<String> inlineObject, boolean unmake, boolean isRegular, Regular regular, boolean isPrimary) throws TableStrucDataException {
         if (Range[0] > MaxListRange)
             MaxListRange = Range[0];
-        ListStructure ls = new ListStructure(listname, ListType, isSingal, isDefault, isRegular, defaultStr);
+        if(hasPrimary&&isPrimary){
+            throw new TableStrucDataException("同一个表中不允许有两个主键");
+        }
+        else{
+            hasPrimary=hasPrimary||isPrimary;
+        }
+        ListStructure ls = new ListStructure(listname, ListType, isSingal, isPrimary, isDefault, isRegular, defaultStr);
         ls.setDefaultType(defaultDataType,isStringType);
         ls.setRange(Range);
         ls.setNumberarea(Numberarea);
@@ -68,6 +79,11 @@ public class TableStructure implements Cloneable {
         newT.MaxListRange = this.MaxListRange;
         newT.listnamessb = this.listnamessb;
         newT.unmake = this.unmake;
+        newT.hasPrimary=this.hasPrimary;
+        if(hasPrimary) {
+            this.startPrimary = this.startPrimary.add(this.primaryInterval);
+            newT.startPrimary = this.startPrimary;
+        }
         return newT;
     }
 
@@ -89,5 +105,18 @@ public class TableStructure implements Cloneable {
 
     public String getListnames() {
         return listnamessb.toString();
+    }
+
+    public BigInteger getStartPrimary() {
+        return startPrimary;
+    }
+
+    public void setPrimaryInterval(BigInteger primaryInterval) {
+        this.primaryInterval=primaryInterval;
+        startPrimary = primaryInterval.negate();
+    }
+
+    public boolean isPrimary(){
+        return this.hasPrimary;
     }
 }
