@@ -26,13 +26,13 @@ public class alltest {
         for (int loop = 0; loop < ci; loop++) {
             long time = System.currentTimeMillis();
 
-            Service.main(new String[]{"-n", "100", "-f", "zhaohuang.sql"});
+            Service.main(new String[]{"-n", "100000", "-f", "zhaohuang.sql"});
             all = all + (System.currentTimeMillis() - time) / 1000.0 / 60.0;
             System.out.println("loop" + loop + ":" + (System.currentTimeMillis() - time));
 
             if (env_properties.getEnvironment("toDB").equals("jdbc")) {
                 getConn conn = new getConn();
-                conn.Stmt().executeUpdate("truncate table zhzm_dbdf_test");
+//                conn.Stmt().executeUpdate("truncate table zhzm_dbdf_test");
             }
         }
         System.out.println("avg:" + all / ci + " min");
@@ -49,16 +49,8 @@ public class alltest {
 
     @Test
     public void versiontest() throws SQLException, IOException {
-//        Service.main(new String[]{"-version"});
         JarFile jar=new JarFile("D:\\Document\\OneDrive\\CodeRepo\\DatabaseDataCreater\\target\\DBDF-1.4.0.jar");
 
-        //        for (Iterator<JarEntry> it = jar.entries().asIterator(); it.hasNext(); ) {
-//            JarEntry je = it.next();
-//            System.out.println(je.getRealName());
-//            System.out.println(je.getAttributes().
-//        }
-
-//        System.out.println(jar.getEntry("version"));
         System.out.println(jar.getEntry("META-INF/maven/zhzm/DBDF/pom.properties"));
         ZipEntry je=jar.getEntry("META-INF/maven/zhzm/DBDF/pom.properties");
         InputStream is =jar.getInputStream(je);
@@ -68,6 +60,15 @@ public class alltest {
         System.out.println(pro.get("version"));
     }
 
+    @Test
+    public void helptest() {
+        Service.main(new String[]{"-h"});
+    }
+
+    /**
+     * 直接用命令行方式运行的模拟测试
+     * @param ar
+     */
     public static void main(String... ar){
         Service.main(new String[]{});
     }

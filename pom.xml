@@ -5,37 +5,13 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>zhzm</groupId>
     <artifactId>DBDF</artifactId>
-    <version>1.4.0</version>
+    <version>1.4.1</version>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <maven.configuration.encoding>UTF-8</maven.configuration.encoding>
     </properties>
-    <repositories>
-<!--        <repository>-->
-<!--            <id>maven.oracle.com</id>-->
-<!--            <releases>-->
-<!--                <enabled>true</enabled>-->
-<!--            </releases>-->
-<!--            <snapshots>-->
-<!--                <enabled>false</enabled>-->
-<!--            </snapshots>-->
-<!--            <url>https://maven.oracle.com</url>-->
-<!--            <layout>default</layout>-->
-<!--        </repository>-->
-        <repository>
-            <id>in-project</id>
-            <name>In Project Repo</name>
-            <url>file://${project.basedir}/lib</url>
-        </repository>
-    </repositories>
-    <pluginRepositories>
-        <pluginRepository>
-            <id>maven.oracle.com</id>
-            <url>https://maven.oracle.com</url>
-        </pluginRepository>
-    </pluginRepositories>
 
     <build>
         <plugins>
@@ -43,27 +19,64 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>3.2.1</version>
+                <configuration>
+                    <createDependencyReducedPom>true</createDependencyReducedPom>
+                    <minimizeJar>true</minimizeJar>
+                    <transformers>
+                        <transformer
+                                implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
+                            <resource>META-INF/README.md</resource>
+                            <file>README.md</file>
+                        </transformer>
+                        <transformer
+                                implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
+                            <resource>META-INF/LICENSE</resource>
+                            <file>LICENSE</file>
+                        </transformer>
+                        <transformer
+                                implementation="org.apache.maven.plugins.shade.resource.ComponentsXmlResourceTransformer"/>
+                        <transformer
+                                implementation="org.apache.maven.plugins.shade.resource.PluginXmlResourceTransformer"/>
+                        <!--                        <transformer implementation="org.apache.maven.plugins.shade.resource.DontIncludeResourceTransformer">-->
+                        <!--                            <resource>.txt</resource>-->
+                        <!--                        </transformer>-->
+                        <transformer
+                                implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                            <manifestEntries>
+                                <Main-Class>main.Service</Main-Class>
+                            </manifestEntries>
+                        </transformer>
+                        <transformer
+                                implementation="org.apache.maven.plugins.shade.resource.ApacheLicenseResourceTransformer">
+                        </transformer>
+                    </transformers>
+                </configuration>
                 <executions>
                     <execution>
-                        <configuration>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <minimizeJar>true</minimizeJar>
-                            <transformers
-                                    implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                <mainClass>main.Service</mainClass>
-                            </transformers>
-                        </configuration>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>
         </plugins>
+<!--        <resources>-->
+<!--            <resource>-->
+<!--                <targetPath>lib/</targetPath>-->
+<!--                <directory>lib/</directory>-->
+<!--                <includes>-->
+<!--                    <include>**/*.jar</include>-->
+<!--                </includes>-->
+<!--            </resource>-->
+<!--        </resources>-->
     </build>
     <dependencies>
         <!--autoutil-->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.13-beta-1</version>
+            <version>4.13-rc-2</version>
             <scope>test</scope>
         </dependency>
 
@@ -87,64 +100,58 @@
         <dependency>
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-model</artifactId>
-            <version>[3.6.1,)</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-shade-plugin</artifactId>
-            <version>[3.2.1,)</version>
+            <version>3.6.3</version>
         </dependency>
 
         <!--jdbc jars-->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>[8.0.16,)</version>
+            <version>[8.0.18,)</version>
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>[42.2.6,)</version>
+            <version>[42.2.9,)</version>
         </dependency>
         <dependency>
             <groupId>com.microsoft.sqlserver</groupId>
             <artifactId>mssql-jdbc</artifactId>
-            <version>7.3.0.jre11-preview</version>
+            <version>8.1.1.jre11-preview</version>
         </dependency>
         <dependency>
             <groupId>com.ibm.db2</groupId>
             <artifactId>jcc</artifactId>
-            <version>[11.1.4.4,)</version>
+            <version>11.5.0.0</version>
         </dependency>
         <dependency>
             <groupId>org.xerial</groupId>
             <artifactId>sqlite-jdbc</artifactId>
-            <version>[3.27.2.1,)</version>
+            <version>[3.30.1,)</version>
         </dependency>
         <dependency>
             <groupId>com.facebook.presto</groupId>
             <artifactId>presto-jdbc</artifactId>
-            <version>[0.220,)</version>
+            <version>[0.229,)</version>
         </dependency>
-        <dependency>
-            <groupId>org.mongodb</groupId>
-            <artifactId>mongo-java-driver</artifactId>
-            <version>[3.10.2,)</version>
-        </dependency>
-        <dependency>
-            <groupId>org.mongodb</groupId>
-            <artifactId>mongodb-driver-reactivestreams</artifactId>
-            <version>[1.11.0,)</version>
-        </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>org.mongodb</groupId>-->
+        <!--            <artifactId>mongo-java-driver</artifactId>-->
+        <!--            <version>3.9.0</version>-->
+        <!--        </dependency>-->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <version>[1.4.199,)</version>
+            <version>[1.4.200,)</version>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>oracle</groupId>-->
-<!--            <artifactId>ojdbc</artifactId>-->
-<!--            <version>10</version>-->
-<!--        </dependency>-->
+
+        <!--localjdbc-->
+        <dependency>
+            <groupId>com.oracle</groupId>
+            <artifactId>ojdbc19</artifactId>
+            <version>19.3.0.0.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/ojdbc10-full/ojdbc10.jar</systemPath>
+        </dependency>
     </dependencies>
 </project>

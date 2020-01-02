@@ -25,7 +25,7 @@ public class MongoCreater extends baseCreater {
                 continue;
             }
             if(list.isPrimary()){
-                out.append(rbdc.getPrimaryKey());
+                out.append(strSpecification(list,rbdc.getPrimaryKey().toString()));
             }
             else {
                 appendStr = strSpecification(list, makeFiled(list));

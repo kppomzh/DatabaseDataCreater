@@ -4,17 +4,16 @@ import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 
 import java.io.*;
-import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.Properties;
-import java.util.Scanner;
 import java.util.jar.JarFile;
-import java.util.jar.JarInputStream;
-import java.util.jar.Manifest;
 import java.util.zip.ZipEntry;
 
 public class env_properties {
     protected static final env_properties init = new env_properties();
     protected static Properties env;
+
+    private Charset envirmentCharset;
 
     protected env_properties(String str) {
     }
@@ -74,6 +73,12 @@ public class env_properties {
     }
 
     private void loadDefaultProp() {
+        if(!env.containsKey("dbCharSet")||env.getProperty("dbCharSet").equals("")){
+            envirmentCharset=Charset.defaultCharset();
+        }
+        else{
+            envirmentCharset=Charset.forName(env.getProperty("dbCharSet"));
+        }
         if (!env.containsKey("toDB")) {
             env.setProperty("toDB", "sql");
         }
@@ -114,5 +119,9 @@ public class env_properties {
 
     public static Properties getJDBCEnv() {
         return init.env;
+    }
+
+    public static Charset getEnvirmentCharset() {
+        return init.envirmentCharset;
     }
 }

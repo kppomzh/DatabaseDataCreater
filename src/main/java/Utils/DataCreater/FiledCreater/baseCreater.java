@@ -8,6 +8,9 @@ import Utils.privateRandom;
 import dataStructure.ListStructure;
 import dataStructure.TableStructure;
 
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -52,8 +55,7 @@ public abstract class baseCreater {
 
         Return.deleteCharAt(Return.length() - 1);
         String insert=Return.append(packTail()).append("\n").toString();
-        Return=null;
-        return insert;
+        return new String(insert.getBytes(), env_properties.getEnvirmentCharset());
     }
 
     protected String strSpecification(ListStructure ls, String appendStr) {

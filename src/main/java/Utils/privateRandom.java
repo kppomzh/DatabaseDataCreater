@@ -66,13 +66,14 @@ public class privateRandom {
      * @return 大整数
      */
     public static BigInteger RandomBInteger(BigInteger start, BigInteger end){
-        if (start.equals(end))
+        if (start.compareTo(end)>=0)
             return start;
 
-        BigInteger sub=start.subtract(end).add(BigInteger.ONE);
+        BigInteger sub=end.subtract(start);
 
         BigInteger res=new BigInteger(sub.bitLength()+1,rm);
 
+        //当随机值大于start与end的差值，且差值大于0
         if(res.compareTo(sub)==1&&sub.compareTo(BigInteger.ZERO)==1){
             res=res.mod(sub);
         }
