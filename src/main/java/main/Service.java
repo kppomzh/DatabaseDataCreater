@@ -27,7 +27,7 @@ public class Service {
                     loop++;
                     break;
                 case "--set":
-                    env_properties.setEnvironment(args[loop + 1].split(",")[0], args[loop + 1].split(",")[1]);
+                    env_properties.setEnvironment(args[loop + 1], args[loop + 2]);
                     loop++;
                     break;
                 case "-o":

@@ -17,28 +17,28 @@ import java.util.zip.ZipEntry;
 
 //这里除了参数是手动写死的之外其他部分和正式的没有区别
 public class alltest {
-    final static int ci = 1;
+    final static int ci = 5;
 
-//    @Ignore
+    //    @Ignore
     @Test
     public void timetest() throws SQLException {
         double all = 0;
         for (int loop = 0; loop < ci; loop++) {
             long time = System.currentTimeMillis();
 
-            Service.main(new String[]{"-n", "100000", "-f", "zhaohuang.sql"});
+            Service.main(new String[]{"-n", "100000000", "-f", "zhaohuang.sql"});
             all = all + (System.currentTimeMillis() - time) / 1000.0 / 60.0;
             System.out.println("loop" + loop + ":" + (System.currentTimeMillis() - time));
 
             if (env_properties.getEnvironment("toDB").equals("jdbc")) {
                 getConn conn = new getConn();
-//                conn.Stmt().executeUpdate("truncate table zhzm_dbdf_test");
+                conn.Stmt().executeUpdate("truncate table zhzm_dbdf_test");
             }
         }
         System.out.println("avg:" + all / ci + " min");
     }
 
-//    @Ignore
+    //    @Ignore
     @Test
     public void typetest() {
         Service.main(new String[]{"-n", "5", "-f", "zhaohuang.sql", "-i", "sql"});
@@ -49,12 +49,12 @@ public class alltest {
 
     @Test
     public void versiontest() throws SQLException, IOException {
-        JarFile jar=new JarFile("D:\\Document\\OneDrive\\CodeRepo\\DatabaseDataCreater\\target\\DBDF-1.4.0.jar");
+        JarFile jar = new JarFile("D:\\Document\\OneDrive\\CodeRepo\\DatabaseDataCreater\\target\\DBDF-1.4.0.jar");
 
         System.out.println(jar.getEntry("META-INF/maven/zhzm/DBDF/pom.properties"));
-        ZipEntry je=jar.getEntry("META-INF/maven/zhzm/DBDF/pom.properties");
-        InputStream is =jar.getInputStream(je);
-        Properties pro=new Properties();
+        ZipEntry je = jar.getEntry("META-INF/maven/zhzm/DBDF/pom.properties");
+        InputStream is = jar.getInputStream(je);
+        Properties pro = new Properties();
         pro.load(is);
 
         System.out.println(pro.get("version"));
@@ -67,9 +67,33 @@ public class alltest {
 
     /**
      * 直接用命令行方式运行的模拟测试
+     *
      * @param ar
      */
-    public static void main(String... ar){
+    public static void main(String... ar) {
         Service.main(new String[]{});
+    }
+
+    @Test
+    public void insertnumtest() throws SQLException {
+        double all = 0;
+        int[] insertnum = {2500, 5000, 10000, 20000};
+        for (int i = 0; i <4; i++) {
+            for (int loop = 0; loop < ci; loop++) {
+                long starttime = System.currentTimeMillis();
+                Service.main(new String[]{"-n", "100000000", "-f", "zhaohuang.sql",
+                        "--set","longerInsertNumber",String.valueOf(insertnum[i])});
+                long stoptime=System.currentTimeMillis();
+                all = all + (stoptime - starttime) / 1000.0 / 60.0;
+                System.out.println("loop" + loop + ":" + (stoptime - starttime));
+
+                if (env_properties.getEnvironment("toDB").equals("jdbc")) {
+                    getConn conn = new getConn();
+                    conn.Stmt().executeUpdate("truncate table zhzm_dbdf_test");
+                }
+            }
+            System.out.println("avg:" + all / ci + " min");
+            all = 0;
+        }
     }
 }

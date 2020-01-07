@@ -14,14 +14,21 @@
 7. 复制粘贴运行三连  
 
 ## 当前版本性能测试
+### 1.本地写入测试
 #### 硬件环境
-CPU:Intel i7-9750H ~=3.30Ghz(12线程运行时)  
+PC1:
+CPU:AMD Ryzen R5 3600X 4.15Ghz  
+Memory:16G DDR4 3600Mhz  
+SSD:海康威视 C2000 1T NVME SSD
+
+PC2:
+CPU:Intel i7-9750H 3.38Ghz  
 Memory:16G DDR4 2666Mhz  
 SSD:建兴 CV8-8E512 500G SATA SSD
 
 #### 软件环境以及测试条件
-OS:Windows10 1903  
-Java:Java 11.0.5+10,Java 13+33  
+OS:Windows10 1909  
+Java:OpenJDK 11.0.5  
 测试条件:  
 1. 12线程  
 2. 异步写入  
@@ -30,12 +37,38 @@ Java:Java 11.0.5+10,Java 13+33
 5. 写入方式为sql  
 6. 生成条数100000000  
 7. 多联输出开启
-  
- ![image](./sample_test.png)  
 
-#### 性能变化 
-由于采用了Java的自有库DriverManager对驱动进行管理，所以在用JDBC进行连接的时候，性能比之前的版本可能会略有降低。不过好在每次灌输数据只用新建
-一次驱动，所以影响其实很小。
+![image](./sample_test.png)  
+针对需要大量random的符在来说，Intel凭借更低的频率和功耗取得了比AMD更好的成绩，所以AMD还是不那么yes的。
+
+### 2.JDBC多联输出性能测试
+#### 硬件环境
+数据生成端：
+CPU:AMD Ryzen R5 3600X 4.12~4.2Ghz  
+Memory:16G DDR4 3600Mhz  
+数据库端：
+CPU:Intel Pentium J5005 2.7Ghz  
+Memory:8G DDR4 2400Mhz  
+SSD:联想 SL700 1T SATA SSD
+双向千兆网卡有线直连，不经过交换机/路由器
+
+#### 软件环境以及测试条件
+OS:Windows10 1909 -> Ubuntu 19.0.1  
+Java:OpenJDK 11.0.5+10  
+测试条件:  
+1. 10线程  
+2. 异步写入  
+3. 默认值比例0.9  
+4. 禁止SQL优化  
+5. 写入方式jdbc  
+6. 生成条数10000000  
+7. 多联输出开启/关闭
+ 
+![image](./jdbc_test.png)  
+网络发送数据并不是一次insert越多越好的，考虑到我这里只使用了单机数据库，尽管有固态加持，更长的写入造成长时间锁等待比反复解析SQL带来的影响更大。
+
+### 性能变化
+由于采用了Java的自有库DriverManager对驱动进行管理，所以在用JDBC进行连接的时候，性能比之前的版本可能会略有降低。不过好在每次灌输数据只用新建一次驱动，所以影响其实很小。
 
 ## 程序参数详解
 -h:显示帮助。  
@@ -86,8 +119,7 @@ bool
 
 ### 本程序默认的数据格式实现
 #### 1.stringtype
-可以在每个字段的后面加上stringtype关键字来指定当前字段的数据格式，包括ch_idcard（中国身份证号）、telephone（中国手机号）、
-email（电子邮件）、ch_word（汉字字符串）、a/b/c/d/e_ip（五种IP地址）、warp_latitude（经纬度）等几种数据。
+可以在每个字段的后面加上stringtype关键字来指定当前字段的数据格式，包括ch_idcard（中国身份证号）、telephone（中国手机号）、email（电子邮件）、ch_word（汉字字符串）、a/b/c/d/e_ip（五种IP地址）、warp_latitude（经纬度）等几种数据。
 #### 2.numberarea  
 可以在每个字段的后面加上numberarea关键来指定当前字段的数值范围，该方式仅对标记为数值型的字段适用。  
 例如numberarea 5~10，就会生成范围在{5,6,7,8,9,10}之内的任意数，根据字段类型也可以是浮点数。
@@ -128,12 +160,10 @@ x|y：匹配x子表达式或者y子表达式，选择其一来生成字符串。
 最后在正则表达式结束的时候一定要用'$'作为结束标记。  
 
 #### 3.stringtype for free  
-本质上仍然是正则表达式，使用properties配置文件来对应名称和正则表达式。配置文件位置在config.properties文件的CustomStringtypeConf选项中进
-行指定，两个文件之间用';'进行分隔。  
+本质上仍然是正则表达式，使用properties配置文件来对应名称和正则表达式。配置文件位置在config.properties文件的CustomStringtypeConf选项中进行指定，两个文件之间用';'进行分隔。  
 
 #### 4.primary key
-在最新版本中，主键约束已经不是影响性能的因素，但是付出的代价是主键约束只提供类似于序列的生成方式，每次从1开始到生成条数处结束，不再支持任何自定
-义的字符串格式；同时，只支持字段类型为数值型或字符型。
+在最新版本中，主键约束已经不是影响性能的因素，但是付出的代价是主键约束只提供类似于序列的生成方式，每次从1开始到生成条数处结束，不再支持任何自定义的字符串格式；同时，只支持字段类型为数值型或字符型。
 
 ## 配置文件config.properties的参数设置
 ### 数据库连接部分参数
@@ -156,8 +186,7 @@ dbCharSet:指定输出的字符串以什么字符集写入指定位置；理论�
 Optimal:SQL优化，（伪）随机缩短字符串长度，避免超长字符串的变量生成导致长时间卡顿。   
 asynchronous:允许异步写文件以加快输出。  
 TOTAL_THREADS:总线程数量，当asynchronous为true的时候整个任务将会被分成和线程数量同等的多个文件。  
-defaultProportion:取值区间0~1，default值在整个字段中占用的默认比例，如果有使用default值的字段，加大该参数会适当的提高程序的性能，
-但是一定要按照实际的业务需求制定该参数的允许上限。  
+defaultProportion:取值区间0~1，default值在整个字段中占用的默认比例，如果有使用default值的字段，加大该参数会适当的提高程序的性能，但是一定要按照实际的业务需求制定该参数的允许上限。  
 WriterEngine:写文件使用的引擎，目前有default和apache两种，性能上差不多，不同条件下略有差异。  
 longerInsert:长insert，将多条数据整合在一个insert中。针对JDBC方式会加快插入速度。  
 longerInsertNumber:长insert一次生成的条数，默认是10000。  

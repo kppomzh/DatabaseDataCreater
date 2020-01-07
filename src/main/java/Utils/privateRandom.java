@@ -71,7 +71,7 @@ public class privateRandom {
 
         BigInteger sub=end.subtract(start);
 
-        BigInteger res=new BigInteger(sub.bitLength()+1,rm);
+        BigInteger res=new BigInteger(sub.bitLength(),rm);
 
         //当随机值大于start与end的差值，且差值大于0
         if(res.compareTo(sub)==1&&sub.compareTo(BigInteger.ZERO)==1){
