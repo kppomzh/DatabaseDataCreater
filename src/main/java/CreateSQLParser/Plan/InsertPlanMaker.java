@@ -69,9 +69,7 @@ public class InsertPlanMaker {
                 case "numberange":
                     numberarea[na] = w.getSubstance();
                     na++;
-                    if(na==2){
-                        hasArray=true;
-                    }
+                    hasArray=na==2;
                     break;
                 case "unmake":
                     isUnmake = true;
@@ -98,14 +96,13 @@ public class InsertPlanMaker {
                     if (!(rangeEnd || setInline)) {
                         if (hasArray&&new BigDecimal(numberarea[0]).compareTo(new BigDecimal(numberarea[1]))==1)
                             throw new CompareException(w,"数值型设定范围必须由小到大。");
-                        if(type.equals("int")&&range[1]!=0){
+                        else if(type.equals("int")&&range[1]!=0){
                             throw new CompareException(w,"整型数不能有小数范围的定义。");
                         }
-                        structure.addlist(listname, type,
-                                defaultDataType, isSingal, isDefault,isStringType, defaultStr,
-                                range, numberarea, inlineObject, isUnmake, isRegular,
-                                regular, isPrimary);
-                        init();
+                        else {
+                            structure.addlist(listname, type, defaultDataType, isSingal, isDefault, isStringType, defaultStr, range, numberarea, inlineObject, isUnmake, isRegular, regular, isPrimary);
+                            init();
+                        }
                     }
                     break;
                 case "{":

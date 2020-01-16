@@ -1,17 +1,14 @@
 package test;
 
 import Utils.DBConn.getConn;
-import main.Service;
-import org.junit.Ignore;
-import org.junit.Test;
 import Utils.env_properties;
+import main.Service;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
-import java.util.Iterator;
 import java.util.Properties;
-import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 
@@ -19,14 +16,19 @@ import java.util.zip.ZipEntry;
 public class alltest {
     final static int ci = 5;
 
-    //    @Ignore
-    @Test
-    public void timetest() throws SQLException {
+    public void PerformanceBase(int createnum,int insertnum) throws SQLException {
         double all = 0;
+
+        //虚拟机预热数据
+        {
+            Service.main(new String[]{"-n", "10000", "-f", "zhaohuang.sql"});
+        }
+
         for (int loop = 0; loop < ci; loop++) {
             long time = System.currentTimeMillis();
 
-            Service.main(new String[]{"-n", "100000000", "-f", "zhaohuang.sql"});
+            Service.main(new String[]{"-n", String.valueOf(createnum), "-f", "zhaohuang.sql","-a","-t","12","-L",
+                    "--set","longerInsertNumber",String.valueOf(insertnum)});
             all = all + (System.currentTimeMillis() - time) / 1000.0 / 60.0;
             System.out.println("loop" + loop + ":" + (System.currentTimeMillis() - time));
 
@@ -35,20 +37,20 @@ public class alltest {
                 conn.Stmt().executeUpdate("truncate table zhzm_dbdf_test");
             }
         }
+        System.out.print("insertnum:");
+        System.out.println(insertnum);
         System.out.println("avg:" + all / ci + " min");
     }
 
-    //    @Ignore
     @Test
     public void typetest() {
-        Service.main(new String[]{"-n", "5", "-f", "zhaohuang.sql", "-i", "sql"});
-        Service.main(new String[]{"-n", "5", "-f", "zhaohuang.sql", "-i", "json"});
-        Service.main(new String[]{"-n", "5", "-f", "zhaohuang.sql", "-i", "csv"});
-//        Service.main(new String[]{"-n", "5", "-f", "zhaohuang.sql","-i","mongo"});
+        Service.main(new String[]{"-n", "5", "-f", "zhaohuang.sql", "-i", "sql","--set","WriterEngine","screenout"});
+        Service.main(new String[]{"-n", "5", "-f", "zhaohuang.sql", "-i", "json","--set","WriterEngine","screenout"});
+        Service.main(new String[]{"-n", "5", "-f", "zhaohuang.sql", "-i", "csv","--set","WriterEngine","screenout"});
     }
 
     @Test
-    public void versiontest() throws SQLException, IOException {
+    public void versiontest() throws IOException {
         JarFile jar = new JarFile("D:\\Document\\OneDrive\\CodeRepo\\DatabaseDataCreater\\target\\DBDF-1.4.0.jar");
 
         System.out.println(jar.getEntry("META-INF/maven/zhzm/DBDF/pom.properties"));
@@ -75,25 +77,19 @@ public class alltest {
     }
 
     @Test
-    public void insertnumtest() throws SQLException {
-        double all = 0;
+    public void FileWriteFullTimeTest() throws SQLException {
         int[] insertnum = {2500, 5000, 10000, 20000};
-        for (int i = 0; i <4; i++) {
-            for (int loop = 0; loop < ci; loop++) {
-                long starttime = System.currentTimeMillis();
-                Service.main(new String[]{"-n", "100000000", "-f", "zhaohuang.sql",
-                        "--set","longerInsertNumber",String.valueOf(insertnum[i])});
-                long stoptime=System.currentTimeMillis();
-                all = all + (stoptime - starttime) / 1000.0 / 60.0;
-                System.out.println("loop" + loop + ":" + (stoptime - starttime));
+        for (int i = 0; i <insertnum.length; i++) {
+            PerformanceBase(100000000,insertnum[i]);
+        }
+    }
 
-                if (env_properties.getEnvironment("toDB").equals("jdbc")) {
-                    getConn conn = new getConn();
-                    conn.Stmt().executeUpdate("truncate table zhzm_dbdf_test");
-                }
-            }
-            System.out.println("avg:" + all / ci + " min");
-            all = 0;
+    @Test
+    public void JDBCWriteFullTimeTest() throws SQLException {
+        env_properties.setEnvironment("toDB","jdbc");
+        int[] insertnum = {10000};//2500, 5000, 10000,
+        for (int i = 0; i <insertnum.length; i++) {
+            PerformanceBase(10000000,insertnum[i]);
         }
     }
 }

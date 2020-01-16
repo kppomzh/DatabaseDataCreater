@@ -1,5 +1,6 @@
 package Utils.DataWriter;
 
+import Utils.env_properties;
 import org.apache.commons.io.output.WriterOutputStream;
 
 import java.io.BufferedOutputStream;
@@ -12,11 +13,11 @@ public class ApacheFileWriter extends tF {
     private BufferedOutputStream bos;
     private WriterOutputStream bw;
 
-    public ApacheFileWriter(String Filename, String charset) throws IOException {
+    public ApacheFileWriter(String Filename) throws IOException {
         super(Filename);
-        bos = new BufferedOutputStream(new FileOutputStream(textfile, false), 524288);
+        bos = new BufferedOutputStream(new FileOutputStream(textfile, false), 32768);
         //暂定512K缓存，一般硬盘测试的中等数据块
-        bw = new WriterOutputStream(new OutputStreamWriter(bos), Charset.forName("utf-8"));
+        bw = new WriterOutputStream(new OutputStreamWriter(bos), env_properties.getEnvirmentCharset(),32768,false);
     }
 
     @Override

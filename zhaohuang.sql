@@ -18,5 +18,6 @@ create table zhzm_DBDF_test(
     addr_list string(50) {"中国 北京 电信宽带光纤","中国 北京 联通宽带光纤","中国 北京 铁通宽带光纤"},
     user_region varchar(40) regulartype (-)?\d+(.\d{1,2})?$,
     Regulartest varchar2(44) regulartype \d\w\W\S\\\)\(\|[\-\]]$,
-    isinsert boolean 
+    isinsert boolean,
+    unmake_test VARCHAR(1) unmake
 );

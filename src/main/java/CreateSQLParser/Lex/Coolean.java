@@ -19,10 +19,7 @@ public class Coolean {
 
     @Override
     public boolean equals(Object o) {
-        if (o.hashCode() == this.hashCode())
-            return true;
-        else
-            return false;
+        return o.hashCode() == this.hashCode();
     }
 
     @Override

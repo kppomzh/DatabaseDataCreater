@@ -14,7 +14,7 @@ public class Service {
 
     public static void main(String[] args){
         String filename = null, FileString;
-        String[] createSQLs = null;
+        String[] createSQLs;
         Double linenumber = null;
         for (int loop = 0; loop < args.length; loop++) {
             switch (args[loop]) {
@@ -28,7 +28,7 @@ public class Service {
                     break;
                 case "--set":
                     env_properties.setEnvironment(args[loop + 1], args[loop + 2]);
-                    loop++;
+                    loop+=2;
                     break;
                 case "-o":
                     env_properties.setEnvironment("baseFileDir", args[loop + 1]);
@@ -53,6 +53,9 @@ public class Service {
                     break;
                 case "-L":
                     env_properties.setEnvironment("longerInsert", "true");
+                    break;
+                case "-N":
+                    env_properties.setEnvironment("canbeNegative", "true");
                     break;
                 case "-v":
 //                case "-version":

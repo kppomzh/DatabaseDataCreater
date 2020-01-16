@@ -107,8 +107,10 @@ public class Fugue {
                             w.setSubstance(cscl.getCustomStringtypes().getProperty(w.getName()));
                             w.setName("isRegular");
                         }
-                        w.setSubstance(w.getName());
-                        w.setName("defaultdatatype");
+                        else {
+                            w.setSubstance(w.getName());
+                            w.setName("defaultdatatype");
+                        }
                         break;
                     case "regulartype":
                         w.setSubstance(w.getName());
@@ -125,11 +127,12 @@ public class Fugue {
     private boolean checknumber(String s) {
         int fu = 0;
         for (char c : s.toCharArray()) {
-            if (c == '-' && fu == 0)
-                continue;
-            if (c < 48 || c > 57)
+            if (fu == 0 && c == '-')
+                fu++;
+            else if (c < 48 || c > 57)
                 return false;
-            fu++;
+            else
+                fu++;
         }
         return true;
     }

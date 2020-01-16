@@ -141,7 +141,7 @@ public class RandomBasicDataCreater {
 
         if (decRange > 0) {
             BigInteger decS;
-            boolean inlengthEquals=true;
+            boolean inlengthEquals;
 
             decS = privateRandom.RandomBInteger(BigInteger.ZERO, decMax);
             String decString=decS.toString();

@@ -1,6 +1,5 @@
 package Utils.insert;
 
-import Utils.CircularLinkedList;
 import Utils.DataCreater.InsertSQLCreater;
 import Utils.DataWriter.*;
 import Utils.env_properties;
@@ -8,13 +7,15 @@ import dataStructure.TableStructure;
 
 import java.io.IOException;
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 public class CreateInsertSQLProcess {
-    private static final int basicThreads = Integer.valueOf(env_properties.getEnvironment("nCPU"));
-    private static final int TOTAL_THREADS = Integer.valueOf(env_properties.getEnvironment("TOTAL_THREADS"));
+    private int basicThreads = Integer.valueOf(env_properties.getEnvironment("nCPU"));
+    private int TOTAL_THREADS = Integer.valueOf(env_properties.getEnvironment("TOTAL_THREADS"));
     private ExecutorService service = Executors.newFixedThreadPool(basicThreads);//根据CPU核心最大值确定线程数量，一般是核心数减一
     private TableStructure ts;
     private int[] linenumber;
@@ -36,15 +37,15 @@ public class CreateInsertSQLProcess {
 
     public void createInsertSQLFile() throws Exception {
         int close_loop = 1;
-        CircularLinkedList<tF> writerlist = new CircularLinkedList<>();
+        List<tF> writerlist = new ArrayList<>();
 
         if (env_properties.getEnvironment("asynchronous").equals("true")) {
             close_loop = TOTAL_THREADS;
             for (int loop = 0; loop < TOTAL_THREADS; loop++) {
-                writerlist.add(getWriter(ts.getTbname() + loop, "utf-8"));
+                writerlist.add(getWriter(ts.getTbname() + loop));
             }
         } else {
-            writerlist.add(getWriter(ts.getTbname(), "utf-8"));
+            writerlist.add(getWriter(ts.getTbname()));
         }
         makePool(writerlist);
 
@@ -52,26 +53,26 @@ public class CreateInsertSQLProcess {
         service.awaitTermination(7, TimeUnit.DAYS);
 
         for (int loop = 0; loop < close_loop; loop++) {
-            writerlist.getNext().closeWriter();
+            writerlist.get(loop).closeWriter();
         }
     }
 
-    private void makePool(CircularLinkedList<tF> writerlist) throws CloneNotSupportedException {
+    private void makePool(List<tF> writerlist) throws CloneNotSupportedException {
         for (int loop = 0; loop < TOTAL_THREADS; loop++)
             service.execute(new InsertSQLCreater(ts.getTbname(),
                     (TableStructure) ts.clone(),
                     linenumber[loop],
-                    writerlist.getNext()));
+                    writerlist.get(loop)));
     }
 
-    private tF getWriter(String tablename, String charset) throws IOException {
+    private tF getWriter(String tablename) throws IOException {
         String filename = env_properties.getEnvironment("baseFileDir") + tablename + "." + env_properties.getEnvironment("toDB");
         if (env_properties.getEnvironment("toDB").equals("jdbc")) {
             return new textFileJDBC();
         } else switch(env_properties.getEnvironment("WriterEngine")){
             case "apache":
-                return new ApacheFileWriter(filename, charset);
-            case "sysout":
+                return new ApacheFileWriter(filename);
+            case "screenout":
                 return new SystemoutWriter();
             default :
                 return new textFileWriter(filename);

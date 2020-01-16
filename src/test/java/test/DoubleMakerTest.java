@@ -17,7 +17,7 @@ public class DoubleMakerTest {
 
     private static String Double2String(Double d) {
         String s[] = d.toString().split("\\.");
-        if (s[1].toString().indexOf("E") == -1)
+        if (s[1].indexOf("E") == -1)
             return s[0];
 
         String s1[] = s[1].split("E");

@@ -5,12 +5,13 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>zhzm</groupId>
     <artifactId>DBDF</artifactId>
-    <version>1.4.1</version>
+    <version>1.4.2</version>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <maven.configuration.encoding>UTF-8</maven.configuration.encoding>
+        <projectname>DatabaseDataCreater</projectname>
     </properties>
 
     <build>
@@ -22,6 +23,8 @@
                 <configuration>
                     <createDependencyReducedPom>true</createDependencyReducedPom>
                     <minimizeJar>true</minimizeJar>
+                    <shadedArtifactAttached>true</shadedArtifactAttached>
+                    <shadedClassifierName>shaded</shadedClassifierName>
                     <filters>
                         <filter>
                             <artifact>*:*</artifact>
@@ -36,6 +39,7 @@
                                 <exclude>META-INF/*.ec</exclude>
                                 <exclude>META-INF/MSFTSIG.SF</exclude>
                                 <exclude>META-INF/MSFTSIG.RSA</exclude>
+                                <exclude>${project.groupId}:${project.artifactId}</exclude>
                             </excludes>
                         </filter>
                     </filters>
@@ -48,6 +52,7 @@
                                 <X-Compile-Target-JDK>11</X-Compile-Target-JDK>
                             </manifestEntries>
                         </transformer>
+                        <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
                     </transformers>
                 </configuration>
                 <executions>
@@ -55,6 +60,23 @@
                         <phase>package</phase>
                         <goals>
                             <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.akathist.maven.plugins.launch4j</groupId>
+                <artifactId>launch4j-maven-plugin</artifactId>
+                <version>1.7.25</version>
+                <configuration>
+                    <infile>${project.basedir}/src/main/resources/launch4j-config.xml</infile>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>l4j-clui</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>launch4j</goal>
                         </goals>
                     </execution>
                 </executions>
