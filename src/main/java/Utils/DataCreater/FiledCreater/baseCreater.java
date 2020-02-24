@@ -68,6 +68,8 @@ public abstract class baseCreater {
             case "string":
                 return StringSpecificationOutput.specString(
                         appendStr, ls.getRange()[0]);
+            case "date":
+                return appendStr;
             default:
                 return null;
         }

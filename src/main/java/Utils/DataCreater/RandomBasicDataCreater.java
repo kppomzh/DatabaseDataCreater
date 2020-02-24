@@ -145,7 +145,7 @@ public class RandomBasicDataCreater {
 
             decS = privateRandom.RandomBInteger(BigInteger.ZERO, decMax);
             String decString=decS.toString();
-            if (intS.compareTo(intMin) == 0) {
+            if (intS.compareTo(intMin) == 0&&numberarea0!=null) {
                 //在intMin的时候，只有decString更长的情况下才更可能落在区间范围里
                 inlengthEquals=numberarea0[1].length()>decString.length();
                 if(numberarea0.length > 1){
@@ -163,7 +163,7 @@ public class RandomBasicDataCreater {
                 if(inlengthEquals){
                     intS.add(BigInteger.ONE);
                 }
-            } else if (intS.compareTo(intMax) == 0) {
+            } else if (intS.compareTo(intMax) == 0&&numberarea1!=null) {
                 //在intMax的时候，只有decString更短的情况下才更可能落在区间范围里
                 inlengthEquals=numberarea1[1].length()<decString.length();
                 if(numberarea1.length > 1){
