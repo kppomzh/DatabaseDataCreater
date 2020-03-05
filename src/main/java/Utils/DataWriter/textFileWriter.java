@@ -5,12 +5,11 @@ import Utils.env_properties;
 import java.io.*;
 
 public class textFileWriter extends tF{
-    private BufferedOutputStream bos;
     private BufferedWriter bw;
 
     public textFileWriter(String Filename) throws IOException {
         super(Filename);
-        bos = new BufferedOutputStream(new FileOutputStream(textfile, false), 32768);//now 32768 is best
+        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(textfile, false), 32768);//now 32768 is best
         //
         bw = new BufferedWriter(new OutputStreamWriter(bos, env_properties.getEnvirmentCharset()), 32768);//now 32768 is best
     }

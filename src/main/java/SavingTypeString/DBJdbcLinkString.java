@@ -37,10 +37,10 @@ public class DBJdbcLinkString {
     }
 
     public static String getJdbcLinkString(String DBname) {
-        return dBjdbcString.DBjdbcLinkCorresponding.get(DBname.toLowerCase());
+        return DBjdbcLinkCorresponding.get(DBname.toLowerCase());
     }
 
     public static String getDefaultJDBCPort(String DBname) {
-        return dBjdbcString.DBjdbcDefaultPort.get(DBname.toLowerCase());
+        return DBjdbcDefaultPort.get(DBname.toLowerCase());
     }
 }

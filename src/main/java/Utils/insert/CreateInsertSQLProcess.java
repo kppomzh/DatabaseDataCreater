@@ -1,6 +1,5 @@
 package Utils.insert;
 
-import Utils.DataCreater.InsertSQLCreater;
 import Utils.DataWriter.*;
 import Utils.env_properties;
 import dataStructure.TableStructure;
@@ -59,7 +58,7 @@ public class CreateInsertSQLProcess {
 
     private void makePool(List<tF> writerlist) throws CloneNotSupportedException {
         for (int loop = 0; loop < TOTAL_THREADS; loop++)
-            service.execute(new InsertSQLCreater(ts.getTbname(),
+            service.execute(new SQLCreaterRunner(
                     (TableStructure) ts.clone(),
                     linenumber[loop],
                     writerlist.get(loop)));

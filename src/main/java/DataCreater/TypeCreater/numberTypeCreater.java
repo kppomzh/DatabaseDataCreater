@@ -1,0 +1,93 @@
+package DataCreater.TypeCreater;
+
+import Utils.privateRandom;
+
+import java.math.BigDecimal;
+import java.math.BigInteger;
+
+public class numberTypeCreater implements baseTypeCreater {
+    private BigInteger intMax,intMin;
+    private BigDecimal decMax,decMin;
+    private int decLength;
+    private boolean canbeNagetive,hasDec=false,isInt=false;
+
+    public numberTypeCreater(int intRange, int decRange, String[] Numberarea, boolean nagetive){
+        canbeNagetive=nagetive;
+
+        if(intRange==0){
+            intRange=privateRandom.RandomInteger(1,9);
+            isInt=true;
+        }
+        intMax =BigInteger.valueOf(Double.valueOf(Math.pow(10,intRange)).longValue()).divide(BigInteger.ONE);
+        intMin=BigInteger.ZERO;
+        if(decRange>0){
+            hasDec=true;
+            decLength=2+decRange;
+        }
+        else
+            decLength=0;
+
+
+        if(Numberarea[0]!=null){
+            String[] areaMax=Numberarea[0].split("\\."),areaMin=Numberarea[1].split("\\.");
+            if(areaMax.length==1){
+                decMax=BigDecimal.ZERO;
+                decMin=BigDecimal.ZERO;
+            }
+            else{
+                decMax=new BigDecimal("0."+areaMax[1]);
+                decMin=new BigDecimal("0."+areaMin[1]);
+            }
+
+            BigInteger intAreaMax=new BigInteger(areaMax[0]),intAreaMin=new BigInteger(areaMin[0]);
+
+            canbeNagetive|=intAreaMin.compareTo(intMin)<0;
+            intMin=intAreaMin;
+
+            intMax=intAreaMax.compareTo(intMax)<0?intAreaMax:intMax;
+        }
+    }
+
+    private String getNumber(){
+        StringBuilder res=new StringBuilder();
+        BigInteger intres;
+        BigDecimal decres = null;
+
+        if(canbeNagetive&&privateRandom.RandomBool()){
+            res.append('-');
+        }
+
+        if(isInt){
+            intres=new BigInteger(privateRandom.RandomInteger(intMin.intValue(),intMax.intValue()).toString());
+        }
+        else {
+            intres=privateRandom.RandomBInteger(intMin, intMax);
+        }
+
+        if(hasDec){
+            decres=privateRandom.RandomBDecimal();
+            if(intres.compareTo(intMax)==0){
+                if(decres.compareTo(decMax) > 0){
+                    intres.subtract(BigInteger.ONE);
+                }
+            }
+            else if(intres.compareTo(intMin)==0){
+                if(decres.compareTo(decMin) < 0){
+                    intres.add(BigInteger.ONE);
+                }
+            }
+        }
+
+        res.append(intres.toString());
+        if(hasDec) {
+            res.append('.');
+            res.append(decres.toPlainString(), 2, decLength);
+        }
+        return res.toString();
+    }
+
+    @Override
+    public String getString(Object... option) {
+        return getNumber();
+    }
+}

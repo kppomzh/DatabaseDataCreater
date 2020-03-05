@@ -205,9 +205,6 @@ public class Word_Segment {
     private boolean charStop(Coolean nowstatus) {
         if (status.equals(Coolean.stop))
             return false;
-        else if (status.equals(nowstatus) && status.equals(Coolean.letter))
-            return false;
-        else
-            return true;
+        else return !status.equals(nowstatus) || !status.equals(Coolean.letter);
     }
 }

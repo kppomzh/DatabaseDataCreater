@@ -114,6 +114,12 @@
             <artifactId>maven-model</artifactId>
             <version>3.6.3</version>
         </dependency>
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>16.0.3</version>
+            <scope>compile</scope>
+        </dependency>
 
         <!--jdbc jars-->
         <dependency>

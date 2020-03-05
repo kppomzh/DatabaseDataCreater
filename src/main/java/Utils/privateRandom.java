@@ -1,5 +1,6 @@
 package Utils;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.locks.Lock;
@@ -37,8 +38,8 @@ public class privateRandom {
             return start;
 
         double Return = Math.abs(rm.nextDouble()*3);
-        if (Return > end - start) {
-            Return = Return % (end - start);
+        if (Return > minunum) {
+            Return = Return % minunum;
         }
         return Return + start;
     }
@@ -47,7 +48,7 @@ public class privateRandom {
         return rm.nextBoolean();
     }
 
-    public static int RandomInteger(int start,int end){
+    public static Integer RandomInteger(int start,int end){
         counter();
 
         if (end<=start)
@@ -77,6 +78,10 @@ public class privateRandom {
         }
 
         return res.add(start);
+    }
+
+    public static BigDecimal RandomBDecimal(){
+        return new BigDecimal(rm.nextGaussian()%1).abs();
     }
 
     /**

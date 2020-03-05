@@ -2,9 +2,8 @@ package test;
 
 import CreateSQLParser.Lex.Word;
 import CreateSQLParser.Plan.RegularPlanMaker;
-import dataStructure.RegularClasses.Regular;
+import DataCreater.RegularCreater.Regular;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class RegularTest {
@@ -25,7 +24,7 @@ public class RegularTest {
 
         try {
             Regular r = RegularPlanMaker.makeRegular(regular);
-            System.out.println(r.getGeneratedString());
+            System.out.println(r.getString());
             Assert.fail();
         } catch (Exception e) {
             System.out.println(e.getMessage());

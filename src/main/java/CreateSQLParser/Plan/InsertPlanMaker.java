@@ -5,7 +5,7 @@ import Exception.DataException.TableStrucDataException;
 import Exception.TypeException.CompareException;
 import Exception.TypeException.MultiKeywordException;
 import Exception.TypeException.RegularinPlanException;
-import dataStructure.RegularClasses.Regular;
+import DataCreater.RegularCreater.Regular;
 import dataStructure.TableStructure;
 import Exception.BaseException;
 

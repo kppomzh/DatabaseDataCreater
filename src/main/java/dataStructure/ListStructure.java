@@ -1,6 +1,7 @@
 package dataStructure;
 
-import dataStructure.RegularClasses.Regular;
+import DataCreater.TypeCreater.baseTypeCreater;
+import DataCreater.RegularCreater.Regular;
 
 /**
  * 表字段数据结构
@@ -13,8 +14,8 @@ public class ListStructure implements Cloneable {
     private boolean isSingal,isPrimary;
     private boolean unmake;//是否对本字段进行填充
 
-    private boolean isStringType;//已命名的默认字符串格式
-    private String defaultType;//默认字符串格式
+    private boolean isAdvancedType;//已命名的默认字符串格式
+    private String advancedType;//默认字符串格式
 
     private boolean isDefault;
     private String defaultStr;//默认值
@@ -24,6 +25,7 @@ public class ListStructure implements Cloneable {
 
     private boolean isInline;//是否采用inline方式填充
     private String[] inlineObject;
+    private baseTypeCreater creater;
 
     /**
      * @param listname 字段名称
@@ -44,9 +46,9 @@ public class ListStructure implements Cloneable {
         this.defaultStr = defaultStr;
     }
 
-    public void setDefaultType(String defaultType,boolean isStringType) {
-        this.defaultType = defaultType;
-        this.isStringType=isStringType;
+    public void setAdvancedType(String advancedType, boolean isStringType) {
+        this.advancedType = advancedType;
+        this.isAdvancedType =isStringType;
     }
 
     public void setRange(int[] range) {
@@ -82,8 +84,8 @@ public class ListStructure implements Cloneable {
         return super.clone();
     }
 
-    public String getDefaultType() {
-        return defaultType;
+    public String getAdvancedType() {
+        return advancedType;
     }
 
     public String getListname() {
@@ -130,18 +132,26 @@ public class ListStructure implements Cloneable {
     }
 
     public String getRegularStr() {
-        return regularStructure.getGeneratedString();
+        return regularStructure.getString();
     }
 
     public void setRegularStr(Regular regular) {
         this.regularStructure = regular;
     }
 
-    public boolean isStringType() {
-        return isStringType;
+    public boolean isAdvancedType() {
+        return isAdvancedType;
     }
 
     public boolean isPrimary() {
         return isPrimary;
+    }
+
+    public void setCreater(baseTypeCreater creater) {
+        this.creater = creater;
+    }
+
+    public String getString(){
+        return creater.getString();
     }
 }

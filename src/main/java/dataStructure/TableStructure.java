@@ -1,7 +1,8 @@
 package dataStructure;
 
 import Exception.DataException.TableStrucDataException;
-import dataStructure.RegularClasses.Regular;
+import DataCreater.RegularCreater.Regular;
+import Utils.Factorys.TypeCreaterFactory;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ public class TableStructure implements Cloneable {
         startPrimary=BigInteger.ZERO;
     }
 
-    public void addlist(String listname, String ListType, String defaultDataType, boolean isSingal, boolean isDefault, boolean isStringType, String defaultStr, int[] Range, String[] Numberarea, List<String> inlineObject, boolean unmake, boolean isRegular, Regular regular, boolean isPrimary) throws TableStrucDataException {
+    public void addlist(String listname, String ListType, String defaultDataType, boolean isSingal, boolean isDefault, boolean isAdvancedType, String defaultStr, int[] Range, String[] Numberarea, List<String> inlineObject, boolean unmake, boolean isRegular, Regular regular, boolean isPrimary) throws TableStrucDataException {
         if (Range[0] > MaxListRange)
             MaxListRange = Range[0];
         if(hasPrimary&&isPrimary){
@@ -33,7 +34,7 @@ public class TableStructure implements Cloneable {
             hasPrimary=hasPrimary||isPrimary;
         }
         ListStructure ls = new ListStructure(listname, ListType, isSingal, isPrimary, isDefault, isRegular, defaultStr);
-        ls.setDefaultType(defaultDataType,isStringType);
+        ls.setAdvancedType(defaultDataType,isAdvancedType);
         ls.setRange(Range);
         ls.setNumberarea(Numberarea);
         ls.setRegularStr(regular);
@@ -47,6 +48,7 @@ public class TableStructure implements Cloneable {
             listnamessb.append(listname);
         } else
             this.unmake = true;
+        ls.setCreater(TypeCreaterFactory.getTypeCreater(ls));
         listStructureList.add(ls);
     }
 
@@ -93,10 +95,6 @@ public class TableStructure implements Cloneable {
 
     public void setTbname(String tbname) {
         this.tbname = tbname;
-    }
-
-    public int getMaxListRange() {
-        return MaxListRange;
     }
 
     public boolean isUnmake() {

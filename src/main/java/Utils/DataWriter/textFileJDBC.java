@@ -2,7 +2,6 @@ package Utils.DataWriter;
 
 import Utils.DBConn.getConn;
 
-import java.io.IOException;
 import java.sql.Statement;
 
 public class textFileJDBC extends tF {

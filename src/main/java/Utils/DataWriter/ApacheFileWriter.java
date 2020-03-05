@@ -7,15 +7,13 @@ import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.nio.charset.Charset;
 
 public class ApacheFileWriter extends tF {
-    private BufferedOutputStream bos;
     private WriterOutputStream bw;
 
     public ApacheFileWriter(String Filename) throws IOException {
         super(Filename);
-        bos = new BufferedOutputStream(new FileOutputStream(textfile, false), 32768);
+        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(textfile, false), 32768);
         //暂定512K缓存，一般硬盘测试的中等数据块
         bw = new WriterOutputStream(new OutputStreamWriter(bos), env_properties.getEnvirmentCharset(),32768,false);
     }

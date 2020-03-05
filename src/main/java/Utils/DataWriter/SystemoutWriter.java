@@ -1,8 +1,7 @@
 package Utils.DataWriter;
 
 public class SystemoutWriter extends tF {
-    public SystemoutWriter() {
-    }
+    public SystemoutWriter() {}
 
     @Override
     public boolean WriteLine(String insert) {
@@ -11,7 +10,5 @@ public class SystemoutWriter extends tF {
     }
 
     @Override
-    public void closeWriter() {
-
-    }
+    public void closeWriter() {}
 }

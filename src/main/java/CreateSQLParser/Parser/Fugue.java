@@ -2,7 +2,7 @@ package CreateSQLParser.Parser;
 
 import CreateSQLParser.Lex.Word;
 import SavingTypeString.DataType;
-import Utils.DataCreater.templet.CustomStringtypeConfigLoader;
+import DataCreater.templet.CustomStringtypeConfigLoader;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -103,8 +103,8 @@ public class Fugue {
                         w.setName("defaultStr");
                         break;
                     case "stringtype":
-                        if(cscl.getCustomStringtypes().containsKey(w.getName())){
-                            w.setSubstance(cscl.getCustomStringtypes().getProperty(w.getName()));
+                        if(CustomStringtypeConfigLoader.getCustomStringtypes().containsKey(w.getName())){
+                            w.setSubstance(CustomStringtypeConfigLoader.getCustomStringtypes().getProperty(w.getName()));
                             w.setName("isRegular");
                         }
                         else {

@@ -1,9 +1,9 @@
 package CreateSQLParser.Plan;
 
 import CreateSQLParser.Lex.Word;
+import DataCreater.RegularCreater.*;
 import Exception.RegularException.*;
 import Utils.Factorys.getRegularElementsFactory;
-import dataStructure.RegularClasses.*;
 
 import java.util.Stack;
 import Exception.BaseException;

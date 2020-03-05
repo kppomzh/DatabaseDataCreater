@@ -110,15 +110,15 @@ public class env_properties {
     }
 
     public static String getEnvironment(String envstring) {
-        return init.env.getProperty(envstring).strip();
+        return env.getProperty(envstring).strip();
     }
 
     public static void setEnvironment(String envName, String envstring) {
-        init.env.setProperty(envName, envstring);
+        env.setProperty(envName, envstring);
     }
 
     public static Properties getJDBCEnv() {
-        return init.env;
+        return env;
     }
 
     public static Charset getEnvirmentCharset() {
