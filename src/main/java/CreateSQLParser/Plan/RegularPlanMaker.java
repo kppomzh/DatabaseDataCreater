@@ -9,12 +9,12 @@ import java.util.Stack;
 import Exception.BaseException;
 
 public class RegularPlanMaker {
-    public static Regular makeRegular(Word regular) throws BaseException {
+    public static MetaString makeRegular(Word regular) throws BaseException {
         Stack<MetaString> metaStack = new Stack<>();
         MetaString root = new MetaString(), temp = root;
         StringBuilder sb = new StringBuilder();
         String regularStr = regular.getSubstance();
-        Word tempreg=null;
+        Word tempreg;
 
         int loop = 0;
 

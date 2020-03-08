@@ -23,6 +23,8 @@ public class numberTypeCreater implements baseTypeCreater {
         if(decRange>0){
             hasDec=true;
             decLength=2+decRange;
+            decMax=BigDecimal.ZERO;
+            decMin=BigDecimal.ZERO;
         }
         else
             decLength=0;
@@ -68,12 +70,12 @@ public class numberTypeCreater implements baseTypeCreater {
             decres=privateRandom.RandomBDecimal();
             if(intres.compareTo(intMax)==0){
                 if(decres.compareTo(decMax) > 0){
-                    intres.subtract(BigInteger.ONE);
+                    intres=intres.subtract(BigInteger.ONE);
                 }
             }
             else if(intres.compareTo(intMin)==0){
                 if(decres.compareTo(decMin) < 0){
-                    intres.add(BigInteger.ONE);
+                    intres=intres.add(BigInteger.ONE);
                 }
             }
         }

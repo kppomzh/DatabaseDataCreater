@@ -6,6 +6,8 @@ import Exception.TypeException.CompareException;
 import Exception.TypeException.MultiKeywordException;
 import Exception.TypeException.RegularinPlanException;
 import DataCreater.RegularCreater.Regular;
+import Utils.Factorys.TypeCreaterFactory;
+import dataStructure.ListStructure;
 import dataStructure.TableStructure;
 import Exception.BaseException;
 
@@ -21,7 +23,7 @@ public class InsertPlanMaker {
             setInline , isUnmake , isRegular,isStringType,isPrimary;
     int arraylocal, na;
     List<String> inlineObject;
-    Regular regular;
+    Word regular;
     String listname , type , defaultDataType , defaultStr ;
 
     public TableStructure makeStrusture(List<Word> words) throws BaseException, TableStrucDataException {
@@ -76,12 +78,7 @@ public class InsertPlanMaker {
                     break;
                 case "isRegular":
                     isRegular = true;
-                    try {
-                        regular = RegularPlanMaker.makeRegular(w);
-                    }
-                    catch (StringIndexOutOfBoundsException e){
-                        throw new RegularinPlanException(w,"正则表达式有未结束的子表达式。");
-                    }
+                    regular = w;
                     break;
                 case "defaultdatatype":
                     isStringType=true;
@@ -100,7 +97,24 @@ public class InsertPlanMaker {
                             throw new CompareException(w,"整型数不能有小数范围的定义。");
                         }
                         else {
-                            structure.addlist(listname, type, defaultDataType, isSingal, isDefault, isStringType, defaultStr, range, numberarea, inlineObject, isUnmake, isRegular, regular, isPrimary);
+                            ListStructure structurel=new ListStructure(listname,type);
+
+                            structurel.setAdvancedType(defaultDataType,isStringType);
+                            structurel.setRange(range);
+                            structurel.setNumberarea(numberarea);
+                            if(isRegular)
+                                structurel.setRegularStr(regular);
+                            if (inlineObject.size() != 0)
+                                structurel.setInlineObject(inlineObject.toArray(new String[0]));
+                            structurel.setUnmake(isUnmake);
+                            if(isDefault)
+                                structurel.setDefaultStr(defaultStr);
+                            structurel.setPrimary(isPrimary);
+                            //singal一定放在最后在设置，内部会有特性的冲突检查，如果存在default或者inline的话会屏蔽这两种特性
+                            structurel.setSingal(isSingal);
+
+                            structurel.setCreater(TypeCreaterFactory.getTypeCreater(structurel));
+                            structure.addList(structurel);
                             init();
                         }
                     }

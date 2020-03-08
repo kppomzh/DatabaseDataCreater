@@ -2,7 +2,6 @@ package DataCreater.FiledCreater;
 
 import Utils.StringSpecificationOutput;
 import Utils.env_properties;
-import Utils.privateRandom;
 import dataStructure.ListStructure;
 import dataStructure.TableStructure;
 
@@ -84,26 +83,16 @@ public abstract class baseFiledCreater {
     }
 
     protected String makeFiled(ListStructure ls) throws ClassNotFoundException {
-        String appendStr;
-        if (ls.isPrimary()) {
-            appendStr = ls.getString();
-        } else if (ls.isInline()) {//inline覆盖掉所有其他设置
-            int num = privateRandom.RandomInteger(0, ls.getInlinelength());
-            appendStr = ls.getInlineObject(num);
-        } else if ((!ls.isSingal()) && ls.isDefault() && privateRandom.RandomDouble(0, 1) <= 2 * Double.valueOf(env_properties.getEnvironment("defaultProportion"))) {
-            appendStr = ls.getDefaultStr();//当存在类似唯一约束的情况时将屏蔽默认值
-        } else if (ls.isAdvancedType()) {
-            if (!ls.getListType().equals("string"))
+        if (!ls.getListType().equals("string")) {
+            if (ls.isAdvancedType())
                 throw new ClassNotFoundException("非字符串类型不能使用stringtype关键字");
-            appendStr = ls.getString();
-        } else if (ls.isRegular()) {
-            if (!ls.getListType().equals("string"))
-                throw new ClassNotFoundException("非字符串类型不能使用regulartype关键字");
-            appendStr = ls.getRegularStr();
-        } else {
-            appendStr = ls.getString();
+            else if (ls.isRegular())
+                    throw new ClassNotFoundException("非字符串类型不能使用regulartype关键字");
         }
-        return appendStr;
+//        else if ((!ls.isSingal()) && ls.isDefault() && privateRandom.RandomDouble(0, 1) <= 2 * Double.valueOf(env_properties.getEnvironment("defaultProportion"))) {
+//            return ls.getDefaultStr();//当存在类似唯一约束的情况时将屏蔽默认值
+//        }
+        return ls.getString();
     }
 
     /**

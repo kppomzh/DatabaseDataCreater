@@ -22,7 +22,7 @@ public class SQLFiledCreater extends baseFiledCreater {
     }
 
     @Override
-    protected void packFiled(TableStructure table, StringBuilder out) throws Exception {
+    protected void packFiled(TableStructure table, StringBuilder out) throws ClassNotFoundException {
         ListStructure list;
         String appendStr;
 

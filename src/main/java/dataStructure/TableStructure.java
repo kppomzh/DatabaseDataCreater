@@ -1,8 +1,7 @@
 package dataStructure;
 
+import DataCreater.TypeCreater.Advanced.PrimaryKey;
 import Exception.DataException.TableStrucDataException;
-import DataCreater.RegularCreater.Regular;
-import Utils.Factorys.TypeCreaterFactory;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -16,6 +15,7 @@ public class TableStructure implements Cloneable {
     private int readnum = -1;
     private boolean unmake = false;//是否存在不需要填充的字段
     private boolean hasPrimary = false;
+    private ListStructure primaryList;
     private BigInteger startPrimary,primaryInterval;
 
     public TableStructure() {
@@ -24,31 +24,26 @@ public class TableStructure implements Cloneable {
         startPrimary=BigInteger.ZERO;
     }
 
-    public void addlist(String listname, String ListType, String defaultDataType, boolean isSingal, boolean isDefault, boolean isAdvancedType, String defaultStr, int[] Range, String[] Numberarea, List<String> inlineObject, boolean unmake, boolean isRegular, Regular regular, boolean isPrimary) throws TableStrucDataException {
-        if (Range[0] > MaxListRange)
-            MaxListRange = Range[0];
-        if(hasPrimary&&isPrimary){
+    public void addList(ListStructure ls) throws TableStrucDataException {
+        if(hasPrimary&&ls.isPrimary()){
             throw new TableStrucDataException("同一个表中不允许有两个主键");
         }
         else{
-            hasPrimary=hasPrimary||isPrimary;
+            if (ls.isPrimary()) {
+                hasPrimary=true;
+                primaryList=ls;
+            }
         }
-        ListStructure ls = new ListStructure(listname, ListType, isSingal, isPrimary, isDefault, isRegular, defaultStr);
-        ls.setAdvancedType(defaultDataType,isAdvancedType);
-        ls.setRange(Range);
-        ls.setNumberarea(Numberarea);
-        ls.setRegularStr(regular);
-        if (inlineObject.size() != 0)
-            ls.setInlineObject(inlineObject.toArray(new String[0]));
-        ls.setUnmake(unmake);
-        if (!unmake) {
+
+        if(ls.isUnmake()){
+            unmake=true;
+        } else{
             if (listnamessb.length() != 0)
                 listnamessb.append(',');
 
-            listnamessb.append(listname);
-        } else
-            this.unmake = true;
-        ls.setCreater(TypeCreaterFactory.getTypeCreater(ls));
+            listnamessb.append(ls.getListname());
+        }
+
         listStructureList.add(ls);
     }
 
@@ -75,17 +70,25 @@ public class TableStructure implements Cloneable {
     @Override
     public Object clone() throws CloneNotSupportedException {
         TableStructure newT = new TableStructure();
-        for (int loop = 0; loop < this.listStructureList.size(); loop++)
-            newT.listStructureList.add((ListStructure) this.listStructureList.get(loop).clone());
+        if(hasPrimary) {
+            this.startPrimary = this.startPrimary.add(this.primaryInterval);
+            newT.startPrimary = this.startPrimary;
+        }
+
+        for (int loop = 0; loop < this.listStructureList.size(); loop++) {
+            if(this.listStructureList.get(loop)==this.primaryList){
+                ListStructure copy= (ListStructure) this.primaryList.clone();
+                copy.setCreater(new PrimaryKey(startPrimary));
+                newT.listStructureList.add(copy);
+            } else {
+                newT.listStructureList.add((ListStructure) this.listStructureList.get(loop).clone());
+            }
+        }
         newT.tbname = this.tbname;
         newT.MaxListRange = this.MaxListRange;
         newT.listnamessb = this.listnamessb;
         newT.unmake = this.unmake;
         newT.hasPrimary=this.hasPrimary;
-        if(hasPrimary) {
-            this.startPrimary = this.startPrimary.add(this.primaryInterval);
-            newT.startPrimary = this.startPrimary;
-        }
         return newT;
     }
 
@@ -103,10 +106,6 @@ public class TableStructure implements Cloneable {
 
     public String getListnames() {
         return listnamessb.toString();
-    }
-
-    public BigInteger getStartPrimary() {
-        return startPrimary;
     }
 
     public void setPrimaryInterval(BigInteger primaryInterval) {

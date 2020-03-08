@@ -32,35 +32,20 @@ public class dateTypeCreater extends baseTypeCreaterImpl {
         sb.append(less10give0(date));
         sb.append(date);
 
-        sb.append(' ');
-        sb.append(less10give0(hour));
-        sb.append(hour);
-        sb.append(':');
-        sb.append(less10give0(minute));
-        sb.append(minute);
-        sb.append(':');
-        sb.append(less10give0(second));
-        sb.append(second);
-        if (outuse)
-            switch (env_properties.getEnvironment("toDB")) {
-                case "sql":
-                case "jdbc":
-                    sb.insert(0, "to_date('");
-                    sb.append("','yyyymmdd hh:mi:ss')");
-                    break;
-                case "csv":
-                    sb.insert(4, '-');
-                    sb.insert(7, '-');
-                    break;
-                case "json":
-                    sb.insert(4, '-');
-                    sb.insert(7, '-');
-                    sb.insert(0, '"');
-                    sb.append('"');
-                    break;
-                default:
-                    break;
-            }
+
+        if (outuse){
+            sb.insert(4, '-');
+            sb.insert(7, '-');
+            sb.append(' ');
+            sb.append(less10give0(hour));
+            sb.append(hour);
+            sb.append(':');
+            sb.append(less10give0(minute));
+            sb.append(minute);
+            sb.append(':');
+            sb.append(less10give0(second));
+            sb.append(second);
+        }
 
         return sb.toString();
     }
@@ -73,6 +58,6 @@ public class dateTypeCreater extends baseTypeCreaterImpl {
 
     @Override
     public String getString(Object... option) {
-        return getDate(option==null?true:(Boolean)option[0]);
+        return getDate(option.length==0?true:(Boolean)option[0]);
     }
 }
