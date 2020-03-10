@@ -1,30 +1,27 @@
 package test;
 
-import SavingTypeString.DBJdbcLinkString;
-import SavingTypeString.DBjdbcDriverString;
 import Utils.DBConn.getConn;
-import Utils.env_properties;
-import org.junit.Ignore;
 import org.junit.Test;
 
-import java.sql.*;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class jdbctest {
     @Test
 //    @Ignore
-    public void conntodbtest(String insert) throws SQLException {
+    public void conntodbtest() throws SQLException {
         getConn conn=new getConn();
 
         Statement stmt=conn.Stmt();
-        stmt.executeUpdate(insert);
+//        stmt.executeUpdate(insert);
         //ResultSet rs=
 //        while(rs.next()){
 //            ResultSetMetaData rsmd = rs.getMetaData();
 //            System.out.println(rs.getString("User"));
 //        }
 
-        System.out.println(stmt.execute("create table zhzm_dbdf_test(\n" +
-                "    CFG_ID numeric(12),\n" +
+        System.out.println(stmt.execute("create table test.zhzm_dbdf_test(\n" +
+                "    CFG_ID varchar(12) primary key,\n" +
                 "    FOUND_TIME numeric(12),\n" +
                 "    found_time_partition numeric(9),\n" +
                 "    RECV_TIME numeric(10),\n" +

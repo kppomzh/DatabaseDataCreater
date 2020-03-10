@@ -67,7 +67,7 @@ public abstract class baseCreater {
                 return StringSpecificationOutput.specString(
                         appendStr, ls.getRange()[0]);
             default:
-                return null;
+                return appendStr;
         }
     }
 

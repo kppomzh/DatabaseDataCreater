@@ -1,5 +1,7 @@
 package SavingTypeString;
 
+import com.ibm.db2.jcc.DB2Driver;
+
 import java.sql.Driver;
 import java.util.HashMap;
 
@@ -37,7 +39,7 @@ public class DBjdbcDriverString {
             case "sqlserver":
                 return new com.microsoft.sqlserver.jdbc.SQLServerDriver();
             case "db2":
-                return new com.ibm.db2.jcc.DB2Driver();
+                return new DB2Driver();
 //            case "mongodb":
 //                return new com.mongodb.connection.netty.jdbc.MongoDriver();
             case "postgresql":

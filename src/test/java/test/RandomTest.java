@@ -1,7 +1,6 @@
 package test;
 
 import Utils.privateRandom;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -26,10 +25,7 @@ public class RandomTest {
         return res.add(start);
     }
     public static BigDecimal RandomBDecimal(String start, String end){
-        BigDecimal res=new BigDecimal(RandomBInteger(start,end));
-//        res=res.add(BigDecimal.valueOf(privateRandom.RandomGaussian()));
-
-        return res;
+        return new BigDecimal(RandomBInteger(start,end));
     }
 
 //    @Ignore
@@ -37,10 +33,10 @@ public class RandomTest {
     public void getRandomTest(){
         RandomTest rt=new RandomTest();
         for (int i = 0; i < 100; i++) {
-            System.out.println(rt.RandomBInteger("0","1000"));
+            System.out.println(RandomBInteger("0","1000"));
         }
 
-        System.out.println(rt.RandomBDecimal("100","1000"));
+        System.out.println(RandomBDecimal("100","1000"));
     }
 
     @Test
