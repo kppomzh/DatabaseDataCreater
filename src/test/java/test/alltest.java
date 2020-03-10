@@ -15,13 +15,13 @@ import java.util.zip.ZipEntry;
 //这里除了参数是手动写死的之外其他部分和正式的没有区别
 public class alltest {
     final static int ci = 5;
-    final static String testfile="E:\\datafile\\download\\s3_2_tableCreates.sql";
+    final static String testfile = "E:\\datafile\\download\\s3_2_tableCreates.sql";
 
     @Test
     public void typetest() {
-        Service.main(new String[]{"-n", "5", "-f", "zhaohuang.sql", "-i", "sql","--set","WriterEngine,screenout"});
-        Service.main(new String[]{"-n", "5", "-f", "zhaohuang.sql", "-i", "json","--set","WriterEngine,screenout"});
-        Service.main(new String[]{"-n", "5", "-f", "zhaohuang.sql", "-i", "csv","--set","WriterEngine,screenout"});
+        Service.main(new String[]{"-n", "5", "-f", "zhaohuang.sql", "-i", "sql", "--set", "WriterEngine,screenout"});
+        Service.main(new String[]{"-n", "5", "-f", "zhaohuang.sql", "-i", "json", "--set", "WriterEngine,screenout"});
+        Service.main(new String[]{"-n", "5", "-f", "zhaohuang.sql", "-i", "csv", "--set", "WriterEngine,screenout"});
     }
 
     @Test
@@ -62,7 +62,7 @@ public class alltest {
     @Ignore
     @Test
     public void JDBCWriteFullTimeTest() throws SQLException {
-        env_properties.setEnvironment("toDB","jdbc");
+        env_properties.setEnvironment("toDB", "jdbc");
         int[] insertnum = {10000};//2500, 5000, 10000,
         for (int value : insertnum) {
             testFunc.PerformanceBase(ci, 10000000, value);
@@ -71,8 +71,8 @@ public class alltest {
 
     @Test
     public void MultiThreadOneFileTest() throws SQLException {
-        env_properties.setEnvironment("TOTAL_THREADS","3");
-        testFunc.PerformanceBase(1,15000,15000);
+        env_properties.setEnvironment("TOTAL_THREADS", "3");
+        testFunc.PerformanceBase(1, 15000, 15000);
     }
 
 }

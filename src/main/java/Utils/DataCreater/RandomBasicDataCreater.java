@@ -94,8 +94,6 @@ public class RandomBasicDataCreater {
         if (outuse) switch (env_properties.getEnvironment("toDB")) {
             case "sql":
             case "jdbc":
-                sb.insert(0, "to_date(\'");
-                sb.append("\',\'yyyymmdd hh:mi:ss\')");
                 break;
             case "csv":
                 sb.insert(4, '-');
