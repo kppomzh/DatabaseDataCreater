@@ -46,8 +46,7 @@ class objpool {
     public GenericObjectPool<Random> pool;
 
     public objpool(int poolSize) {
-//        pool=new GenericObjectPool<Random>();
-        GenericObjectPoolConfig conf = new GenericObjectPoolConfig();
+        GenericObjectPoolConfig<Random> conf = new GenericObjectPoolConfig<>();
         conf.setMaxIdle(poolSize);
         conf.setMaxTotal(Integer.valueOf(env_properties.getEnvironment("nCPU")));
         pool = new GenericObjectPool<>(new RandomPooledFactory(), conf);
@@ -82,9 +81,7 @@ class objpool {
     }
 
     public BigInteger RandomBInteger(){
-        BigInteger res=new BigInteger(200,random);
-
-        return res;
+        return new BigInteger(200,random);
     }
 }
 

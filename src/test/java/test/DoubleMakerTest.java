@@ -1,12 +1,9 @@
 package test;
 
-import Utils.privateRandom;
-import org.junit.Test;
-
-import java.util.*;
+import java.util.Random;
 
 public class DoubleMakerTest {
-    public static void main(String ar[])
+    public static void main(String[] ar)
     {
         Double d=47385974985974885745756376675598.65347676763765376;
         System.out.println(d);
@@ -16,11 +13,11 @@ public class DoubleMakerTest {
     }
 
     private static String Double2String(Double d) {
-        String s[] = d.toString().split("\\.");
-        if (s[1].toString().indexOf("E") == -1)
+        String[] s = d.toString().split("\\.");
+        if (s[1].indexOf("E") == -1)
             return s[0];
 
-        String s1[] = s[1].split("E");
+        String[] s1 = s[1].split("E");
         StringBuilder res=new StringBuilder(s[0]);
         res.append(s1[0]);
         int length = Integer.valueOf(s1[1]);
