@@ -6,7 +6,6 @@ create table zhzm_DBDF_test(
     trans_proto string default "17" ,
     addr_type number(1) {4,6},
     d_ip char(16) stringtype c_ip default  "192.168.0.2",
-    s_ip string(16) stringtype a_ip default  "192.168.0.3",
     d_port string(5) {"1234","8080","8088","1236"},
     service int(2),
     entrance_id decimal(2,2),
