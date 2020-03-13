@@ -12,7 +12,7 @@
   <lib>w32api/libuser32.a</lib>
   <lib>w32api/libadvapi32.a</lib>
   <lib>w32api/libshell32.a</lib>
-  <jar>D:\Document\OneDrive\CodeRepo\DatabaseDataCreater\target\DBDF-1.4.2-shaded.jar</jar>
+  <jar>D:\Document\OneDrive\CodeRepo\DatabaseDataCreater\target\DBDF-1.4.3-shaded.jar</jar>
   <outfile>D:\Document\OneDrive\CodeRepo\DatabaseDataCreater\target\DBDF.exe</outfile>
   <errTitle>Error</errTitle>
   <cmdLine></cmdLine>
