@@ -19,7 +19,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.1</version>
+                <version>3.2.2</version>
                 <configuration>
                     <createDependencyReducedPom>true</createDependencyReducedPom>
                     <minimizeJar>true</minimizeJar>
@@ -106,7 +106,7 @@
         <dependency>
             <groupId>com.ibm.icu</groupId>
             <artifactId>icu4j</artifactId>
-            <version>64.2</version>
+            <version>65.1</version>
         </dependency>
         <dependency>
             <groupId>org.apache.maven</groupId>
@@ -134,7 +134,7 @@
         <dependency>
             <groupId>com.microsoft.sqlserver</groupId>
             <artifactId>mssql-jdbc</artifactId>
-            <version>8.1.1.jre11-preview</version>
+            <version>8.2.1.jre11</version>
         </dependency>
         <dependency>
             <groupId>com.ibm.db2</groupId>
@@ -155,7 +155,7 @@
         <dependency>
             <groupId>com.facebook.presto</groupId>
             <artifactId>presto-jdbc</artifactId>
-            <version>[0.229,)</version>
+            <version>0.233-SNAPSHOT</version>
         </dependency>
         <!--        <dependency>-->
         <!--            <groupId>org.mongodb</groupId>-->
