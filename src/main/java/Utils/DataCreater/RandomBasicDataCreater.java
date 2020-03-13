@@ -96,14 +96,9 @@ public class RandomBasicDataCreater {
             case "jdbc":
                 break;
             case "csv":
-                sb.insert(4, '-');
-                sb.insert(7, '-');
-                break;
             case "json":
                 sb.insert(4, '-');
                 sb.insert(7, '-');
-                sb.insert(0, '"');
-                sb.append('"');
                 break;
             default:
                 break;
