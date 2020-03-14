@@ -84,33 +84,28 @@ public class RandomBasicDataCreater {
         sb.append(less10give0(date));
         sb.append(date);
 
-        sb.append(' ');
-        sb.append(less10give0(hour));
-        sb.append(hour);
-        sb.append(':');
-        sb.append(less10give0(minute));
-        sb.append(minute);
-        sb.append(':');
-        sb.append(less10give0(second));
-        sb.append(second);
-        if (outuse) switch (env_properties.getEnvironment("toDB")) {
-            case "sql":
-            case "jdbc":
-                sb.insert(0, "to_date(\'");
-                sb.append("\',\'yyyymmdd hh:mi:ss\')");
-                break;
-            case "csv":
-                sb.insert(4, '-');
-                sb.insert(7, '-');
-                break;
-            case "json":
-                sb.insert(4, '-');
-                sb.insert(7, '-');
-                sb.insert(0, '"');
-                sb.append('"');
-                break;
-            default:
-                break;
+        if (outuse) {
+            switch (env_properties.getEnvironment("toDB")) {
+                case "sql":
+                case "jdbc":
+                    break;
+                case "csv":
+                case "json":
+                    sb.insert(4, '-');
+                    sb.insert(7, '-');
+                    break;
+                default:
+                    break;
+            }
+            sb.append(' ');
+            sb.append(less10give0(hour));
+            sb.append(hour);
+            sb.append(':');
+            sb.append(less10give0(minute));
+            sb.append(minute);
+            sb.append(':');
+            sb.append(less10give0(second));
+            sb.append(second);
         }
 
         return sb.toString();
@@ -141,46 +136,12 @@ public class RandomBasicDataCreater {
 
         if (decRange > 0) {
             BigInteger decS;
-            boolean inlengthEquals;
 
             decS = privateRandom.RandomBInteger(BigInteger.ZERO, decMax);
-            String decString=decS.toString();
-            if (intS.compareTo(intMin) == 0&&numberarea0!=null) {
-                //在intMin的时候，只有decString更长的情况下才更可能落在区间范围里
-                inlengthEquals=numberarea0[1].length()>decString.length();
-                if(numberarea0.length > 1){
-                    for (int i = 0; i < Math.min(decString.length(), numberarea0[1].length()); i++) {
-                        if(decString.charAt(i)<numberarea0[1].charAt(i)){
-                            inlengthEquals=true;
-                            break;
-                        }
-                        else if(decString.charAt(i)>numberarea0[1].charAt(i)){
-                            break;
-                        }
-                    }
-                }
-
-                if(inlengthEquals){
-                    intS.add(BigInteger.ONE);
-                }
-            } else if (intS.compareTo(intMax) == 0&&numberarea1!=null) {
-                //在intMax的时候，只有decString更短的情况下才更可能落在区间范围里
-                inlengthEquals=numberarea1[1].length()<decString.length();
-                if(numberarea1.length > 1){
-                    for (int i = 0; i < Math.min(decString.length(), numberarea1[1].length()); i++) {
-                        if(decString.charAt(i)>numberarea1[1].charAt(i)){
-                            inlengthEquals=true;
-                            break;
-                        }
-                        else if(decString.charAt(i)<numberarea1[1].charAt(i)){
-                            break;
-                        }
-                    }
-                }
-
-                if(inlengthEquals){
-                    intS.subtract(BigInteger.ONE);
-                }
+            if (intS.compareTo(intMin) == 0) {
+                intS.add(BigInteger.ONE);
+            } else if (intS.compareTo(intMax) == 0) {
+                intS.subtract(BigInteger.ONE);
             }
             sb.append(intS);
             sb.append('.');
