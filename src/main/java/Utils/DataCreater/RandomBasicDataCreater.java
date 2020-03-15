@@ -112,7 +112,7 @@ public class RandomBasicDataCreater {
     }
 
     public String getNumber(int intRange, int decRange, String[] Numberarea) {
-        String[] numberarea0 = Numberarea[0]==null?null:Numberarea[0].split("\\."), numberarea1 = Numberarea[1]==null?null: Numberarea[1].split("\\.");
+        String[] numberarea0 = Numberarea[0]==null?new String[0]:Numberarea[0].split("\\."), numberarea1 = Numberarea[1]==null?new String[0]: Numberarea[1].split("\\.");
 
         BigInteger area1 = Numberarea[0] == null ? BigInteger.ZERO : new BigInteger(numberarea0[0]), area2 = Numberarea[1] == null ? BigInteger.ZERO : new BigInteger(numberarea1[0]);
 
@@ -136,12 +136,46 @@ public class RandomBasicDataCreater {
 
         if (decRange > 0) {
             BigInteger decS;
+            boolean inlengthEquals=false;
 
             decS = privateRandom.RandomBInteger(BigInteger.ZERO, decMax);
+            String decString=decS.toString();
             if (intS.compareTo(intMin) == 0) {
-                intS.add(BigInteger.ONE);
+                //在intMin的时候，只有decString更长的情况下才更可能落在区间范围里
+                if(numberarea0.length > 1){
+//                    inlengthEquals=numberarea0[1].length()>decString.length();
+                    for (int i = 0; i < Math.min(decString.length(), numberarea0[1].length()); i++) {
+                        if(decString.charAt(i)<numberarea0[1].charAt(i)){
+                            inlengthEquals=true;
+                            break;
+                        }
+                        else if(decString.charAt(i)>numberarea0[1].charAt(i)){
+                            break;
+                        }
+                    }
+                }
+
+                if(inlengthEquals){
+                    intS.add(BigInteger.ONE);
+                }
             } else if (intS.compareTo(intMax) == 0) {
-                intS.subtract(BigInteger.ONE);
+                //在intMax的时候，只有decString更短的情况下才更可能落在区间范围里
+                if(numberarea1.length > 1){
+//                    inlengthEquals=numberarea1[1].length()<decString.length();
+                    for (int i = 0; i < Math.min(decString.length(), numberarea1[1].length()); i++) {
+                        if(decString.charAt(i)>numberarea1[1].charAt(i)){
+                            inlengthEquals=true;
+                            break;
+                        }
+                        else if(decString.charAt(i)<numberarea1[1].charAt(i)){
+                            break;
+                        }
+                    }
+                }
+
+                if(inlengthEquals){
+                    intS.subtract(BigInteger.ONE);
+                }
             }
             sb.append(intS);
             sb.append('.');
