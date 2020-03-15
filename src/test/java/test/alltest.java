@@ -26,7 +26,7 @@ public class alltest {
 
     @Test
     public void versiontest() throws IOException {
-        JarFile jar = new JarFile("D:\\Document\\OneDrive\\CodeRepo\\DatabaseDataCreater\\target\\DBDF-1.4.0.jar");
+        JarFile jar = new JarFile("target/DBDF-1.4.0.jar");
 
         System.out.println(jar.getEntry("META-INF/maven/zhzm/DBDF/pom.properties"));
         ZipEntry je = jar.getEntry("META-INF/maven/zhzm/DBDF/pom.properties");
