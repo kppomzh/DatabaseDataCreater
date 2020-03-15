@@ -11,12 +11,14 @@ public class StringSpecificationOutput {
             intRange++;
         }
         if (nums[0].length() > intRange&& intRange>1) {
-            nums[0] = nums[0].substring(0, intRange - 1);
+            nums[0] = nums[0].substring(0, intRange);
         }
         Return = nums[0];
         if (nums.length > 1) {
             if (nums[1].length() > decRange)
-                Return = Return + '.' + nums[1].substring(0, decRange - 1);
+                Return = Return + '.' + nums[1].substring(0, decRange);
+            else
+                Return=num;
         }
         return Return;
     }
