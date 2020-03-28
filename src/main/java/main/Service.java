@@ -1,7 +1,7 @@
 package main;
 
 import Utils.FileLoader;
-import Utils.TableStructure.CreateTableStructure;
+import CreateSQLParser.TableStructure.CreateTableStructure;
 import Utils.env_properties;
 import Utils.insert.CreateInsertSQLProcess;
 import dataStructure.TableStructure;
