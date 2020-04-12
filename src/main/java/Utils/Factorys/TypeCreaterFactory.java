@@ -14,11 +14,13 @@ import dataStructure.ListStructure;
 public class TypeCreaterFactory {
     public static baseTypeCreater getTypeCreater(ListStructure list) throws BaseException {
         if (list.isPrimary()) {
-            return new PrimaryKey();
+            return new PrimaryKey(list);
         } else if (list.isDefault()) {
-            return new DefaultCreater(makeCreater(list), list.getDefaultStr(), Double.valueOf(env_properties.getEnvironment("defaultProportion")));
+            return new DefaultCreater(makeCreater(list), list, Double.valueOf(env_properties.getEnvironment("defaultProportion")));
         } else if (list.isUnmake()) {
             return null;
+        } else if (list.isInline()) {
+            return new InlineTypeCreater(list);
         } else {
             return makeCreater(list);
         }
@@ -36,9 +38,7 @@ public class TypeCreaterFactory {
             case "bool":
                 return new boolTypeCreater();
             case "string": {
-                if (list.isInline()) {
-                    return new InlineTypeCreater(list.getInlineObjects());
-                } else if (list.isRegular()) {
+                if (list.isRegular()) {
                     try {
                         return RegularPlanMaker.makeRegular(list.getRegularWord());
                     } catch (BaseException e) {

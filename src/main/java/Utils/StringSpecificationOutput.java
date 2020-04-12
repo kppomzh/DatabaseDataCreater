@@ -5,6 +5,9 @@ package Utils;
  */
 public class StringSpecificationOutput {
     public static String specNumber(String num, int intRange, int decRange) {
+        if(intRange==0 && decRange==0)
+            return num;
+
         String[] nums = num.split("\\.");
         String Return;
         if (nums[0].toCharArray()[0] == '-' || nums[0].toCharArray()[0] == '+') {
@@ -55,7 +58,7 @@ public class StringSpecificationOutput {
             default:
                 break;
         }
-        if (dates[1] != null) {
+        if (dates.length>1) {
             specstr.append(' ');
             timestrs = dates[1].split(":");
             if (Integer.valueOf(timestrs[0]) > 12)

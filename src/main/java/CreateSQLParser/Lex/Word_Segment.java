@@ -7,7 +7,7 @@ public class Word_Segment {
     LinkedList<Word> LW;//主SQL序列
     Coolean status;
     String toSQL;
-    int nowline=0,nowlist=0;
+    int nowline = 0, nowlist = 0;
 
     public Word_Segment() {
         LW = new LinkedList<>();
@@ -26,7 +26,7 @@ public class Word_Segment {
             boolean quotation = (c == '\"');
             boolean Stop = isStop | charStop | quotation | (toWord.length() != 0 && status.equals(Coolean.stop));
 
-            boolean isRegular=false;
+            boolean isRegular = false;
 
             if (Stop) { //
                 String isWord = toWord.toString().toLowerCase();//统一转换成小写
@@ -34,8 +34,8 @@ public class Word_Segment {
                     create_word_and_add(isWord, null);
                     toWord.delete(0, toWord.length());
 
-                    if(isWord.equalsIgnoreCase("regulartype")){
-                        isRegular=true;
+                    if (isWord.equalsIgnoreCase("regulartype")) {
+                        isRegular = true;
                     }
                 }
                 if (quotation) {
@@ -56,9 +56,9 @@ public class Word_Segment {
                 }
             }
 
-            if(isRegular){
+            if (isRegular) {
                 loop = loop + varnameinquotation(loop, toWord, '$');
-                create_word_and_add(toWord.toString(),null);
+                create_word_and_add(toWord.toString(), null);
                 toWord.delete(0, toWord.length());
             }
 
@@ -69,11 +69,11 @@ public class Word_Segment {
         return LW;
     }
 
-    private Coolean c_BuildWord(char c) throws Exception {
+    private Coolean c_BuildWord(char c) {
         switch (c) {
             case '\n':
                 nowline++;
-                nowlist=0;
+                nowlist = 0;
                 return Coolean.stop;
             case ' ':
                 nowlist++;
@@ -85,11 +85,7 @@ public class Word_Segment {
 
             case '(':
             case ')':
-//            case '!':
-//            case '%':
             case ',':
-//            case '/':
-//            case ':':
             case '\"':
             case '~':
             case '{':
@@ -169,7 +165,6 @@ public class Word_Segment {
             case '.':
             case '_':
             case '\''://单引号在纯create语句当中并没有作用，所以被拿来当作stringType的一个字符来识别
-//                return Coolean.letter;
             default:
                 return Coolean.letter;
         }
@@ -196,9 +191,9 @@ public class Word_Segment {
     //生成简单SQL关键字的方法
     private void create_word_and_add(String name, String substance) {
         Word word;
-        word = new Word(name, substance, status.equals(Coolean.mark),nowline,nowlist);
+        word = new Word(name, substance, status.equals(Coolean.mark), nowline, nowlist);
         LW.add(word);
-        nowlist=nowlist+name.length();
+        nowlist = nowlist + name.length();
     }
 
     //通过status和nowstatus的取值和相互关系得出是否继续读入字符

@@ -17,7 +17,7 @@ public class JsonFiledCreater extends baseFiledCreater {
     }
 
     @Override
-    protected void packFiled(TableStructure table, StringBuilder out) throws Exception {
+    protected void packFiled(TableStructure table, StringBuilder out) {
         ListStructure list;
         String appendStr;
 
@@ -28,12 +28,12 @@ public class JsonFiledCreater extends baseFiledCreater {
                 continue;
             }
             else {
-                appendStr = strSpecification(list, makeFiled(list));
+                appendStr = list.getString();
                 while (!addtoSet(list, appendStr)) {
-                    appendStr = strSpecification(list, makeFiled(list));
+                    appendStr = list.getString();
                 }
 
-                out.append("\n\"").append(list.getListname()).append("\": \"").append(appendStr).append("\",");
+                out.append("\n\"").append(list.getListname()).append("\": ").append(appendStr).append(",");
             }
         }
         out.deleteCharAt(out.length()-1);

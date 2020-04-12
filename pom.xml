@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>zhzm</groupId>
     <artifactId>DBDF</artifactId>
-    <version>1.4.3</version>
+    <version>1.5</version>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
@@ -19,10 +19,10 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.1</version>
+                <version>3.2.2</version>
                 <configuration>
                     <createDependencyReducedPom>true</createDependencyReducedPom>
-                    <minimizeJar>true</minimizeJar>
+                    <minimizeJar>false</minimizeJar>
                     <shadedArtifactAttached>true</shadedArtifactAttached>
                     <shadedClassifierName>shaded</shadedClassifierName>
                     <filters>
@@ -68,9 +68,6 @@
                 <groupId>com.akathist.maven.plugins.launch4j</groupId>
                 <artifactId>launch4j-maven-plugin</artifactId>
                 <version>1.7.25</version>
-                <configuration>
-                    <infile>${project.basedir}/src/main/resources/launch4j-config.xml</infile>
-                </configuration>
                 <executions>
                     <execution>
                         <id>l4j-clui</id>
@@ -78,6 +75,28 @@
                         <goals>
                             <goal>launch4j</goal>
                         </goals>
+                        <configuration>
+                            <headerType>console</headerType>
+                            <jar>target/${artifactId}-${version}-shaded.jar</jar>
+                            <outfile>target/${artifactId}-${version}.exe</outfile>
+                            <errTitle>${artifactId}</errTitle>
+                            <classPath>
+                                <mainClass>main.Service</mainClass>
+                                <addDependencies>false</addDependencies>
+                                <preCp>anything</preCp>
+                            </classPath>
+                            <jre>
+                                <path>${env.JAVA_HOME}</path>
+                                <bundledJre64Bit>true</bundledJre64Bit>
+                                <bundledJreAsFallback>false</bundledJreAsFallback>
+                                <minVersion>11</minVersion>
+                                <maxVersion>${java.version}</maxVersion>
+                                <jdkPreference>preferJdk</jdkPreference>
+                                <runtimeBits>64/32</runtimeBits>
+                                <initialHeapSize>256</initialHeapSize>
+                                <maxHeapSize>4096</maxHeapSize>
+                            </jre>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -88,7 +107,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.13-rc-2</version>
+            <version>4.13</version>
             <scope>test</scope>
         </dependency>
 
@@ -96,18 +115,18 @@
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-            <version>[2.6,)</version>
+            <version>2.6</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-pool2</artifactId>
-            <version>2.6.0</version>
+            <version>2.8.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.ibm.icu</groupId>
             <artifactId>icu4j</artifactId>
-            <version>64.2</version>
+            <version>66.1</version>
         </dependency>
         <dependency>
             <groupId>org.apache.maven</groupId>
@@ -117,7 +136,7 @@
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
-            <version>16.0.3</version>
+            <version>19.0.0</version>
             <scope>compile</scope>
         </dependency>
 
@@ -125,17 +144,17 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>[8.0.18,)</version>
+            <version>8.0.19</version>
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>[42.2.9,)</version>
+            <version>42.2.12</version>
         </dependency>
         <dependency>
             <groupId>com.microsoft.sqlserver</groupId>
             <artifactId>mssql-jdbc</artifactId>
-            <version>8.1.1.jre11-preview</version>
+            <version>8.2.2.jre11</version>
         </dependency>
         <dependency>
             <groupId>com.ibm.db2</groupId>
@@ -145,12 +164,12 @@
         <dependency>
             <groupId>org.xerial</groupId>
             <artifactId>sqlite-jdbc</artifactId>
-            <version>[3.30.1,)</version>
+            <version>3.30.1</version>
         </dependency>
         <dependency>
             <groupId>com.facebook.presto</groupId>
             <artifactId>presto-jdbc</artifactId>
-            <version>[0.229,)</version>
+            <version>0.233.1</version>
         </dependency>
         <!--        <dependency>-->
         <!--            <groupId>org.mongodb</groupId>-->
@@ -160,7 +179,7 @@
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <version>[1.4.200,)</version>
+            <version>1.4.200</version>
         </dependency>
 
         <!--localjdbc-->

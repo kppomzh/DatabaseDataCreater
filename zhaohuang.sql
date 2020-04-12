@@ -6,7 +6,7 @@ create table zhzm_DBDF_test(
     trans_proto string default "17" ,
     addr_type number(1) {4,6},
     d_ip char(16) stringtype c_ip default  "192.168.0.2",
-    d_port string(5) {"1234","8080","8088","1236"},
+    d_port int(5) {1234,8080,8088,1236},
     service int(2),
     entrance_id decimal(2,2),
     device_id int(2),
@@ -18,5 +18,6 @@ create table zhzm_DBDF_test(
     Regulartest varchar2(44) regulartype \d\w\W\S\\\)\(\|[\-\]]$,
     isinsert boolean,
     unmake_test VARCHAR(1) unmake,
-    regdate date
+    regdate date,
+    checkdate timestamp {20190903,"2020-01-12"}
 );

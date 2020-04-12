@@ -25,7 +25,7 @@ public class LengthExpression implements Regular {
     }
 
     @Override
-    public String getString() {
+    public StringBuilder getString() {
         return null;
     }
 

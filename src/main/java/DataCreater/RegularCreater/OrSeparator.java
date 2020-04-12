@@ -12,7 +12,7 @@ public class OrSeparator implements Regular {
     }
 
     @Override
-    public String getString() {
+    public StringBuilder getString() {
         return null;
     }
 

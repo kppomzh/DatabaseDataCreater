@@ -26,14 +26,14 @@ public class SingalMetaChar implements Regular {
     }
 
     @Override
-    public String getString() {
+    public StringBuilder getString() {
         int Stringlength=length.getReplaceNum();
         StringBuilder sb=new StringBuilder();
         for(int loop = 0; loop < Stringlength; loop++) {
             sb.append(baseTypeCreaterImpl.
                     getArbitraryCharacter(1,MetaChar));
         }
-        return sb.toString();
+        return sb;
     }
 
     @Override

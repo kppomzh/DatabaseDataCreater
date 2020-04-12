@@ -48,23 +48,6 @@ public abstract class baseFiledCreater {
         return new String(insert.getBytes(), env_properties.getEnvirmentCharset());
     }
 
-    protected String strSpecification(ListStructure ls, String appendStr) {
-        switch (ls.getListType()) {
-            case "decimal":
-            case "int":
-                return StringSpecificationOutput.specNumber(appendStr, ls.getRange()[0], ls.getRange()[1]);
-            case "bool":
-                return StringSpecificationOutput.specBool(appendStr);
-            case "string":
-                return StringSpecificationOutput.specString(
-                        appendStr, ls.getRange()[0]);
-            case "date":
-                return appendStr;
-            default:
-                return null;
-        }
-    }
-
     /**
      * 用于唯一约束检测，每一个线程会分配一个
      *
@@ -83,15 +66,6 @@ public abstract class baseFiledCreater {
     }
 
     protected String makeFiled(ListStructure ls) throws ClassNotFoundException {
-        if (!ls.getListType().equals("string")) {
-            if (ls.isAdvancedType())
-                throw new ClassNotFoundException("非字符串类型不能使用stringtype关键字");
-            else if (ls.isRegular())
-                    throw new ClassNotFoundException("非字符串类型不能使用regulartype关键字");
-        }
-//        else if ((!ls.isSingal()) && ls.isDefault() && privateRandom.RandomDouble(0, 1) <= 2 * Double.valueOf(env_properties.getEnvironment("defaultProportion"))) {
-//            return ls.getDefaultStr();//当存在类似唯一约束的情况时将屏蔽默认值
-//        }
         return ls.getString();
     }
 

@@ -145,6 +145,8 @@ public class AdvanceTypeCreater extends baseTypeCreaterImpl {
             return "";
         }
 
+        advancedString.insert(0,'\'');
+        advancedString.append('\'');
         return advancedString.toString();
     }
 }

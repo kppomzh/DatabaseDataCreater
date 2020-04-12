@@ -27,7 +27,7 @@ public class stringTypeCreater extends baseTypeCreaterImpl {
         if (strusages == 0) reinitStr();
         strusages--;
 
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder('\'');
 
         for (int loop = 0; loop < piecewise; loop++) {
             int sublength = privateRandom.RandomInteger(1, rangeLength);
@@ -40,6 +40,7 @@ public class stringTypeCreater extends baseTypeCreaterImpl {
             sb.append(quickStr, substrart, substrart + rangeLength - sb.length());
         }
 
+        sb.append('\'');
         return sb.toString();
     }
 

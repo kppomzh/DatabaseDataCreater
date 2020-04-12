@@ -8,7 +8,7 @@ import DataCreater.TypeCreater.baseTypeCreater;
  */
 public class ListStructure implements Cloneable {
     private String listname;//字段名称
-    private String ListType;//字段数据类型,string,number,dat三类
+    private String ListType;//字段数据类型,string,number,date三类
     private int[] Range;//字段长度
     private String[] Numberarea;//数值类型的取值范围
     private boolean isSingal//是否存在唯一约束

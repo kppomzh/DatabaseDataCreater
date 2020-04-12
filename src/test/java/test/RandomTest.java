@@ -6,6 +6,7 @@ import org.junit.Test;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class RandomTest {
 
@@ -46,5 +47,30 @@ public class RandomTest {
             if(r<0)
                 System.out.println(r);
         }
+    }
+
+    @Test
+    public void difRandomTime(){
+        Random rm1= ThreadLocalRandom.current();
+        Random rm2=new Random();
+
+        long time;
+        time=System.nanoTime();
+        for(int loop=0;loop<10000000;loop++){
+            rm1.nextInt();
+        }
+        System.out.println((System.nanoTime()-time)/1000D);
+
+        time=System.nanoTime();
+        for(int loop=0;loop<10000000;loop++){
+            rm2.nextInt();
+        }
+        System.out.println((System.nanoTime()-time)/1000D);
+
+        time=System.nanoTime();
+        for(int loop=0;loop<10000000;loop++){
+            Math.random();
+        }
+        System.out.println((System.nanoTime()-time)/1000D);
     }
 }

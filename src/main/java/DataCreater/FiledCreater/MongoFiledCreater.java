@@ -14,7 +14,7 @@ public class MongoFiledCreater extends baseFiledCreater {
     }
 
     @Override
-    protected void packFiled(TableStructure table, StringBuilder out) throws Exception {
+    protected void packFiled(TableStructure table, StringBuilder out) {
         ListStructure list;
         String appendStr;
 
@@ -25,23 +25,14 @@ public class MongoFiledCreater extends baseFiledCreater {
                 continue;
             }
             else {
-                appendStr = strSpecification(list, makeFiled(list));
+                appendStr = list.getString();
                 while (!addtoSet(list, appendStr)) {
-                    appendStr = strSpecification(list, makeFiled(list));
+                    appendStr = list.getString();
                 }
 
                 out.append("\n\"").append(list.getListname()).append("\":");
-                switch (list.getListType()) {
-                    case "string":
-                    case "date":
-                        out.append('\"').append(appendStr).append("\"");
-                        break;
-                    default:
-                        out.append(appendStr);
-                        break;
-                }
+                out.append(appendStr).append(',');
             }
-            out.append(',');
         }
         out.deleteCharAt(out.length() - 1);
         out.append('}').append(',');

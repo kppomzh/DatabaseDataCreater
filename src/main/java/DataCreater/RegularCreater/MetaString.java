@@ -81,7 +81,7 @@ public class MetaString implements Regular,baseTypeCreater {
     }
 
     @Override
-    public String getString() {
+    public StringBuilder getString() {
         List<Regular> makeString=this.regularList;
         if(OrSeparatorLocal.size()!=2){
             int section= privateRandom.RandomInteger(0,OrSeparatorLocal.size());
@@ -97,7 +97,7 @@ public class MetaString implements Regular,baseTypeCreater {
                 sb.append(r.getString());
             }
         }
-        return sb.toString();
+        return sb;
     }
 
     @Override
@@ -107,6 +107,6 @@ public class MetaString implements Regular,baseTypeCreater {
 
     @Override
     public String getString(Object... option) {
-        return getString();
+        return getString().insert(0,'\'').append('\'').toString();
     }
 }

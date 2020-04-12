@@ -4,7 +4,20 @@ import Utils.env_properties;
 import Utils.privateRandom;
 
 public class dateTypeCreater extends baseTypeCreaterImpl {
-    private static String getDate(boolean outuse) {
+    private String wrapBefore,wrapAfter;
+
+    public dateTypeCreater(){
+        if(env_properties.getEnvironment("toDB").equals("sql")){
+            wrapBefore="to_date(\"";
+            wrapAfter="\",\"yyyy-mm-dd hh24:mi:ss\")";
+        }
+        else{
+            wrapBefore="'";
+            wrapAfter="'";
+        }
+    }
+
+    private String getDate(boolean outuse) {
         int year = privateRandom.RandomInteger(1970, 2050);
         int month = privateRandom.RandomInteger(1, 12);
         int date;
@@ -45,6 +58,8 @@ public class dateTypeCreater extends baseTypeCreaterImpl {
             sb.append(':');
             sb.append(less10give0(second));
             sb.append(second);
+            sb.insert(0,wrapBefore);
+            sb.append(wrapAfter);
         }
 
         return sb.toString();

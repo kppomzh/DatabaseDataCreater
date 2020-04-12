@@ -14,7 +14,7 @@ public class csvFiledCreater extends baseFiledCreater {
     }
 
     @Override
-    protected void packFiled(TableStructure table, StringBuilder out) throws Exception {
+    protected void packFiled(TableStructure table, StringBuilder out) {
         ListStructure list;
         String appendStr;
 
@@ -24,21 +24,12 @@ public class csvFiledCreater extends baseFiledCreater {
                 continue;
             }
             else {
-                appendStr = strSpecification(list, makeFiled(list));
+                appendStr = list.getString();
                 while (!addtoSet(list, appendStr)) {
-                    appendStr = strSpecification(list, makeFiled(list));
-                }
-
-                switch (list.getListType()) {
-                    case "string":
-                    case "date":
-                        out.append('\'').append(appendStr).append("'");
-                        break;
-                    default:
-                        out.append(appendStr);
-                        break;
+                    appendStr = list.getString();
                 }
             }
+            out.append(appendStr);
             out.append(',');
         }
         out.deleteCharAt(out.length()-1);

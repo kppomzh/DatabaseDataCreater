@@ -34,14 +34,14 @@ public class BracketExpression implements Regular {
     }
 
     @Override
-    public String getString() {
+    public StringBuilder getString() {
         int Stringlength=length.getReplaceNum();
-        char[] str=new char[Stringlength];
+        StringBuilder str=new StringBuilder(Stringlength);
         for(int loop=0;loop<Stringlength;loop++){
-            str[loop]=markFiled.charAt(privateRandom.RandomInteger(
-                    0,markFiled.length()));
+            str.append(markFiled.charAt(privateRandom.RandomInteger(
+                    0,markFiled.length())));
         }
-        return new String(str);
+        return str;
     }
 
     @Override

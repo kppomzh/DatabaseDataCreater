@@ -78,7 +78,7 @@ public class TableStructure implements Cloneable {
         for (int loop = 0; loop < this.listStructureList.size(); loop++) {
             if(this.listStructureList.get(loop)==this.primaryList){
                 ListStructure copy= (ListStructure) this.primaryList.clone();
-                copy.setCreater(new PrimaryKey(startPrimary));
+                copy.setCreater(new PrimaryKey(copy,startPrimary));
                 newT.listStructureList.add(copy);
             } else {
                 newT.listStructureList.add((ListStructure) this.listStructureList.get(loop).clone());

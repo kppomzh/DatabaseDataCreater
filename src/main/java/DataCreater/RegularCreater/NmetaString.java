@@ -24,13 +24,13 @@ public class NmetaString implements Regular {
     }
 
     @Override
-    public String getString() {
+    public StringBuilder getString() {
         StringBuilder sb=new StringBuilder();
         int StringLength=length.getReplaceNum();
         for(int loop = 0; loop < StringLength; loop++) {
             sb.append(str);
         }
-        return sb.toString();
+        return sb;
     }
 
     @Override
