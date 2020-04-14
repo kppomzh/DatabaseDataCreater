@@ -1,7 +1,7 @@
 create table zhzm_DBDF_test(
     CFG_ID varchar(100) primary key,
     FOUND_TIME int(12) numberarea 1514736000~1522512000,
-    found_time_partition numeric(9) numberarea 420760.6~422919.5,
+    found_time_partition numeric(9,1) numberarea 420760.6~422919.5,
     RECV_TIME int(12) numberarea 7776000000~7777000000,
     trans_proto string default "17" ,
     addr_type number(1) {4,6},

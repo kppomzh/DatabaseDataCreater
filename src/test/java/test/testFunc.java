@@ -31,7 +31,7 @@ public class testFunc {
         }
 
         for (int loop = 0; loop < ci; loop++) {
-            all = all + testBase(createnum,"zhaohuang.sql") / 1000.0 / 60.0;
+            all = all + testBase(createnum,"zhaohuang.sql");
         }
         System.out.print("insertnum:");
         System.out.println(insertnum);

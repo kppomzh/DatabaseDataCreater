@@ -31,7 +31,7 @@ public class numberTypeCreater implements baseTypeCreater {
 
 
         if(Numberarea[0]!=null){
-            String[] areaMax=Numberarea[0].split("\\."),areaMin=Numberarea[1].split("\\.");
+            String[] areaMax=Numberarea[1].split("\\."),areaMin=Numberarea[0].split("\\.");
             if(areaMax.length==1){
                 decMax=BigDecimal.ZERO;
                 decMin=BigDecimal.ZERO;

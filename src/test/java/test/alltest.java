@@ -54,9 +54,9 @@ public class alltest {
 
     @Test
     public void FileWriteFullTimeTest() throws SQLException {
-        int[] insertnum = {2500, 5000, 10000};
+        int[] insertnum = {10000};
         for (int value : insertnum) {
-            testFunc.PerformanceBase(ci, 1000000, value);
+            testFunc.PerformanceBase(ci, 100000000, value);
         }
     }
 
