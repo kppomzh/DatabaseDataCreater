@@ -13,7 +13,6 @@ public class Fugue {
     Set<String> mark;
     Set<String> data;
     Set<String> multi;
-    CustomStringtypeConfigLoader cscl;
 
     public void init() {
         mark = new HashSet<>();
@@ -129,7 +128,7 @@ public class Fugue {
         for (char c : s.toCharArray()) {
             if (fu == 0 && c == '-')
                 fu++;
-            else if (c < 48 || c > 57)
+            else if ((c < 48 || c > 57) && c!='.')
                 return false;
             else
                 fu++;
