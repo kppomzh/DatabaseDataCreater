@@ -5,12 +5,11 @@
 也可以是逗号隔开的csv格式以便通过数据库外部表或load工具来利用。支持通过JDBC直接导入数据。支持生成json字符串。
 ## 最简化使用方法
 该方法可以不需要config.properties的配置文件。  
-1. 下载 https://github.com/kppomzh/DatabaseDataCreater/releases/download/V1.4.3/DBDF-1.4.3.zip  
+1. 下载 https://github.com/kppomzh/DatabaseDataCreater/releases/download/V1.5/DBDF-1.5.zip  
 2. 解压  
-3. 命令行定位到jar包所在位置  
-4. 输入命令：java -jar DBDF-1.4.3.jar  
+3. 双击DBDF-1.5.exe  
 5. 按照提示输入create命令和输出条数  
-6. 在jar包所在的文件夹下就可以找到和表名一致的.sql文件，里面是相应条数的insert数据  
+6. 当前文件夹下就可以找到和表名一致的.sql文件，里面是相应条数的insert数据  
 7. 复制粘贴运行三连  
 
 ## 当前版本性能测试
@@ -30,7 +29,7 @@ SSD:Toshiba TR150 256G
 
 #### 软件环境以及测试条件
 OS:Fedora 31  
-Kernel:5.5.8  
+Kernel:5.5.13  
 Java:OpenJDK 11.0.6/13.0.2  
 测试条件:  
 1. 12线程  
@@ -42,16 +41,12 @@ Java:OpenJDK 11.0.6/13.0.2
 7. 多联输出开启  
 8. 每次输出2000条
 
-现在程序的输出速度似乎逐步逼近了Windows NTFS的极限，所以以后回换到外置硬盘的Linux+XFS分区上测试，这样也可以统一软件环境。
-另外Kernel会随着上游频繁更新，两个版本之间应该不会有相同的Kernel了。
 #### 测试版本
-本次测试集中了自1.3.4以来的所有版本，除了1.3.4由于没有进行过主键优化的原因，实在是没法在短时间内跑完测试之外，其他几个版本都在可以接受的时间内完成了测试。
-![image](./detail.png)  
-![image](./sample_test.png)  
+测试目前暂时未更新
 
 ### 性能变化
-1.4.3对生成数据部分做了大量解析工作，同时大幅度减少了不必要的if else判断，这些工作在AMD处理器上取得了非常好的效果，在Intel处理器上就并不很明显。
-似乎说明Intel对分支预测做的更好？
+1.5对生成数据格式检查做了很多改进，减少了大量不必要的格式检查，使得速度进一步加快。
+另外针对ThreadLocalRandom随机性不够的问题，特地添加了一个SecurityRamdom来部分的增强随机性。
 
 ## 程序参数详解
 -h:显示帮助。  
