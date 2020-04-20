@@ -52,7 +52,7 @@ public class CreateInsertSQLProcess {
         service.awaitTermination(7, TimeUnit.DAYS);
 
         for (int loop = 0; loop < close_loop; loop++) {
-            writerlist.get(loop).closeWriter();
+            writerlist.get(loop).close();
         }
     }
 

@@ -15,7 +15,7 @@ public class numberTypeCreater implements baseTypeCreater {
         canbeNagetive=nagetive;
 
         if(intRange==0){
-            intRange=privateRandom.RandomInteger(1,9);
+            intRange=2;
             isInt=true;
         }
         intMax =BigInteger.valueOf(Double.valueOf(Math.pow(10,intRange)).longValue()).divide(BigInteger.ONE);

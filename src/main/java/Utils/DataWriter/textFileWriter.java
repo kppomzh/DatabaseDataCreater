@@ -26,7 +26,7 @@ public class textFileWriter extends tF{
     }
 
     @Override
-    public void closeWriter() throws IOException {
+    public void close() throws IOException {
         bw.flush();
         bw.close();
     }

@@ -25,7 +25,7 @@ public class textFileJDBC extends tF {
     }
 
     @Override
-    public void closeWriter() throws Exception {
+    public void close() throws Exception {
         stmt.execute("commit;");
         stmt.close();
         conn.Conn().close();

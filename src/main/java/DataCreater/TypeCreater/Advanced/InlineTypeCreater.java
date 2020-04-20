@@ -5,7 +5,6 @@ import Utils.StringSpecificationOutput;
 import Utils.env_properties;
 import Utils.privateRandom;
 import dataStructure.ListStructure;
-import org.jetbrains.annotations.NotNull;
 
 public class InlineTypeCreater implements baseTypeCreater {
     private String[] inlineArray;

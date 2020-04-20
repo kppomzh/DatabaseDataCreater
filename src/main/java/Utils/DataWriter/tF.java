@@ -21,5 +21,5 @@ public abstract class tF {
 
     public abstract boolean WriteLine(String insert);
 
-    public abstract void closeWriter() throws Exception;
+    public abstract void close() throws Exception;
 }
