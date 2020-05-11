@@ -3,7 +3,6 @@ package SavingTypeString;
 import java.util.HashMap;
 
 public class DBJdbcLinkString {
-    private static DBJdbcLinkString dBjdbcString = new DBJdbcLinkString();
     private static HashMap<String, String> DBjdbcLinkCorresponding;
     private static HashMap<String, String> DBjdbcDefaultPort;
 
@@ -19,7 +18,7 @@ public class DBJdbcLinkString {
         DBjdbcLinkCorresponding.put("h2", "jdbc:h2:tcp://{IP}:{port}/{dbname}");
         DBjdbcLinkCorresponding.put("presto", "jdbc:presto://{IP}:{port}/{dbname}/default");
         DBjdbcLinkCorresponding.put("elasticsearch", "jdbc:es://{IP}/{port}");
-//        DBjdbcLinkCorresponding.put("hive", "jdbc:hive2://{IP}:{port}/{dbname}");
+        DBjdbcLinkCorresponding.put("hive", "jdbc:hive2://{IP}:{port}/{dbname}");
 //        DBjdbcDriverCorresponding.put("","");
 
         DBjdbcDefaultPort = new HashMap<>();

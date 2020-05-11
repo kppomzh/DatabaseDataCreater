@@ -88,9 +88,9 @@ public class env_properties {
         if (!env.containsKey("Optimal")) {
             env.setProperty("Optimal", "false");
         }
-        if (!env.containsKey("asynchronous")) {
-            env.setProperty("asynchronous", "false");
-        }
+//        if (!env.containsKey("asynchronous")) {
+//            env.setProperty("asynchronous", "false");
+//        }
         if (!env.containsKey("TOTAL_THREADS")) {
             env.setProperty("TOTAL_THREADS", "1");
         }

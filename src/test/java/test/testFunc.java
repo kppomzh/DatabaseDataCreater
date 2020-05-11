@@ -14,12 +14,11 @@ public class testFunc {
         env_properties.setEnvironment("longerInsertNumber",String.valueOf(insertnum));
         env_properties.setEnvironment("toDB","sql");
         env_properties.setEnvironment("Optimal","false");
-        env_properties.setEnvironment("asynchronous","true");
         env_properties.setEnvironment("TOTAL_THREADS","12");
         env_properties.setEnvironment("defaultProportion","0.5");
         env_properties.setEnvironment("canbeNegative","false");
         env_properties.setEnvironment("longerInsert","true");
-        env_properties.setEnvironment("baseFileDir","D:/");
+        env_properties.setEnvironment("baseFileDir","E:/");
 
         //虚拟机预热数据
         {

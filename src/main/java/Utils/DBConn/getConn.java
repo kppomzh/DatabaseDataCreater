@@ -24,7 +24,6 @@ public class getConn {
 
     private Connection getConn() throws Exception {
         String url = DBJdbcLinkString.getJdbcLinkString(env_properties.getEnvironment("DBsoftware").toLowerCase());
-
         String port = env_properties.getEnvironment("port").equals("") ? DBJdbcLinkString.getDefaultJDBCPort(env_properties.getEnvironment("DBsoftware")) : env_properties.getEnvironment("port");
 
         return DriverManager.getConnection(url.

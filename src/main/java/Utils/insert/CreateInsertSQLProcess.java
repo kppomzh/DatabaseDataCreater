@@ -38,7 +38,7 @@ public class CreateInsertSQLProcess {
         int close_loop = 1;
         List<tF> writerlist = new ArrayList<>();
 
-        if (env_properties.getEnvironment("asynchronous").equals("true")) {
+        if (TOTAL_THREADS>1) {
             close_loop = TOTAL_THREADS;
             for (int loop = 0; loop < TOTAL_THREADS; loop++) {
                 writerlist.add(getWriter(ts.getTbname() + loop));

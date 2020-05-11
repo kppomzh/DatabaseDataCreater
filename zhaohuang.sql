@@ -12,7 +12,8 @@ create table zhzm_DBDF_test(
     service int(2),
     entrance_id decimal(2,2),
     device_id int(2),
-    direction int(1) default 0,
+    direction numeric(1,0) default 0/*dsf
+    dsf*/,
     stream_dir int(1),
     cap_ip string(16) stringtype b_ip default "192.168.0.1",
     addr_list string(50) {"中国 北京 电信宽带光纤","中国 北京 联通宽带光纤","中国 北京 铁通宽带光纤"},

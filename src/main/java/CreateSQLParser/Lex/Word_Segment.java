@@ -31,6 +31,23 @@ public class Word_Segment {
             if (Stop) { //
                 String isWord = toWord.toString().toLowerCase();//统一转换成小写
                 if (isWord.length() != 0) {
+                    if(isWord.equals("//")||isWord.equals("--")){
+                        for (; loop < toSQL.length(); loop++) {
+                            if('\n'==toSQL.charAt(loop))
+                                break;
+                        }
+                        status=Coolean.stop;
+                        continue;
+                    }
+                    else if(isWord.equals("/*")){
+                        for (; loop < toSQL.length(); loop++) {
+                            if('*'==toSQL.charAt(loop) && '/'==toSQL.charAt(loop+1))
+                                break;
+                        }
+                        loop++;
+                        status=Coolean.stop;
+                        continue;
+                    }
                     create_word_and_add(isWord, null);
                     toWord.delete(0, toWord.length());
 
