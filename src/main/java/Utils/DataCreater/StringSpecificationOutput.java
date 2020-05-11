@@ -57,7 +57,7 @@ public class StringSpecificationOutput {
             default:
                 break;
         }
-        if (dates[1] != null) {
+        if (dates.length>1 && dates[1] != null) {
             specstr.append(' ');
             timestrs = dates[1].split(":");
             if (Integer.valueOf(timestrs[0]) > 12)

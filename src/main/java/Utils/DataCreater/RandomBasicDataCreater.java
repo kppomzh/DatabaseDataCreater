@@ -243,6 +243,9 @@ public class RandomBasicDataCreater {
             int substrart = privateRandom.RandomInteger(0, rangeLength - range + sb.length() - 1);
             sb.append(quickStr, substrart, substrart + range - sb.length());
         }
+        else if (sb.length() > range){
+            sb.delete(range,sb.length());
+        }
 
         return sb.toString();
     }

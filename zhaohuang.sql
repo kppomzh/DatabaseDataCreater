@@ -1,16 +1,18 @@
 create table zhzm_DBDF_test(
     CFG_ID varchar(100) primary key,
+    telephone varchar2(20) stringtype telephone,
+    cardNumber varchar2(20) stringtype ch_idcard,
     FOUND_TIME int(12) numberarea 1514736000~1522512000,
-    found_time_partition numeric(9) numberarea 420760.6~422919.5,
+    found_time_partition numeric(9,1) numberarea 420760.6~422919.5,
     RECV_TIME int(12) numberarea 7776000000~7777000000,
     trans_proto string default "17" ,
     addr_type number(1) {4,6},
     d_ip char(16) stringtype c_ip default  "192.168.0.2",
-    d_port string(5) {"1234","8080","8088","1236"},
+    d_port int(5) {1234,8080,8088,1236},
     service int(2),
     entrance_id decimal(2,2),
     device_id int(2),
-    direction int(1) default 0,
+    direction numeric(1,0) default 0,
     stream_dir int(1),
     cap_ip string(16) stringtype b_ip default "192.168.0.1",
     addr_list string(50) {"中国 北京 电信宽带光纤","中国 北京 联通宽带光纤","中国 北京 铁通宽带光纤"},
@@ -18,5 +20,6 @@ create table zhzm_DBDF_test(
     Regulartest varchar2(44) regulartype \d\w\W\S\\\)\(\|[\-\]]$,
     isinsert boolean,
     unmake_test VARCHAR(1) unmake,
-    regdate date
+    regdate date,
+    checkdate timestamp {20190903,"2020-01-12"}
 );
