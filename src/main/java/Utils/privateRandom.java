@@ -93,9 +93,9 @@ public class privateRandom {
      */
     private static void counter() {
         if (num > 20000000 && lock.tryLock()) {
-            num = 0;
             reSetRandom();
             lock.unlock();
+            num = 0;
         }
         num++;
     }
