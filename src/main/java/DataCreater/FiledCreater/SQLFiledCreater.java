@@ -1,7 +1,5 @@
 package DataCreater.FiledCreater;
 
-import Utils.StringSpecificationOutput;
-import dataStructure.ListStructure;
 import dataStructure.TableStructure;
 
 public class SQLFiledCreater extends baseFiledCreater {
@@ -10,10 +8,10 @@ public class SQLFiledCreater extends baseFiledCreater {
     }
 
     @Override
-    protected String packHead(boolean isUnmake) {
+    protected String packHead() {
         StringBuilder table = new StringBuilder("insert into ");
         table.append(tableStructure.getTbname());
-        if (isUnmake) {
+        if (tableStructure.isUnmake()) {
             table.append('(');
             table.append(tableStructure.getListnames());
             table.append(')');
@@ -22,22 +20,9 @@ public class SQLFiledCreater extends baseFiledCreater {
     }
 
     @Override
-    protected void packFiled(TableStructure table, StringBuilder out) {
-        ListStructure list;
-        String appendStr;
-
+    protected void packFiled(StringBuilder out) {
         out.append('(');
-        while (this.tableStructure.hasNext()) {
-            list = tableStructure.getNextStruc();
-            if (list.isUnmake()) {
-                continue;
-            }
-            else {
-                appendStr = list.getString();
-                while (!addtoSet(list, appendStr)) {
-                    appendStr = list.getString();
-                }
-            }
+        for (String appendStr:super.makeOnceData()) {
             out.append(appendStr);
             out.append(',');
         }

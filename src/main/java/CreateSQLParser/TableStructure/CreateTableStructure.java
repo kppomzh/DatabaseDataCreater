@@ -20,7 +20,7 @@ public class CreateTableStructure {
         Fugue fugue = new Fugue();
         InsertPlanMaker maker = new InsertPlanMaker();
 
-        List<Word> words = ws.Segment(createSQL);
+        Word[] words = ws.Segment(createSQL);
         words = fugue.fugue(words);
         return maker.makeStrusture(words);
     }

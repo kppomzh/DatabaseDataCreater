@@ -1,6 +1,5 @@
 package DataCreater.FiledCreater;
 
-import dataStructure.ListStructure;
 import dataStructure.TableStructure;
 
 public class JsonFiledCreater extends baseFiledCreater {
@@ -12,29 +11,17 @@ public class JsonFiledCreater extends baseFiledCreater {
     }
 
     @Override
-    protected String packHead(boolean isUnmake) {
+    protected String packHead() {
         return "";
     }
 
     @Override
-    protected void packFiled(TableStructure table, StringBuilder out) {
-        ListStructure list;
-        String appendStr;
-
+    protected void packFiled(StringBuilder out) {
         out.append('{');
-        while (this.tableStructure.hasNext()) {
-            list = tableStructure.getNextStruc();
-            if (list.isUnmake()) {
-                continue;
-            }
-            else {
-                appendStr = list.getString();
-                while (!addtoSet(list, appendStr)) {
-                    appendStr = list.getString();
-                }
-
-                out.append("\n\"").append(list.getListname()).append("\": ").append(appendStr).append(",");
-            }
+        String[] temp=super.makeOnceData();
+        for (int i = 0; i < temp.length; i++) {
+            String appendStr=temp[i];
+            out.append("\n\"").append(toMakeInserts[i].getListname()).append("\": ").append(appendStr).append(",");
         }
         out.deleteCharAt(out.length()-1);
         out.append("\n}\n");

@@ -4,23 +4,31 @@ import Utils.env_properties;
 import dataStructure.ListStructure;
 import dataStructure.TableStructure;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public abstract class baseFiledCreater {
     protected TableStructure tableStructure;
-    private Map<String, List<String>> unique;
+    private Map<String, Set<String>> unique;
+    protected ListStructure[] toMakeInserts;
 
     public baseFiledCreater(TableStructure tableStructure) {
         this.tableStructure = tableStructure;
         this.unique = new HashMap<>();
-        for (ListStructure ls : tableStructure.getStruc()) {
-            if (ls.isSingal()) {
-                unique.put(ls.getListname(), new ArrayList<String>());
+        List<ListStructure> temp=new ArrayList<>();
+        while (this.tableStructure.hasNext()) {
+            ListStructure list = tableStructure.getNextStruc();
+
+            if (list.isUnmake()) {
+                continue;
+            }
+            else {
+                if (list.isSingal()) {
+                    unique.put(list.getListname(), new HashSet<>());
+                }
+                temp.add(list);
             }
         }
+        toMakeInserts=temp.toArray(new ListStructure[0]);
     }
 
 
@@ -31,11 +39,11 @@ public abstract class baseFiledCreater {
      * @throws Exception
      */
     public String makeinsert(int makenum) {
-        StringBuilder Return = new StringBuilder(packHead(tableStructure.isUnmake()));
+        StringBuilder Return = new StringBuilder(packHead());
 
         for (int loop = 0; loop < makenum; loop++) {
             try {
-                packFiled(tableStructure, Return);
+                packFiled(Return);
             } catch (Exception e) {
                 System.out.println(Return.toString());
                 throw new RuntimeException(e.getMessage());
@@ -64,25 +72,33 @@ public abstract class baseFiledCreater {
         return true;
     }
 
-    protected String makeFiled(ListStructure ls) throws ClassNotFoundException {
-        return ls.getString();
+    /**
+     * @return
+     */
+    protected String[] makeOnceData(){
+        String fileds[]=new String[toMakeInserts.length];
+        for (int i = 0; i < toMakeInserts.length; i++) {
+            fileds[i]=toMakeInserts[i].getString();
+            while (!addtoSet(toMakeInserts[i], fileds[i])) {
+                fileds[i] = toMakeInserts[i].getString();
+            }
+        }
+        return fileds;
     }
 
     /**
      * 依赖于不同的数据格式，一条数据插入时候的头部特殊格式
      *
-     * @param isUnmake
      * @return
      */
-    protected abstract String packHead(boolean isUnmake);
+    protected abstract String packHead();
 
     /**
      * 依赖于不同的数据格式，各类型字段的特殊格式
      *
-     * @param table
      * @param out
      */
-    protected abstract void packFiled(TableStructure table, StringBuilder out) throws Exception;
+    protected abstract void packFiled(StringBuilder out) throws Exception;
 
     /**
      * 依赖于不同的数据格式，一条数据插入时候的尾部特殊格式

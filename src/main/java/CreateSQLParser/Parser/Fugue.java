@@ -45,16 +45,15 @@ public class Fugue {
         init();
     }
 
-    public List<Word> fugue(List<Word> words) {
+    public Word[] fugue(Word[] words) {
         boolean inlineOpen = false;
-        if (!words.get(0).getName().equals("create"))
+        if (!words[0].getName().equals("create"))
             throw new RuntimeException("not start with create");
 
-        Iterator<Word> iwords = words.iterator();
-        Word w = words.get(0), last;
-        for (int loop = 0; iwords.hasNext(); loop++) {
+        Word w = words[0], last;
+        for (int loop = 0; loop<words.length-1; loop++) {
             last = w;
-            w = iwords.next();
+            w = words[loop+1];
             if (data.contains(w.getName())) {
                 w.setSubstance(DataType.getDataTypeString(w.getName()));
                 w.setName("type");

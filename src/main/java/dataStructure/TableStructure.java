@@ -58,13 +58,7 @@ public class TableStructure implements Cloneable {
     //取字段结构
     public ListStructure getNextStruc() {
         readnum++;
-        if (readnum == listStructureList.size())
-            readnum = -1;
         return listStructureList.get(readnum);
-    }
-
-    public List<ListStructure> getStruc() {
-        return listStructureList;
     }
 
     @Override

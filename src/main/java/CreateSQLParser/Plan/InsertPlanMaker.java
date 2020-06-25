@@ -26,24 +26,25 @@ public class InsertPlanMaker {
     Word regular;
     String listname , type , defaultDataType , defaultStr ;
 
-    public TableStructure makeStrusture(List<Word> words) throws BaseException, TableStrucDataException {
+    public TableStructure makeStrusture(Word[] words) throws BaseException, TableStrucDataException {
         TableStructure structure = new TableStructure();
 
-        Iterator<Word> iwords = words.iterator();
         init();
 
-        for (; iwords.hasNext(); ) {
-            Word w = iwords.next();
+        for (int loop = 0; loop<words.length-1; loop++) {
+            Word w = words[loop];
             switch (w.getName()) {
                 case "inline":
                     inlineObject.add(w.getSubstance());
                     break;
                 case "not":
-                    if (!iwords.next().getName().equals("null"))
+                    loop++;
+                    if (!words[loop].getName().equals("null"))
                         throw new MultiKeywordException(w,"多单词关键字：not null必须连用。");
                     break;
                 case "primary":
-                    if (!iwords.next().getName().equals("key"))
+                    loop++;
+                    if (!words[loop].getName().equals("key"))
                         throw new MultiKeywordException(w,"多单词关键字：primary key必须连用。");
                     isPrimary = true;
                     break;

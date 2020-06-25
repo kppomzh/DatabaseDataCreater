@@ -1,20 +1,19 @@
 package CreateSQLParser.Lex;
 
 import java.util.LinkedList;
+import java.util.List;
 
 public class Word_Segment {
-
-    LinkedList<Word> LW;//主SQL序列
     Coolean status;
     String toSQL;
     int nowline = 0, nowlist = 0;
 
     public Word_Segment() {
-        LW = new LinkedList<>();
+
     }
 
-    public LinkedList<Word> Segment(String content) throws Exception {
-        LW.clear();
+    public Word[] Segment(String content) throws Exception {
+        List<Word> LW= new LinkedList<>();
         toSQL = content;
         StringBuilder toWord = new StringBuilder();
         status = Coolean.letter;
@@ -48,7 +47,7 @@ public class Word_Segment {
                         status=Coolean.stop;
                         continue;
                     }
-                    create_word_and_add(isWord, null);
+                    create_word_and_add(isWord, null,LW);
                     toWord.delete(0, toWord.length());
 
                     if (isWord.equalsIgnoreCase("regulartype")) {
@@ -59,7 +58,7 @@ public class Word_Segment {
                     StringBuilder quo = new StringBuilder();
 
                     Integer cp_length = varnameinquotation(loop, quo, c);
-                    create_word_and_add(quo.toString(), null);
+                    create_word_and_add(quo.toString(), null,LW);
                     loop = loop + cp_length;//loop停在后面的引号的下一个字符
                     nowstatus = Coolean.mark;
                 }
@@ -75,15 +74,15 @@ public class Word_Segment {
 
             if (isRegular) {
                 loop = loop + varnameinquotation(loop, toWord, '$');
-                create_word_and_add(toWord.toString(), null);
+                create_word_and_add(toWord.toString(), null,LW);
                 toWord.delete(0, toWord.length());
             }
 
             status = nowstatus;
         }
-        create_word_and_add(";", null);
+        create_word_and_add(";", null,LW);
 
-        return LW;
+        return LW.toArray(new Word[0]);
     }
 
     private Coolean c_BuildWord(char c) {
@@ -206,7 +205,7 @@ public class Word_Segment {
     }
 
     //生成简单SQL关键字的方法
-    private void create_word_and_add(String name, String substance) {
+    private void create_word_and_add(String name, String substance,List LW) {
         Word word;
         word = new Word(name, substance, status.equals(Coolean.mark), nowline, nowlist);
         LW.add(word);

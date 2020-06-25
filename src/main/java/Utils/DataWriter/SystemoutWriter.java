@@ -8,7 +8,4 @@ public class SystemoutWriter extends tF {
         System.out.println(insert);
         return true;
     }
-
-    @Override
-    public void close() {}
 }
