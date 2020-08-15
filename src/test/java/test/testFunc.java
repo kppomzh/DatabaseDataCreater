@@ -7,10 +7,7 @@ import main.Service;
 import java.sql.SQLException;
 
 public class testFunc {
-
-    public static void PerformanceBase(int ci, int createnum, int insertnum) throws SQLException {
-        double all = 0;
-
+    public static void setLocalEnv(int insertnum){
         env_properties.setEnvironment("longerInsertNumber",String.valueOf(insertnum));
         env_properties.setEnvironment("toDB","sql");
         env_properties.setEnvironment("Optimal","false");
@@ -19,6 +16,10 @@ public class testFunc {
         env_properties.setEnvironment("canbeNegative","false");
         env_properties.setEnvironment("longerInsert","true");
         env_properties.setEnvironment("baseFileDir","E:/");
+    }
+
+    public static void PerformanceBase(int ci, int createnum) throws SQLException {
+        double all = 0;
 
         //虚拟机预热数据
         {
@@ -33,7 +34,7 @@ public class testFunc {
             all = all + testBase(createnum,"zhaohuang.sql");
         }
         System.out.print("insertnum:");
-        System.out.println(insertnum);
+        System.out.println(env_properties.getEnvironment("longerInsertNumber"));
         System.out.println("avg:" + all / ci + " min");
     }
 

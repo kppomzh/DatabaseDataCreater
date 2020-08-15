@@ -9,16 +9,13 @@ public class numberTypeCreater implements baseTypeCreater {
     private BigInteger intMax,intMin;
     private BigDecimal decMax,decMin;
     private int decLength;
-    private boolean canbeNagetive,hasDec=false,isInt=false;
+    private boolean canbeNagetive;
+    private boolean hasDec=false;
 
-    public numberTypeCreater(int intRange, int decRange, String[] Numberarea, boolean nagetive){
+    public numberTypeCreater(int mainRange, int decRange, String[] Numberarea, boolean nagetive){
         canbeNagetive=nagetive;
 
-        if(intRange==0){
-            intRange=2;
-            isInt=true;
-        }
-        intMax =BigInteger.valueOf(Double.valueOf(Math.pow(10,intRange)).longValue()).divide(BigInteger.ONE);
+        intMax =BigInteger.valueOf(Double.valueOf(Math.pow(10,mainRange-decRange)).longValue()).divide(BigInteger.ONE);
         intMin=BigInteger.ZERO;
         if(decRange>0){
             hasDec=true;
@@ -59,12 +56,7 @@ public class numberTypeCreater implements baseTypeCreater {
             res.append('-');
         }
 
-        if(isInt){
-            intres=new BigInteger(privateRandom.RandomInteger(intMin.intValue(),intMax.intValue()).toString());
-        }
-        else {
-            intres=privateRandom.RandomBInteger(intMin, intMax);
-        }
+        intres=privateRandom.RandomBInteger(intMin, intMax);
 
         if(hasDec){
             decres=privateRandom.RandomBDecimal();

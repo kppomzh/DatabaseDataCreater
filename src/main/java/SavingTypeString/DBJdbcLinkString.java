@@ -3,6 +3,8 @@ package SavingTypeString;
 import java.util.HashMap;
 
 public class DBJdbcLinkString {
+    private static DBJdbcLinkString link=new DBJdbcLinkString();
+
     private static HashMap<String, String> DBjdbcLinkCorresponding;
     private static HashMap<String, String> DBjdbcDefaultPort;
 
@@ -36,10 +38,10 @@ public class DBJdbcLinkString {
     }
 
     public static String getJdbcLinkString(String DBname) {
-        return DBjdbcLinkCorresponding.get(DBname.toLowerCase());
+        return link.DBjdbcLinkCorresponding.get(DBname.toLowerCase());
     }
 
     public static String getDefaultJDBCPort(String DBname) {
-        return DBjdbcDefaultPort.get(DBname.toLowerCase());
+        return link.DBjdbcDefaultPort.get(DBname.toLowerCase());
     }
 }

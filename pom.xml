@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>zhzm</groupId>
     <artifactId>DBDF</artifactId>
-    <version>1.5.1</version>
+    <version>1.5.2</version>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
@@ -29,7 +29,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.3</version>
+                <version>3.2.4</version>
                 <configuration>
                     <outputDirectory>${buildDir}</outputDirectory>
                     <createDependencyReducedPom>true</createDependencyReducedPom>
@@ -144,12 +144,6 @@
             <artifactId>maven-model</artifactId>
             <version>3.6.3</version>
         </dependency>
-        <dependency>
-            <groupId>org.jetbrains</groupId>
-            <artifactId>annotations</artifactId>
-            <version>19.0.0</version>
-            <scope>compile</scope>
-        </dependency>
 
         <!--jdbc jars-->
 <!--        <dependency>-->
@@ -160,32 +154,32 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.20</version>
+            <version>8.0.21</version>
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.2.12</version>
+            <version>42.2.15</version>
         </dependency>
         <dependency>
             <groupId>com.microsoft.sqlserver</groupId>
             <artifactId>mssql-jdbc</artifactId>
-            <version>8.2.2.jre11</version>
+            <version>8.4.0.jre11</version>
         </dependency>
         <dependency>
             <groupId>com.ibm.db2</groupId>
             <artifactId>jcc</artifactId>
-            <version>11.5.0.0</version>
+            <version>11.5.4.0</version>
         </dependency>
         <dependency>
             <groupId>org.xerial</groupId>
             <artifactId>sqlite-jdbc</artifactId>
-            <version>3.31.1</version>
+            <version>3.32.3.2</version>
         </dependency>
         <dependency>
             <groupId>com.facebook.presto</groupId>
             <artifactId>presto-jdbc</artifactId>
-            <version>0.234.2</version>
+            <version>0.239</version>
         </dependency>
         <!--        <dependency>-->
         <!--            <groupId>org.mongodb</groupId>-->

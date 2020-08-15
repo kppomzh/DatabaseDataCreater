@@ -2,7 +2,6 @@ package test;
 
 import Utils.env_properties;
 import main.Service;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -56,24 +55,25 @@ public class alltest {
     public void FileWriteFullTimeTest() throws SQLException {
         int[] insertnum = {10000};
         for (int value : insertnum) {
-            testFunc.PerformanceBase(ci, 100000000, value);
+            testFunc.setLocalEnv(value);
+            testFunc.PerformanceBase(ci, 100000000);
         }
     }
 
-    @Ignore
+//    @Ignore
     @Test
     public void JDBCWriteFullTimeTest() throws SQLException {
         env_properties.setEnvironment("toDB","jdbc");
         int[] insertnum = {10000};//2500, 5000, 10000,
         for (int value : insertnum) {
-            testFunc.PerformanceBase(ci, 10000000, value);
+            testFunc.PerformanceBase(ci, 10000000);
         }
     }
 
     @Test
     public void MultiThreadOneFileTest() throws SQLException {
         env_properties.setEnvironment("TOTAL_THREADS","3");
-        testFunc.PerformanceBase(1,15000,15000);
+        testFunc.PerformanceBase(1,15000);
     }
 
 }

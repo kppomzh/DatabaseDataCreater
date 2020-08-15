@@ -5,9 +5,9 @@
 也可以是逗号隔开的csv格式以便通过数据库外部表或load工具来利用。支持通过JDBC直接导入数据。支持生成json字符串。支持--、//、/**/三种注释方式。
 ## 最简化使用方法
 该方法可以不需要config.properties的配置文件。  
-1. 下载 https://github.com/kppomzh/DatabaseDataCreater/releases/download/V1.5.1/DBDF-1.5.1.zip  
+1. 下载 https://github.com/kppomzh/DatabaseDataCreater/releases/download/V1.5.2/DBDF-1.5.2.zip  
 2. 解压  
-3. 双击DBDF-1.5.1.exe  
+3. 双击DBDF-1.5.2.exe  
 5. 按照提示输入create命令和输出条数  
 6. 当前文件夹下就可以找到和表名一致的.sql文件，里面是相应条数的insert数据  
 7. 复制粘贴运行三连  
@@ -16,22 +16,19 @@
 ### 本地写入测试
 #### 硬件环境
 PC1:
-CPU:AMD Ryzen R5 3600X 4.2Ghz  
-Memory:16G DDR4 3200Mhz  
+CPU:AMD Ryzen R5 3600X 4.0~4.025Ghz  
+Memory:32G DDR4 3200Mhz  
 
 PC2:
-CPU:Intel i5-8600K 4.2Ghz  
-Memory:16G DDR4 2400Mhz  
+CPU:Intel i5-10400 4.0Ghz  
+Memory:16G DDR4 2666Mhz  
 
 SSD:Toshiba TR150 256G  
-
-本次测试特地统一了AMD处理器和Intel处理器的主频、核心数（AMD关闭了超线程），除了Intel处理器的内存规格太低频率上不去之外，双方真正的处于同一起
-跑线上。另外将Java更新到了14。
 
 #### 软件环境以及测试条件
 OS:Fedora 32  
 Kernel:5.6.10  
-Java:OpenJDK 11.0.6/14  
+Java:OpenJDK 11.0.7/14.0.1  
 测试条件:  
 1. 6线程  
 2. 异步写入  
@@ -42,12 +39,21 @@ Java:OpenJDK 11.0.6/14
 7. 多联输出开启  
 8. 每次输出10000条
 
-#### 测试版本
-测试目前暂时未更新
+本次测试调大了Linux的缓存使用量，并且在回写上的策略更加消极。PC1基本可以做到所有数据都内存中写入，几乎完全避免了磁盘IO延迟的影响。  
+但是在Java11的测试中仍然轻微的落后于Intel。  
+当然Java测试很难稳定，我在Java11上测试了三次取平均值，Java14上仅有一次测试。
+
+#### 测试结果
+参与测试的版本：1.4.3 / 1.5 / 1.5.1 / 1.5.2
+![avatar](./detail.png)  
+版本优化折线图
+![avatar](./版本优化折线图.png)  
+环境影响折线图
+![avatar](./环境影响折线图.png)
 
 ### 性能变化
-1.5对生成数据格式检查做了很多改进，减少了大量不必要的格式检查，使得速度进一步加快。
-另外针对ThreadLocalRandom随机性不够的问题，特地添加了一个SecurityRamdom来部分的增强随机性。
+总体的性能仍然有小幅提高，但是未来的优化空间几乎没有了；除非能找到新的突破点，比如下一步分析一下正则表达式生成器的性能瓶颈。  
+1.5.2修改了数值类型的长度定义方式，现在按照第一位设置总长度，第二位设置浮点长度的方式确定数值格式。
 
 ## 程序参数详解
 -h:显示帮助。  
