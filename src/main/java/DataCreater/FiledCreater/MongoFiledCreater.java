@@ -13,7 +13,8 @@ public class MongoFiledCreater extends baseFiledCreater {
     }
 
     @Override
-    protected void packFiled(StringBuilder out) {
+    protected String packFiled() {
+        StringBuilder out=new StringBuilder();
         out.append('{');
         String[] temp=super.makeOnceData();
         for (int i = 0; i < temp.length; i++) {
@@ -24,6 +25,7 @@ public class MongoFiledCreater extends baseFiledCreater {
         }
         out.deleteCharAt(out.length() - 1);
         out.append('}').append(',');
+        return out.toString();
     }
 
     @Override

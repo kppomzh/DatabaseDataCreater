@@ -23,7 +23,7 @@ public class testFunc {
 
         //虚拟机预热数据
         {
-            Service.main(new String[]{"-n", "10000", "-f", "zhaohuang.sql"});
+            Service.main(new String[]{"-n", "10000", "-f", "./zhaohuang.sql"});
             if (env_properties.getEnvironment("toDB").equals("jdbc")) {
                 getConn conn = new getConn();
                 conn.Stmt().executeUpdate("truncate table zhzm_dbdf_test");
@@ -31,7 +31,7 @@ public class testFunc {
         }
 
         for (int loop = 0; loop < ci; loop++) {
-            all = all + testBase(createnum,"zhaohuang.sql");
+            all = all + testBase(createnum,"./zhaohuang.sql");
         }
         System.out.print("insertnum:");
         System.out.println(env_properties.getEnvironment("longerInsertNumber"));

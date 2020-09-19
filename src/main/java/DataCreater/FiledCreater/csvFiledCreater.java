@@ -13,17 +13,19 @@ public class csvFiledCreater extends baseFiledCreater {
     }
 
     @Override
-    protected void packFiled(StringBuilder out) {
+    protected String packFiled() {
+        StringBuilder out=new StringBuilder();
         for (String appendStr:super.makeOnceData()) {
             out.append(appendStr);
             out.append(',');
         }
         out.deleteCharAt(out.length()-1);
         out.append('\n');
+        return out.toString();
     }
 
     @Override
     protected String packTail() {
-        return "";
+        return "\n";
     }
 }

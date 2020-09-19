@@ -1,17 +1,19 @@
 package Utils.DataWriter;
 
 import Utils.env_properties;
+import org.apache.commons.io.output.FileWriterWithEncoding;
 
 import java.io.*;
 
 public class textFileWriter extends tF{
-    private BufferedWriter bw;
+    private Writer bw;
 
     public textFileWriter(String Filename) throws IOException {
         super(Filename);
-        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(textfile, false), 32768);//now 32768 is best
-        //
-        bw = new BufferedWriter(new OutputStreamWriter(bos, env_properties.getEnvirmentCharset()), 32768);//now 32768 is best
+        Writer writer=new FileWriterWithEncoding(textfile,env_properties.getEnvirmentCharset());
+
+        bw = new BufferedWriter(writer, 32768);//now 32768 is best
+//        bw=writer;
     }
 
     @Override
