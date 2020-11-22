@@ -15,7 +15,7 @@ public class numberTypeCreater implements baseTypeCreater {
     public numberTypeCreater(int mainRange, int decRange, String[] Numberarea, boolean nagetive){
         canbeNagetive=nagetive;
 
-        intMax =BigInteger.valueOf(Double.valueOf(Math.pow(10,mainRange-decRange)).longValue()).divide(BigInteger.ONE);
+        intMax =BigInteger.valueOf(Double.valueOf(Math.pow(10,mainRange-decRange)).longValue()).subtract(BigInteger.ONE);
         intMin=BigInteger.ZERO;
         if(decRange>0){
             hasDec=true;

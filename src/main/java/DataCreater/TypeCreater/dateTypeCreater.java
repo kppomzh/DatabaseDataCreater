@@ -8,8 +8,8 @@ public class dateTypeCreater extends baseTypeCreaterImpl {
 
     public dateTypeCreater(){
         if(env_properties.getEnvironment("toDB").equals("sql")){
-            wrapBefore="to_date(\"";
-            wrapAfter="\",\"yyyy-mm-dd hh24:mi:ss\")";
+            wrapBefore="to_date('";
+            wrapAfter="','yyyy-mm-dd hh24:mi:ss')";
         }
         else{
             wrapBefore="'";

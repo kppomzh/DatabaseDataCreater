@@ -1,12 +1,10 @@
 package CreateSQLParser.Parser;
 
 import CreateSQLParser.Lex.Word;
-import SavingTypeString.DataType;
 import DataCreater.templet.CustomStringtypeConfigLoader;
+import SavingTypeString.DataType;
 
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 public class Fugue {
@@ -47,8 +45,9 @@ public class Fugue {
 
     public Word[] fugue(Word[] words) {
         boolean inlineOpen = false;
-        if (!words[0].getName().equals("create"))
+        if (!words[0].getName().equals("create")) {
             throw new RuntimeException("not start with create");
+        }
 
         Word w = words[0], last;
         for (int loop = 0; loop<words.length-1; loop++) {

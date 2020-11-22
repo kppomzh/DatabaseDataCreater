@@ -1,6 +1,5 @@
 package newfeature;
 
-import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
@@ -8,8 +7,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
-import java.util.zip.ZipInputStream;
-import java.util.zip.ZipOutputStream;
 
 public class memzip {
     @Test
@@ -40,7 +37,7 @@ public class memzip {
         return stringBuffer;
     }
 
-    private String ungzcompress(@NotNull byte[] toUnCompress) throws IOException {
+    private String ungzcompress(byte[] toUnCompress) throws IOException {
         ByteArrayInputStream in = new ByteArrayInputStream(toUnCompress);
         GZIPInputStream ungzip = new GZIPInputStream(in);
         return new String(ungzip.readAllBytes());
