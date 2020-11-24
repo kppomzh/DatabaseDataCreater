@@ -86,9 +86,10 @@ public class InsertPlanMaker {
                     defaultDataType = w.getSubstance();
                     break;
                 case ")":
-                    if (rangeEnd)
+                    if (rangeEnd) {
                         rangeEnd = false;
-                    break;
+                        break;
+                    }
                 case ";":
                 case ",":
                     if (!(rangeEnd || setInline)) {
