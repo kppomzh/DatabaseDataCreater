@@ -4,20 +4,23 @@ import Utils.DataWriter.*;
 import Utils.env_properties;
 import dataStructure.TableStructure;
 
+import javax.security.auth.callback.Callback;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-public class CreateInsertSQLProcess {
+public class CreateInsertSQLProcess implements Callback {
     private int basicThreads = Integer.valueOf(env_properties.getEnvironment("nCPU"));
     private int TOTAL_THREADS = Integer.valueOf(env_properties.getEnvironment("TOTAL_THREADS"));
     private ExecutorService service = Executors.newFixedThreadPool(basicThreads);//根据CPU核心最大值确定线程数量，一般是核心数减一
     private TableStructure ts;
     private int[] linenumber;
+    private ConcurrentLinkedQueue<String> tempPool;
 
     /**
      * @param ts 每个表的解析信息
@@ -32,6 +35,7 @@ public class CreateInsertSQLProcess {
         if(ts.isPrimary()){
             ts.setPrimaryInterval(BigInteger.valueOf(TOTAL_THREADS>1?this.linenumber[1]:this.linenumber[0]));
         }
+        tempPool=new ConcurrentLinkedQueue<>();
     }
 
     public void createInsertSQLFile() throws Exception {
@@ -46,7 +50,7 @@ public class CreateInsertSQLProcess {
         } else {
             writerlist.add(getWriter(ts.getTbname()));
         }
-        makePool(writerlist);
+        makePool();
 
         service.shutdown();
         service.awaitTermination(7, TimeUnit.DAYS);
@@ -56,12 +60,8 @@ public class CreateInsertSQLProcess {
         }
     }
 
-    private void makePool(List<tF> writerlist) throws CloneNotSupportedException {
-        for (int loop = 0; loop < TOTAL_THREADS; loop++)
-            service.execute(new SQLCreaterRunner(
-                    (TableStructure) ts.clone(),
-                    linenumber[loop],
-                    writerlist.get(loop)));
+    private void makePool() throws CloneNotSupportedException {
+
     }
 
     private tF getWriter(String tablename) throws IOException {
@@ -79,5 +79,9 @@ public class CreateInsertSQLProcess {
                 else
                     return new textFileWriter(filename);
         }
+    }
+
+    public void putPool(String str){
+        tempPool.add(str);
     }
 }

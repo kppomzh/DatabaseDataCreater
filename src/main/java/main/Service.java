@@ -5,6 +5,9 @@ import CreateSQLParser.TableStructure.CreateTableStructure;
 import Utils.env_properties;
 import Utils.insert.CreateInsertSQLProcess;
 import dataStructure.TableStructure;
+import main.control.local.LocalStart;
+import main.control.network.NetworkStart;
+import main.control.start;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,9 +16,9 @@ import java.util.Scanner;
 public class Service {
     private static Scanner scanf = new Scanner(System.in);
 
-    public static void main(String[] args) {
-        String filename = null, FileString;
-        String[] createSQLs;
+    public static void main(String[] args) throws IOException {
+        start service;
+        String filename = null;
         Double linenumber = null;
         for (int loop = 0; loop < args.length; loop++) {
             switch (args[loop]) {
@@ -49,9 +52,9 @@ public class Service {
                 case "-O":
                     env_properties.setEnvironment("Optimal", "true");
                     break;
-//                case "-a":
-//                    env_properties.setEnvironment("asynchronous", "true");
-//                    break;
+                case "-I":
+                    env_properties.setEnvironment("networkService", "true");
+                    break;
                 case "-L":
                     env_properties.setEnvironment("longerInsert", "true");
                     break;
@@ -65,31 +68,11 @@ public class Service {
             }
         }
 
-        if (filename == null) {
-            System.out.println("输入create SQL");
-            FileString = scanf.nextLine();
+        if (env_properties.getEnvironment("networkService").equals("true")) {
+            service=new NetworkStart();
         } else {
-            try {
-                FileString = FileLoader.loadFile(new File(filename));
-            } catch (IOException e) {
-                e.printStackTrace();
-                return ;
-            }
+            service = new LocalStart(linenumber,filename);
         }
-        if (linenumber == null) {
-            System.out.println("输入create number");
-            linenumber = scanf.nextDouble();
-        }
-        createSQLs = FileString.replace("\r", "").split(";");
-
-        for (int i = 0; i < createSQLs.length; i++) {
-            try {
-                TableStructure ts = CreateTableStructure.makeStructure(createSQLs[i] + ';');
-                CreateInsertSQLProcess createInsertSQLProcess = new CreateInsertSQLProcess(ts, linenumber);
-                createInsertSQLProcess.createInsertSQLFile();//args -n linenumber
-            } catch (Throwable t) {
-                System.out.println(t.getMessage());
-            }
-        }
+        service.start();
     }
 }

@@ -5,7 +5,9 @@ import Utils.DataWriter.tF;
 import Utils.Factorys.FiledCreaterFactory;
 import Utils.env_properties;
 import dataStructure.TableStructure;
+import main.control.start;
 
+import javax.security.auth.callback.Callback;
 import java.util.Objects;
 
 /**
@@ -14,14 +16,14 @@ import java.util.Objects;
 public class SQLCreaterRunner implements Runnable {
 
     private int makenumber;
-    private tF writer;
 
     private baseFiledCreater bc;
     private int partCreatemax;
+    private start upStare;
 
-    public SQLCreaterRunner(TableStructure tableStructure, int makenumber, tF writer) {
+    public SQLCreaterRunner(TableStructure tableStructure, int makenumber, start upStare) {
         this.makenumber = makenumber;
-        this.writer = writer;
+        this.upStare=upStare;
         bc= FiledCreaterFactory.getFiledCreater(tableStructure);
         partCreatemax=Objects.equals(env_properties.getEnvironment("longerInsert"), "true")?
                 Integer.valueOf(env_properties.getEnvironment("longerInsertNumber")):1;
@@ -31,12 +33,12 @@ public class SQLCreaterRunner implements Runnable {
     public void run() {
         while(makenumber>=partCreatemax){
             String toWrite = bc.makeinsert(partCreatemax);
-            writer.WriteLine(toWrite);
+            upStare.send(toWrite);
             makenumber-=partCreatemax;
         }
 
         if(makenumber>0) {
-            writer.WriteLine(bc.makeinsert(makenumber));
+            upStare.send(bc.makeinsert(makenumber));
         }
     }
 }

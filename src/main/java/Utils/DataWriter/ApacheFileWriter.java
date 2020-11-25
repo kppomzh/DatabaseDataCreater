@@ -19,7 +19,7 @@ public class ApacheFileWriter extends tF {
     }
 
     @Override
-    public synchronized boolean WriteLine(String insert) {
+    public boolean WriteLine(String insert) {
         try {
             bw.write(insert.getBytes());
             return true;
