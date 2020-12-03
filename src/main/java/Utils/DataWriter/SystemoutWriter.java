@@ -1,6 +1,6 @@
 package Utils.DataWriter;
 
-public class SystemoutWriter extends tF {
+public class SystemoutWriter extends Writer {
     public SystemoutWriter() {}
 
     @Override

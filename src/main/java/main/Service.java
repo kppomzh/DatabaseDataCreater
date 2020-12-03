@@ -1,15 +1,10 @@
 package main;
 
-import Utils.FileLoader;
-import CreateSQLParser.TableStructure.CreateTableStructure;
 import Utils.env_properties;
-import Utils.insert.CreateInsertSQLProcess;
-import dataStructure.TableStructure;
 import main.control.local.LocalStart;
 import main.control.network.NetworkStart;
 import main.control.start;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
 
@@ -18,8 +13,7 @@ public class Service {
 
     public static void main(String[] args) throws IOException {
         start service;
-        String filename = null;
-        Double linenumber = null;
+        String filename = null,linenumber = null;
         for (int loop = 0; loop < args.length; loop++) {
             switch (args[loop]) {
                 case "-f":
@@ -27,7 +21,7 @@ public class Service {
                     loop++;
                     break;
                 case "-n":
-                    linenumber = Double.valueOf(args[loop + 1]);
+                    linenumber = args[loop + 1];
                     loop++;
                     break;
                 case "--set":
@@ -39,7 +33,7 @@ public class Service {
                     loop++;
                     break;
                 case "-t":
-                    env_properties.setEnvironment("TOTAL_THREADS", args[loop + 1]);
+                    env_properties.setEnvironment("totalThreads", args[loop + 1]);
                     loop++;
                     break;
                 case "-i":
@@ -50,7 +44,7 @@ public class Service {
                     help.printHelpMessage();
                     System.exit(0);
                 case "-O":
-                    env_properties.setEnvironment("Optimal", "true");
+                    env_properties.setEnvironment("optimal", "true");
                     break;
                 case "-I":
                     env_properties.setEnvironment("networkService", "true");

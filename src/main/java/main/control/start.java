@@ -1,6 +1,6 @@
 package main.control;
 
-import Utils.DataWriter.tF;
+import Utils.DataWriter.Writer;
 import Utils.env_properties;
 import Utils.insert.SQLCreaterRunner;
 import dataStructure.TableStructure;
@@ -13,10 +13,10 @@ import java.util.concurrent.Executors;
 
 public abstract class start implements Callback {
     private int basicThreads = Integer.valueOf(env_properties.getEnvironment("nCPU"));
-    private int TOTAL_THREADS = Integer.valueOf(env_properties.getEnvironment("TOTAL_THREADS"));
+    private int TOTAL_THREADS = Integer.valueOf(env_properties.getEnvironment("totalThreads"));
     private ExecutorService service = Executors.newFixedThreadPool(basicThreads);//根据CPU核心最大值确定线程数量，一般是核心数减一
     protected TableStructure ts;
-    protected tF writer;
+    protected Writer writer;
     protected int[] linenumber;
 
     public void setTableStructure(TableStructure ts) {
@@ -49,5 +49,5 @@ public abstract class start implements Callback {
 
     public abstract void send(String str);
 
-    protected abstract <T> tF getWriter(T obj) throws IOException;
+    protected abstract <T> Writer getWriter(T obj) throws IOException;
 }

@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 
 public class CreateInsertSQLProcess implements Callback {
     private int basicThreads = Integer.valueOf(env_properties.getEnvironment("nCPU"));
-    private int TOTAL_THREADS = Integer.valueOf(env_properties.getEnvironment("TOTAL_THREADS"));
+    private int TOTAL_THREADS = Integer.valueOf(env_properties.getEnvironment("totalThreads"));
     private ExecutorService service = Executors.newFixedThreadPool(basicThreads);//根据CPU核心最大值确定线程数量，一般是核心数减一
     private TableStructure ts;
     private int[] linenumber;
@@ -40,7 +40,7 @@ public class CreateInsertSQLProcess implements Callback {
 
     public void createInsertSQLFile() throws Exception {
         int close_loop = 1;
-        List<tF> writerlist = new ArrayList<>();
+        List<Writer> writerlist = new ArrayList<>();
 
         if (TOTAL_THREADS>1) {
             close_loop = TOTAL_THREADS;
@@ -64,7 +64,7 @@ public class CreateInsertSQLProcess implements Callback {
 
     }
 
-    private tF getWriter(String tablename) throws IOException {
+    private Writer getWriter(String tablename) throws IOException {
         String filename = env_properties.getEnvironment("baseFileDir") + tablename + "." + env_properties.getEnvironment("toDB");
         if (env_properties.getEnvironment("toDB").equals("jdbc")) {
             return new textFileJDBC();
@@ -75,7 +75,7 @@ public class CreateInsertSQLProcess implements Callback {
                 return new SystemoutWriter();
             default :
                 if(env_properties.getEnvironment("compress").equals("true"))
-                    return new textCompressWriter(filename);
+                    return new netCompressWriter();
                 else
                     return new textFileWriter(filename);
         }

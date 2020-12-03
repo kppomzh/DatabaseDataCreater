@@ -1,13 +1,11 @@
 package Utils.insert;
 
 import DataCreater.FiledCreater.baseFiledCreater;
-import Utils.DataWriter.tF;
 import Utils.Factorys.FiledCreaterFactory;
 import Utils.env_properties;
 import dataStructure.TableStructure;
 import main.control.start;
 
-import javax.security.auth.callback.Callback;
 import java.util.Objects;
 
 /**

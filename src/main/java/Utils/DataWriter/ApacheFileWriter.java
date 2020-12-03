@@ -8,7 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
-public class ApacheFileWriter extends tF {
+public class ApacheFileWriter extends Writer {
     private WriterOutputStream bw;
 
     public ApacheFileWriter(String Filename) throws IOException {

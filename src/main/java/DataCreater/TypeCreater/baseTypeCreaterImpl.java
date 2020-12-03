@@ -62,7 +62,7 @@ public abstract class baseTypeCreaterImpl implements baseTypeCreater,Cloneable {
     private static int strRangeOptimal(int range) {
         if (range < 1) {
             range = privateRandom.RandomInteger(1, 10);
-        } else if (env_properties.getEnvironment("Optimal").equals("true")) {
+        } else if (env_properties.getEnvironment("optimal").equals("true")) {
             if (range < 32 && range > 8) range = range - privateRandom.RandomInteger(1, 8);
             else if (range >= 32) range = privateRandom.RandomInteger(1, range >> 3);
         }

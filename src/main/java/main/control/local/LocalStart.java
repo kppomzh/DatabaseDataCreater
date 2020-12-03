@@ -2,14 +2,17 @@ package main.control.local;
 
 import CreateSQLParser.TableStructure.CreateTableStructure;
 import Utils.DataWriter.*;
+import Utils.Factorys.getEnvRecordFactory;
 import Utils.FileLoader;
 import Utils.env_properties;
 import Utils.insert.SQLCreaterRunner;
+import dataStructure.RuntimeEnvironment;
 import dataStructure.TableStructure;
 import main.control.start;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
@@ -21,18 +24,16 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class LocalStart extends start {
     private int basicThreads = Integer.valueOf(env_properties.getEnvironment("nCPU"));
-    private int TOTAL_THREADS = Integer.valueOf(env_properties.getEnvironment("TOTAL_THREADS"));
-    private String[] createSQLs;
+    private int TOTAL_THREADS = Integer.valueOf(env_properties.getEnvironment("totalThreads"));
     private String filename;
-    private Double localSetNumber;
     private static Scanner scanf = new Scanner(System.in);
     private ExecutorService service;
     private Lock lock = new ReentrantLock();
+    private RuntimeEnvironment thisEnv;
 
-    public LocalStart(Double linenumber, String SQLFilename) {
+    public LocalStart(String linenumber, String SQLFilename) {
         filename=SQLFilename;
-        localSetNumber=linenumber;
-        checkMsg();
+        checkMsg(linenumber);
         //根据CPU核心最大值确定线程数量，一般是核心数减一
         service = Executors.newFixedThreadPool(basicThreads);
     }
@@ -40,6 +41,7 @@ public class LocalStart extends start {
     @Override
     public void start() {
         List<Exception> exList=new LinkedList<>();
+        String[] createSQLs = thisEnv.getSQLString().replace("\r", "").split(";");
         for (int i = 0; i < createSQLs.length; i++) {
             try {
                 TableStructure ts = CreateTableStructure.makeStructure(createSQLs[i] + ';');
@@ -60,6 +62,7 @@ public class LocalStart extends start {
 
     @Override
     public void createInsertPool() throws CloneNotSupportedException {
+        super.setLineNumber(thisEnv.getCreateNum());
         for (int loop = 0; loop < TOTAL_THREADS; loop++)
             service.execute(new SQLCreaterRunner(
                     (TableStructure) ts.clone(),
@@ -67,26 +70,28 @@ public class LocalStart extends start {
                     this));
     }
 
-    private void checkMsg(){
-        String FileString;
+    private void checkMsg(String linenumber){
+        HashMap<String,String> template=new HashMap<>();
 
         if (filename == null) {
             System.out.println("输入create SQL");
-            FileString = scanf.nextLine();
+            template.put("SQLString",scanf.nextLine());
         } else {
             try {
-                FileString = FileLoader.loadFile(new File(filename));
+                template.put("SQLString",FileLoader.loadFile(new File(filename)));
             } catch (IOException e) {
                 e.printStackTrace();
                 return ;
             }
         }
-        if (localSetNumber == null) {
+        if (linenumber == null) {
             System.out.println("输入create number");
-            localSetNumber = scanf.nextDouble();
+            template.put("createNum",scanf.nextLine());
+        } else {
+            template.put("createNum",linenumber);
         }
-        createSQLs = FileString.replace("\r", "").split(";");
-        super.setLineNumber(localSetNumber);
+
+        thisEnv= getEnvRecordFactory.getRuntimeEnv(template);
     }
 
     @Override
@@ -101,7 +106,7 @@ public class LocalStart extends start {
     }
 
     @Override
-    protected <T> tF getWriter(T obj) throws IOException {
+    protected <T> Writer getWriter(T obj) throws IOException {
         String filename = env_properties.getEnvironment("baseFileDir") + obj + "." + env_properties.getEnvironment("toDB");
         if (env_properties.getEnvironment("toDB").equals("jdbc")) {
             return new textFileJDBC();

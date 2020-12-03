@@ -17,7 +17,7 @@ public class alltest {
     final static String testfile="./zhaohuang.sql";
 
     @Test
-    public void typetest() {
+    public void typetest() throws IOException {
         Service.main(new String[]{"-n", "5", "-f", "zhaohuang.sql", "-i", "mongo","--set","WriterEngine","screenout"});
         Service.main(new String[]{"-n", "5", "-f", "zhaohuang.sql", "-i", "sql","--set","WriterEngine","screenout"});
         Service.main(new String[]{"-n", "5", "-f", "zhaohuang.sql", "-i", "json","--set","WriterEngine","screenout"});
@@ -38,7 +38,7 @@ public class alltest {
     }
 
     @Test
-    public void helptest() {
+    public void helptest() throws IOException {
         Service.main(new String[]{"-h"});
     }
 
@@ -47,12 +47,12 @@ public class alltest {
      *
      * @param ar
      */
-    public static void main(String... ar) {
+    public static void main(String... ar) throws IOException {
         Service.main(new String[]{"-n", "100000", "-f", testfile});
     }
 
     @Test
-    public void FileWriteFullTimeTest() throws SQLException {
+    public void FileWriteFullTimeTest() throws SQLException, IOException {
         int[] insertnum = {10000};
         for (int value : insertnum) {
             testFunc.setLocalEnv(value);
@@ -62,7 +62,7 @@ public class alltest {
 
 //    @Ignore
     @Test
-    public void JDBCWriteFullTimeTest() throws SQLException {
+    public void JDBCWriteFullTimeTest() throws SQLException, IOException {
         env_properties.setEnvironment("toDB","jdbc");
         int[] insertnum = {10000};//2500, 5000, 10000,
         for (int value : insertnum) {
@@ -71,8 +71,8 @@ public class alltest {
     }
 
     @Test
-    public void MultiThreadOneFileTest() throws SQLException {
-        env_properties.setEnvironment("TOTAL_THREADS","3");
+    public void MultiThreadOneFileTest() throws SQLException, IOException {
+        env_properties.setEnvironment("totalThreads","3");
         testFunc.PerformanceBase(1,15000);
     }
 

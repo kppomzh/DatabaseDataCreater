@@ -12,7 +12,7 @@ public class stringTypeCreater extends baseTypeCreaterImpl {
     public stringTypeCreater(int range) {
         if (range < 1) {
             rangeLength = privateRandom.RandomInteger(1, 10);
-        } else if (env_properties.getEnvironment("Optimal").equals("true")) {
+        } else if (env_properties.getEnvironment("optimal").equals("true")) {
             if (range < 32 && range > 8) rangeLength = range - privateRandom.RandomInteger(1, 8);
             else if (range >= 32) rangeLength = privateRandom.RandomInteger(1, range >> 3);
         } else {

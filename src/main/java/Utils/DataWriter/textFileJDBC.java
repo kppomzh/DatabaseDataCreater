@@ -4,7 +4,7 @@ import Utils.DBConn.getConn;
 
 import java.sql.Statement;
 
-public class textFileJDBC extends tF {
+public class textFileJDBC extends Writer {
     private getConn conn;
     private Statement stmt;
 

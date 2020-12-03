@@ -1,32 +1,38 @@
 package main.control.network;
 
 import NetworkUtils.InsertProcessor;
-import NetworkUtils.StringProtocol;
-import Utils.DataWriter.tF;
+import NetworkUtils.JsonProtocol;
+import Utils.DataWriter.Writer;
+import Utils.DataWriter.netCompressWriter;
 import Utils.env_properties;
-import dataStructure.TableStructure;
 import main.control.start;
 import org.smartboot.socket.transport.AioQuickServer;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 public class NetworkStart extends start {
+    private JsonProtocol protocol;
+    private InsertProcessor processor;
+    private AioQuickServer server;
+
     public NetworkStart() throws IOException {
-        AioQuickServer<String> server = new AioQuickServer<String>(
+        processor=new InsertProcessor(this);
+        protocol=new JsonProtocol(this);
+
+        server = new AioQuickServer(
                 Integer.valueOf(env_properties.getEnvironment("networkPort")),
-                new StringProtocol(),
-                new InsertProcessor(this)
+                protocol,processor
         );
-        server.start();
     }
 
-    private void msgConfig(){
+    private void msgConfig(HashMap<String,String> configure){
 
     }
 
     @Override
     public void start() throws IOException {
-
+        server.start();
     }
 
     @Override
@@ -40,7 +46,7 @@ public class NetworkStart extends start {
     }
 
     @Override
-    protected <T> tF getWriter(T obj) throws IOException {
-        return null;
+    protected <T> Writer getWriter(T obj) throws IOException {
+        return new netCompressWriter();
     }
 }
