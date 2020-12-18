@@ -1,16 +1,18 @@
 package test;
 
 import Utils.DBConn.getConn;
+import Utils.Factorys.getEnvRecordFactory;
 import org.junit.Test;
 
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
 
 public class jdbctest {
     @Test
 //    @Ignore
     public void conntodbtest() throws SQLException {
-        getConn conn=new getConn();
+        getConn conn=new getConn(getEnvRecordFactory.getRuntimeEnv(new HashMap<>()));
 
         Statement stmt=conn.Stmt();
 //        stmt.executeUpdate(insert);

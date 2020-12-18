@@ -1,13 +1,13 @@
 package DataCreater.TypeCreater;
 
-import Utils.env_properties;
+import Utils.BaseProperties;
 import Utils.privateRandom;
 
 public class dateTypeCreater extends baseTypeCreaterImpl {
     private String wrapBefore,wrapAfter;
 
     public dateTypeCreater(){
-        if(env_properties.getEnvironment("toDB").equals("sql")){
+        if(BaseProperties.getEnvironment("toDB").equals("sql")){
             wrapBefore="to_date('";
             wrapAfter="','yyyy-mm-dd hh24:mi:ss')";
         }

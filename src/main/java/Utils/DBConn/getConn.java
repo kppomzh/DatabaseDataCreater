@@ -1,7 +1,7 @@
 package Utils.DBConn;
 
 import SavingTypeString.DBJdbcLinkString;
-import Utils.env_properties;
+import dataStructure.RuntimeEnvironment;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -11,9 +11,9 @@ public class getConn {
     private Connection conn;
     private Statement stmt;
 
-    public getConn() {
+    public getConn(RuntimeEnvironment env) {
         try {
-            conn = getConn();
+            conn = getConn(env);
             refreshStmt();
         } catch (Exception e) {
             e.printStackTrace();
@@ -22,14 +22,14 @@ public class getConn {
         }
     }
 
-    private Connection getConn() throws Exception {
-        String url = DBJdbcLinkString.getJdbcLinkString(env_properties.getEnvironment("DBsoftware").toLowerCase());
-        String port = env_properties.getEnvironment("port").equals("") ? DBJdbcLinkString.getDefaultJDBCPort(env_properties.getEnvironment("DBsoftware")) : env_properties.getEnvironment("port");
+    private Connection getConn(RuntimeEnvironment env) throws Exception {
+        String url = DBJdbcLinkString.getJdbcLinkString(env.getDBsoftware().toLowerCase());
+        String port = env.getPort().equals("") ? DBJdbcLinkString.getDefaultJDBCPort(env.getDBsoftware()) : env.getPort();
 
         return DriverManager.getConnection(url.
-                replace("{IP}", env_properties.getEnvironment("IP")).
+                replace("{IP}", env.getIP()).
                 replace("{port}", port).
-                replace("{dbname}", env_properties.getEnvironment("database")), env_properties.getEnvironment("user"), env_properties.getEnvironment("password"));
+                replace("{dbname}", env.getDatabase()), env.getUser(), env.getPassword());
     }
 
     public Connection Conn() {

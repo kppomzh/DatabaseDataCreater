@@ -1,10 +1,11 @@
 package DataCreater.FiledCreater;
 
+import dataStructure.RuntimeEnvironment;
 import dataStructure.TableStructure;
 
 public class MongoFiledCreater extends baseFiledCreater {
-    public MongoFiledCreater(TableStructure tableStructure) {
-        super(tableStructure);
+    public MongoFiledCreater(TableStructure tableStructure, RuntimeEnvironment env) {
+        super(tableStructure,env);
     }
 
     @Override

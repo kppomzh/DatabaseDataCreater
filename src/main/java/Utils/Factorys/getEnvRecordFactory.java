@@ -1,6 +1,6 @@
 package Utils.Factorys;
 
-import Utils.env_properties;
+import Utils.BaseProperties;
 import dataStructure.RuntimeEnvironment;
 
 import java.nio.charset.Charset;
@@ -11,7 +11,7 @@ import java.util.Properties;
 public class getEnvRecordFactory {
     public static RuntimeEnvironment getRuntimeEnv(Map<String,String> template) {
         Map<String,String> allConf=new HashMap<>();
-        Properties config= env_properties.getJDBCEnv();
+        Properties config= BaseProperties.getEnvs();
         for(String key:config.stringPropertyNames()){
             allConf.put(key,config.getProperty(key));
         }

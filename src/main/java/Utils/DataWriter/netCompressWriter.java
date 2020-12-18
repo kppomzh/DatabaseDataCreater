@@ -1,18 +1,19 @@
 package Utils.DataWriter;
 
+import dataStructure.RuntimeEnvironment;
 import org.xerial.snappy.SnappyOutputStream;
 
-import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-public class netCompressWriter extends Writer {
-    private BufferedOutputStream bos;
+public class netCompressWriter extends BaseWriter {
+    private ByteArrayOutputStream bos;
     private SnappyOutputStream compress;
 
-    public netCompressWriter() throws IOException {
-        super();
-//        bos =new BufferedOutputStream();
-//        compress=new SnappyOutputStream();
+    public netCompressWriter() {
+        bos=new ByteArrayOutputStream();
+        compress=new SnappyOutputStream(bos);
     }
 
     @Override
@@ -25,11 +26,18 @@ public class netCompressWriter extends Writer {
             return false;
         }
 
-        return true;
+        return bos.size()>6553600;
     }
 
     @Override
     public void close() throws IOException {
-        this.bos.close();
+        this.compress.close();
+    }
+
+    public byte[] getCompress() throws IOException {
+        compress.flush();
+        byte[] res=bos.toByteArray();
+        bos.reset();
+        return res;
     }
 }

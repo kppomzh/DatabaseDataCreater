@@ -1,12 +1,13 @@
 package DataCreater.FiledCreater;
 
+import dataStructure.RuntimeEnvironment;
 import dataStructure.TableStructure;
 
 public class JsonFiledCreater extends baseFiledCreater {
 //    private HashMap<String,Object> k_vMap;
 
-    public JsonFiledCreater(TableStructure tableStructure) {
-        super(tableStructure);
+    public JsonFiledCreater(TableStructure tableStructure, RuntimeEnvironment env) {
+        super(tableStructure,env);
 //        k_vMap=new HashMap<>();
     }
 

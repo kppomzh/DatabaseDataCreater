@@ -1,6 +1,6 @@
 package main;
 
-import Utils.env_properties;
+import Utils.BaseProperties;
 
 public class help {
     static String help="本程序的作用是根据给定的建立数据库表的SQL（create语句），自动的生成给定行数的数据，\n" +
@@ -29,7 +29,7 @@ public class help {
 
 
     public static void printVersion(){
-        System.out.println(env_properties.getEnvironment("version"));
+        System.out.println(BaseProperties.getEnvironment("version"));
     }
     public static void printHelpMessage()
     {

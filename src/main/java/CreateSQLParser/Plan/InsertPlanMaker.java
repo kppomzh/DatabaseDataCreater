@@ -8,6 +8,7 @@ import Exception.TypeException.RegularinPlanException;
 import DataCreater.RegularCreater.Regular;
 import Utils.Factorys.TypeCreaterFactory;
 import dataStructure.ListStructure;
+import dataStructure.RuntimeEnvironment;
 import dataStructure.TableStructure;
 import Exception.BaseException;
 
@@ -17,14 +18,19 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class InsertPlanMaker {
-    int[] range;
-    String[] numberarea;
-    boolean rangeEnd , isDefault , isSingal,hasArray=false,
+    private int[] range;
+    private String[] numberarea;
+    private boolean rangeEnd , isDefault , isSingal,hasArray=false,
             setInline , isUnmake , isRegular,isStringType,isPrimary;
-    int arraylocal, na;
-    List<String> inlineObject;
-    Word regular;
-    String listname , type , defaultDataType , defaultStr ;
+    private int arraylocal, na;
+    private List<String> inlineObject;
+    private Word regular;
+    private String listname , type , defaultDataType , defaultStr ;
+    private RuntimeEnvironment env;
+
+    public InsertPlanMaker(RuntimeEnvironment env){
+        this.env=env;
+    }
 
     public TableStructure makeStrusture(Word[] words) throws BaseException, TableStrucDataException {
         TableStructure structure = new TableStructure();
@@ -115,7 +121,7 @@ public class InsertPlanMaker {
                             //singal一定放在最后在设置，内部会有特性的冲突检查，如果存在default或者inline的话会屏蔽这两种特性
                             structurel.setSingal(isSingal);
 
-                            structurel.setCreater(TypeCreaterFactory.getTypeCreater(structurel));
+                            structurel.setCreater(TypeCreaterFactory.getTypeCreater(structurel,env));
                             structure.addList(structurel);
                             init();
                         }

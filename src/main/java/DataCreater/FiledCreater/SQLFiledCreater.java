@@ -1,10 +1,11 @@
 package DataCreater.FiledCreater;
 
+import dataStructure.RuntimeEnvironment;
 import dataStructure.TableStructure;
 
 public class SQLFiledCreater extends baseFiledCreater {
-    public SQLFiledCreater(TableStructure tableStructure) {
-        super(tableStructure);
+    public SQLFiledCreater(TableStructure tableStructure, RuntimeEnvironment env) {
+        super(tableStructure,env);
     }
 
     @Override

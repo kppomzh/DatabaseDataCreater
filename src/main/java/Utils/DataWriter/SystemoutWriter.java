@@ -1,7 +1,11 @@
 package Utils.DataWriter;
 
-public class SystemoutWriter extends Writer {
-    public SystemoutWriter() {}
+import dataStructure.RuntimeEnvironment;
+
+public class SystemoutWriter extends BaseWriter {
+    public SystemoutWriter(RuntimeEnvironment env) {
+        super(env);
+    }
 
     @Override
     public boolean WriteLine(String insert) {

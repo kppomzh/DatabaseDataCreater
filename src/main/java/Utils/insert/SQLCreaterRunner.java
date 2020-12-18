@@ -2,7 +2,8 @@ package Utils.insert;
 
 import DataCreater.FiledCreater.baseFiledCreater;
 import Utils.Factorys.FiledCreaterFactory;
-import Utils.env_properties;
+import Utils.BaseProperties;
+import dataStructure.RuntimeEnvironment;
 import dataStructure.TableStructure;
 import main.control.start;
 
@@ -19,12 +20,12 @@ public class SQLCreaterRunner implements Runnable {
     private int partCreatemax;
     private start upStare;
 
-    public SQLCreaterRunner(TableStructure tableStructure, int makenumber, start upStare) {
+    public SQLCreaterRunner(TableStructure tableStructure, int makenumber, start upStare, RuntimeEnvironment env) {
         this.makenumber = makenumber;
         this.upStare=upStare;
-        bc= FiledCreaterFactory.getFiledCreater(tableStructure);
-        partCreatemax=Objects.equals(env_properties.getEnvironment("longerInsert"), "true")?
-                Integer.valueOf(env_properties.getEnvironment("longerInsertNumber")):1;
+        bc= FiledCreaterFactory.getFiledCreater(tableStructure,env);
+        partCreatemax=Objects.equals(BaseProperties.getEnvironment("longerInsert"), "true")?
+                Integer.valueOf(BaseProperties.getEnvironment("longerInsertNumber")):1;
     }
 
     @Override

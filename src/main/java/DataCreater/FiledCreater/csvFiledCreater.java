@@ -1,10 +1,11 @@
 package DataCreater.FiledCreater;
 
+import dataStructure.RuntimeEnvironment;
 import dataStructure.TableStructure;
 
 public class csvFiledCreater extends baseFiledCreater {
-    public csvFiledCreater(TableStructure tableStructure) {
-        super(tableStructure);
+    public csvFiledCreater(TableStructure tableStructure, RuntimeEnvironment env) {
+        super(tableStructure,env);
     }
 
     @Override

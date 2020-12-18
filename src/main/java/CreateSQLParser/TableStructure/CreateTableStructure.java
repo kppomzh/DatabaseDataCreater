@@ -4,6 +4,7 @@ import CreateSQLParser.Lex.Word;
 import CreateSQLParser.Lex.Word_Segment;
 import CreateSQLParser.Parser.Fugue;
 import CreateSQLParser.Plan.InsertPlanMaker;
+import dataStructure.RuntimeEnvironment;
 import dataStructure.TableStructure;
 
 import java.util.List;
@@ -15,10 +16,10 @@ public class CreateTableStructure {
      * @return
      * @throws Exception
      */
-    public static TableStructure makeStructure(String createSQL) throws Exception {
+    public static TableStructure makeStructure(String createSQL, RuntimeEnvironment env) throws Exception {
         Word_Segment ws = new Word_Segment();
         Fugue fugue = new Fugue();
-        InsertPlanMaker maker = new InsertPlanMaker();
+        InsertPlanMaker maker = new InsertPlanMaker(env);
 
         Word[] words = ws.Segment(createSQL);
         try {

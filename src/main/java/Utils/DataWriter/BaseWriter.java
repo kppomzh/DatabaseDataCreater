@@ -1,12 +1,16 @@
 package Utils.DataWriter;
 
+import dataStructure.RuntimeEnvironment;
+
 import java.io.File;
 import java.io.IOException;
 
-public abstract class Writer {
+public abstract class BaseWriter {
     protected File textfile;
+    protected RuntimeEnvironment env;
 
-    protected Writer(String Filename) throws IOException {
+    protected BaseWriter(String Filename, RuntimeEnvironment env) throws IOException {
+        this(env);
         textfile = new File(Filename);
         if (!textfile.exists()) {
             textfile.createNewFile();
@@ -16,7 +20,11 @@ public abstract class Writer {
             throw new IOException(textfile.getPath() + "can't be write.");
     }
 
-    protected Writer() {
+    protected BaseWriter(RuntimeEnvironment env) {
+        this.env=env;
+    }
+
+    protected BaseWriter() {
     }
 
     public abstract boolean WriteLine(String insert);

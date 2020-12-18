@@ -1,7 +1,6 @@
 package NetworkUtils;
 
 import Utils.Factorys.getEnvRecordFactory;
-import Utils.env_properties;
 import com.facebook.presto.jdbc.internal.jackson.core.type.TypeReference;
 import com.facebook.presto.jdbc.internal.jackson.databind.ObjectMapper;
 import dataStructure.RuntimeEnvironment;

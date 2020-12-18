@@ -1,6 +1,6 @@
 package DataCreater.templet;
 
-import Utils.env_properties;
+import Utils.BaseProperties;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -19,7 +19,7 @@ public class CustomStringtypeConfigLoader{
 
         File[] confiles;
 //        Collections.addAll(confiles,getFiles(new File(regularpath)));
-        String[] pathsa= env_properties.getEnvironment("CustomStringtypeConf").split(";");
+        String[] pathsa= BaseProperties.getEnvironment("CustomStringtypeConf").split(";");
         confiles=getFiles(pathsa);
 
         custom=new Properties();

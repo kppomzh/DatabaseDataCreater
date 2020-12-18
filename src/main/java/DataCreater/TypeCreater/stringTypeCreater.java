@@ -1,6 +1,6 @@
 package DataCreater.TypeCreater;
 
-import Utils.env_properties;
+import Utils.BaseProperties;
 import Utils.privateRandom;
 
 public class stringTypeCreater extends baseTypeCreaterImpl {
@@ -12,7 +12,7 @@ public class stringTypeCreater extends baseTypeCreaterImpl {
     public stringTypeCreater(int range) {
         if (range < 1) {
             rangeLength = privateRandom.RandomInteger(1, 10);
-        } else if (env_properties.getEnvironment("optimal").equals("true")) {
+        } else if (BaseProperties.getEnvironment("optimal").equals("true")) {
             if (range < 32 && range > 8) rangeLength = range - privateRandom.RandomInteger(1, 8);
             else if (range >= 32) rangeLength = privateRandom.RandomInteger(1, range >> 3);
         } else {

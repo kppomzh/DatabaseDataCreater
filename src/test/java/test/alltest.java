@@ -1,6 +1,6 @@
 package test;
 
-import Utils.env_properties;
+import Utils.BaseProperties;
 import main.Service;
 import org.junit.Test;
 
@@ -63,7 +63,7 @@ public class alltest {
 //    @Ignore
     @Test
     public void JDBCWriteFullTimeTest() throws SQLException, IOException {
-        env_properties.setEnvironment("toDB","jdbc");
+        BaseProperties.setEnvironment("toDB","jdbc");
         int[] insertnum = {10000};//2500, 5000, 10000,
         for (int value : insertnum) {
             testFunc.PerformanceBase(ci, 10000000);
@@ -72,7 +72,7 @@ public class alltest {
 
     @Test
     public void MultiThreadOneFileTest() throws SQLException, IOException {
-        env_properties.setEnvironment("totalThreads","3");
+        BaseProperties.setEnvironment("totalThreads","3");
         testFunc.PerformanceBase(1,15000);
     }
 

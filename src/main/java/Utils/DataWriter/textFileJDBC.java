@@ -1,15 +1,17 @@
 package Utils.DataWriter;
 
 import Utils.DBConn.getConn;
+import dataStructure.RuntimeEnvironment;
 
 import java.sql.Statement;
 
-public class textFileJDBC extends Writer {
+public class textFileJDBC extends BaseWriter {
     private getConn conn;
     private Statement stmt;
 
-    public textFileJDBC(){
-        conn=new getConn();
+    public textFileJDBC(RuntimeEnvironment env){
+        super(env);
+        conn=new getConn(env);
         stmt=conn.Stmt();
     }
 

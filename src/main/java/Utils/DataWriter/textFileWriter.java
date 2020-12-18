@@ -1,16 +1,20 @@
 package Utils.DataWriter;
 
-import Utils.env_properties;
+import Utils.BaseProperties;
+import dataStructure.RuntimeEnvironment;
 import org.apache.commons.io.output.FileWriterWithEncoding;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.Writer;
 
-public class textFileWriter extends Writer {
-    private java.io.Writer bw;
 
-    public textFileWriter(String Filename) throws IOException {
-        super(Filename);
-        java.io.Writer writer=new FileWriterWithEncoding(textfile,env_properties.getEnvirmentCharset());
+public class textFileWriter extends BaseWriter {
+    private Writer bw;
+
+    public textFileWriter(String Filename, RuntimeEnvironment env) throws IOException {
+        super(Filename,env);
+        Writer writer=new FileWriterWithEncoding(textfile, super.env.getEnvirmentCharset());
         bw = new BufferedWriter(writer, 32768);//now 32768 is best
     }
 

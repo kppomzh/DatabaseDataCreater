@@ -1,7 +1,7 @@
 package DataCreater.FiledCreater;
 
-import Utils.env_properties;
 import dataStructure.ListStructure;
+import dataStructure.RuntimeEnvironment;
 import dataStructure.TableStructure;
 
 import java.util.*;
@@ -10,10 +10,12 @@ public abstract class baseFiledCreater {
     protected TableStructure tableStructure;
     private Map<String, Set<String>> unique;
     protected ListStructure[] toMakeInserts;
+    private RuntimeEnvironment env;
 
-    public baseFiledCreater(TableStructure tableStructure) {
+    public baseFiledCreater(TableStructure tableStructure, RuntimeEnvironment env) {
         this.tableStructure = tableStructure;
         this.unique = new HashMap<>();
+        this.env=env;
         List<ListStructure> temp=new ArrayList<>();
         while (this.tableStructure.hasNext()) {
             ListStructure list = tableStructure.getNextStruc();
@@ -54,7 +56,7 @@ public abstract class baseFiledCreater {
         Return.append(packTail());
 //        Return.deleteCharAt(Return.length() - 1);
 
-        return new String(Return.toString().getBytes(), env_properties.getEnvirmentCharset());
+        return new String(Return.toString().getBytes(), env.getEnvirmentCharset());
     }
 
     /**

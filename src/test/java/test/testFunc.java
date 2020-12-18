@@ -1,22 +1,24 @@
 package test;
 
 import Utils.DBConn.getConn;
-import Utils.env_properties;
+import Utils.Factorys.getEnvRecordFactory;
+import Utils.BaseProperties;
 import main.Service;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.HashMap;
 
 public class testFunc {
     public static void setLocalEnv(int insertnum){
-        env_properties.setEnvironment("longerInsertNumber",String.valueOf(insertnum));
-        env_properties.setEnvironment("toDB","sql");
-        env_properties.setEnvironment("optimal","false");
-        env_properties.setEnvironment("totalThreads","12");
-        env_properties.setEnvironment("defaultProportion","0.5");
-        env_properties.setEnvironment("canbeNegative","false");
-        env_properties.setEnvironment("longerInsert","true");
-        env_properties.setEnvironment("baseFileDir","E:/");
+        BaseProperties.setEnvironment("longerInsertNumber",String.valueOf(insertnum));
+        BaseProperties.setEnvironment("toDB","sql");
+        BaseProperties.setEnvironment("optimal","false");
+        BaseProperties.setEnvironment("totalThreads","12");
+        BaseProperties.setEnvironment("defaultProportion","0.5");
+        BaseProperties.setEnvironment("canbeNegative","false");
+        BaseProperties.setEnvironment("longerInsert","true");
+        BaseProperties.setEnvironment("baseFileDir","E:/");
     }
 
     public static void PerformanceBase(int ci, int createnum) throws SQLException, IOException {
@@ -25,8 +27,8 @@ public class testFunc {
         //虚拟机预热数据
         {
             Service.main(new String[]{"-n", "10000", "-f", "./zhaohuang.sql"});
-            if (env_properties.getEnvironment("toDB").equals("jdbc")) {
-                getConn conn = new getConn();
+            if (BaseProperties.getEnvironment("toDB").equals("jdbc")) {
+                getConn conn = new getConn(getEnvRecordFactory.getRuntimeEnv(new HashMap<>()));
                 conn.Stmt().executeUpdate("truncate table zhzm_dbdf_test");
             }
         }
@@ -35,7 +37,7 @@ public class testFunc {
             all = all + testBase(createnum,"./zhaohuang.sql");
         }
         System.out.print("insertnum:");
-        System.out.println(env_properties.getEnvironment("longerInsertNumber"));
+        System.out.println(BaseProperties.getEnvironment("longerInsertNumber"));
         System.out.println("avg:" + all / ci + " min");
     }
 
@@ -46,8 +48,8 @@ public class testFunc {
         time = System.currentTimeMillis() - time;
         System.out.println("this" + ":" + time);
 
-        if (env_properties.getEnvironment("toDB").equals("jdbc")) {
-            getConn conn = new getConn();
+        if (BaseProperties.getEnvironment("toDB").equals("jdbc")) {
+            getConn conn = new getConn(getEnvRecordFactory.getRuntimeEnv(new HashMap<>()));
             conn.Stmt().executeUpdate("truncate table zhzm_dbdf_test");
         }
 
