@@ -2,14 +2,31 @@ package Utils.DataWriter;
 
 import dataStructure.RuntimeEnvironment;
 
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TransferQueue;
+
 public class SystemoutWriter extends BaseWriter {
-    public SystemoutWriter(RuntimeEnvironment env) {
-        super(env);
+    public SystemoutWriter(RuntimeEnvironment env, TransferQueue<String> cache) {
+        super(env,cache);
     }
 
     @Override
-    public boolean WriteLine(String insert) {
-        System.out.println(insert);
-        return true;
+    public void WriteLine() {
+        try {
+            System.out.println(writeCache.poll(5,TimeUnit.SECONDS));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void run() {
+        while(notStop) {
+            try {
+                System.out.println(writeCache.poll(5, TimeUnit.SECONDS));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

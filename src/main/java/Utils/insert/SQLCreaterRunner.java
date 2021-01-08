@@ -5,9 +5,9 @@ import Utils.Factorys.FiledCreaterFactory;
 import Utils.BaseProperties;
 import dataStructure.RuntimeEnvironment;
 import dataStructure.TableStructure;
-import main.control.start;
 
 import java.util.Objects;
+import java.util.concurrent.TransferQueue;
 
 /**
  * 产生独立线程和数据格式判断
@@ -18,11 +18,11 @@ public class SQLCreaterRunner implements Runnable {
 
     private baseFiledCreater bc;
     private int partCreatemax;
-    private start upStare;
+    private TransferQueue<String> writeCache;
 
-    public SQLCreaterRunner(TableStructure tableStructure, int makenumber, start upStare, RuntimeEnvironment env) {
+    public SQLCreaterRunner(TableStructure tableStructure, int makenumber, TransferQueue<String> cache, RuntimeEnvironment env) {
         this.makenumber = makenumber;
-        this.upStare=upStare;
+        this.writeCache = cache;
         bc= FiledCreaterFactory.getFiledCreater(tableStructure,env);
         partCreatemax=Objects.equals(BaseProperties.getEnvironment("longerInsert"), "true")?
                 Integer.valueOf(BaseProperties.getEnvironment("longerInsertNumber")):1;
@@ -32,12 +32,12 @@ public class SQLCreaterRunner implements Runnable {
     public void run() {
         while(makenumber>=partCreatemax){
             String toWrite = bc.makeinsert(partCreatemax);
-            upStare.send(toWrite);
+            writeCache.add(toWrite);
             makenumber-=partCreatemax;
         }
 
         if(makenumber>0) {
-            upStare.send(bc.makeinsert(makenumber));
+            writeCache.add(bc.makeinsert(makenumber));
         }
     }
 }

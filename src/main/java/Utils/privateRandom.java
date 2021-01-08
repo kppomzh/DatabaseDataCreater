@@ -27,7 +27,7 @@ public class privateRandom {
     }
 
     /**
-     * 获取指定区间内随机数值，取值范围是[start,end)
+     * 获取指定区间内随机数值，取值范围是[startService,end)
      *
      * @param start 随机区间起始值
      * @param end   随机区间终止值
@@ -62,7 +62,7 @@ public class privateRandom {
     }
 
     /**
-     * 获取指定区间内随机数值，取值范围是[start,end]
+     * 获取指定区间内随机数值，取值范围是[startService,end]
      *
      * @param start 随机区间起始值
      * @param end   随机区间终止值

@@ -12,12 +12,12 @@ import main.control.start;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -26,26 +26,33 @@ public class LocalStart extends start {
     private int TOTAL_THREADS = Integer.valueOf(BaseProperties.getEnvironment("totalThreads"));
     private String filename;
     private static Scanner scanf = new Scanner(System.in);
-    private Lock lock = new ReentrantLock();
     private RuntimeEnvironment thisEnv;
+    private TransferQueue<String> writeCache;
+
+    protected ExecutorService service;//根据CPU核心最大值确定线程数量，一般是核心数减一
+    protected TableStructure ts;
+    protected BaseWriter writer;
+    protected int[] linenumber;
 
     public LocalStart(String linenumber, String SQLFilename) {
         filename = SQLFilename;
         checkMsg(linenumber);
         //根据CPU核心最大值确定线程数量，一般是核心数减一
-        service = Executors.newFixedThreadPool(basicThreads);
+        service = Executors.newFixedThreadPool(basicThreads+1);
+        writeCache=new LinkedTransferQueue<>();
     }
 
     @Override
-    public void start() {
+    public void startService() {
         List<Exception> exList = new LinkedList<>();
         String[] createSQLs = thisEnv.getSQLString().replace("\r", "").split(";");
         for (int i = 0; i < createSQLs.length; i++) {
             try {
-                TableStructure ts = CreateTableStructure.makeStructure(createSQLs[i] + ';', thisEnv);
-                setTableStructure(ts);
-                writer = getWriter(ts.getTbname());
+                ts = CreateTableStructure.makeStructure(createSQLs[i] + ';', thisEnv);
+                setLineNumber(thisEnv.getCreateNum());
+                setTableStructure();
                 createInsertPool();
+                writer = getWriter(ts.getTbname());
 
                 service.shutdown();
                 service.awaitTermination(7, TimeUnit.DAYS);
@@ -57,14 +64,13 @@ public class LocalStart extends start {
         }
     }
 
-    @Override
     protected void createInsertPool() throws CloneNotSupportedException {
-        super.setLineNumber(thisEnv.getCreateNum());
+        service.execute(writer);
         for (int loop = 0; loop < TOTAL_THREADS; loop++)
             service.execute(new SQLCreaterRunner(
                     (TableStructure) ts.clone(),
                     linenumber[loop],
-                    this,
+                    writeCache,
                     thisEnv));
     }
 
@@ -92,27 +98,31 @@ public class LocalStart extends start {
         thisEnv = getEnvRecordFactory.getRuntimeEnv(template);
     }
 
-    @Override
-    public void send(String str) {
-        lock.lock();
-        try {
-            writer.WriteLine(str);
-        } finally {
-            lock.unlock();
-        }
-    }
-
     protected <T> BaseWriter getWriter(T obj) throws IOException {
         String filename = thisEnv.getBaseFileDir() + obj + "." + thisEnv.getToDB();
         if (thisEnv.getToDB().equals("jdbc")) {
-            return new textFileJDBC(thisEnv);
+            return new textFileJDBC(thisEnv,writeCache);
         } else switch (thisEnv.getWriterEngine()) {
             case "apache":
-                return new ApacheFileWriter(filename, thisEnv);
+                return new ApacheFileWriter(filename, thisEnv,writeCache);
             case "screenout":
-                return new SystemoutWriter(thisEnv);
+                return new SystemoutWriter(thisEnv,writeCache);
             default:
-                return new textFileWriter(filename, thisEnv);
+                return new textFileWriter(filename, thisEnv,writeCache);
         }
+    }
+
+    protected void setTableStructure() {
+        if(ts.isPrimary()){
+            ts.setPrimaryInterval(BigInteger.valueOf(TOTAL_THREADS>1?this.linenumber[1]:this.linenumber[0]));
+        }
+    }
+
+    protected void setLineNumber(Double setnumber){
+        this.linenumber = new int[TOTAL_THREADS];
+        for (int loop = 1; loop < TOTAL_THREADS; loop++) {
+            this.linenumber[loop] = setnumber.intValue() / TOTAL_THREADS;
+        }
+        this.linenumber[0] = setnumber.intValue() / TOTAL_THREADS + setnumber.intValue() % TOTAL_THREADS;
     }
 }

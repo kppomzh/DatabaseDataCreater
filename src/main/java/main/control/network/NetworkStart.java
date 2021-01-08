@@ -14,7 +14,7 @@ public class NetworkStart extends start {
     private AioQuickServer server;
 
     public NetworkStart() throws IOException {
-        protocol=new JsonProtocol(this);
+        protocol=new JsonProtocol();
         processor=new InsertProcessor();
 
         server = new AioQuickServer(
@@ -24,17 +24,7 @@ public class NetworkStart extends start {
     }
 
     @Override
-    public void start() throws IOException {
+    public void startService() throws IOException {
         server.start();
-    }
-
-    @Override
-    protected void createInsertPool() {
-
-    }
-
-    @Override
-    public void send(String str) {
-
     }
 }

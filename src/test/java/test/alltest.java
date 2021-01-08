@@ -56,7 +56,7 @@ public class alltest {
         int[] insertnum = {10000};
         for (int value : insertnum) {
             testFunc.setLocalEnv(value);
-            testFunc.PerformanceBase(ci, 10000000);
+            testFunc.PerformanceBase(ci, 2000000);
         }
     }
 

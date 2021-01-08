@@ -46,7 +46,7 @@ public class Fugue {
     public Word[] fugue(Word[] words) {
         boolean inlineOpen = false;
         if (!words[0].getName().equals("create")) {
-            throw new RuntimeException("not start with create");
+            throw new RuntimeException("not startService with create");
         }
 
         Word w = words[0], last;

@@ -3,33 +3,41 @@ package Utils.DataWriter;
 import Utils.DBConn.getConn;
 import dataStructure.RuntimeEnvironment;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TransferQueue;
 
 public class textFileJDBC extends BaseWriter {
     private getConn conn;
     private Statement stmt;
 
-    public textFileJDBC(RuntimeEnvironment env){
-        super(env);
+    public textFileJDBC(RuntimeEnvironment env, TransferQueue<String> cache){
+        super(env,cache);
         conn=new getConn(env);
         stmt=conn.Stmt();
     }
 
     @Override
-    public boolean WriteLine(String insert) {
+    public void WriteLine() {
         try {
+            String insert= writeCache.poll(5, TimeUnit.SECONDS);
             stmt.executeUpdate(insert.substring(0,insert.length()-1));
-            return true;
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
         }
     }
 
     @Override
-    public void close() throws Exception {
-        stmt.execute("commit;");
-        stmt.close();
-        conn.Conn().close();
+    public void close() throws IOException {
+        super.close();
+        try {
+            stmt.execute("commit;");
+            stmt.close();
+            conn.Conn().close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 }

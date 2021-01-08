@@ -1,53 +1,52 @@
 package NetworkUtils;
 
 import CreateSQLParser.TableStructure.CreateTableStructure;
-import Utils.DataWriter.*;
 import Utils.BaseProperties;
+import Utils.DataWriter.netCompressWriter;
 import Utils.insert.SQLCreaterRunner;
 import dataStructure.RuntimeEnvironment;
 import dataStructure.TableStructure;
-import main.control.start;
 import org.smartboot.socket.MessageProcessor;
 import org.smartboot.socket.StateMachineEnum;
 import org.smartboot.socket.transport.AioSession;
 
-import java.io.IOException;
+import java.math.BigInteger;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.*;
 
-public class InsertProcessor extends start implements MessageProcessor<RuntimeEnvironment> {
+public class InsertProcessor implements MessageProcessor<RuntimeEnvironment> {
     private int basicThreads = Integer.valueOf(BaseProperties.getEnvironment("nCPU"));
     private int TOTAL_THREADS = Integer.valueOf(BaseProperties.getEnvironment("totalThreads"));
 
     private ExecutorService service;
-    private Lock lock = new ReentrantLock();
 
     private LinkedBlockingQueue sessions = new LinkedBlockingQueue();
     private AioSession session;
     private RuntimeEnvironment thisEnv;
     private netCompressWriter writer;
+    protected TableStructure ts;
+    protected int[] linenumber;
+    private TransferQueue<String> writeCache;
 
     public InsertProcessor(){
         service = Executors.newFixedThreadPool(basicThreads);
-        writer=new netCompressWriter();
+        writeCache=new LinkedTransferQueue<>();
+        writer=new netCompressWriter(writeCache,session);
     }
 
     @Override
     public void process(AioSession aioSession, RuntimeEnvironment environment) {
         session=aioSession;
+
         thisEnv=environment;
         List<Exception> exList = new LinkedList<>();
         String[] createSQLs = thisEnv.getSQLString().replace("\r", "").split(";");
         for (int i = 0; i < createSQLs.length; i++) {
             try {
-                TableStructure ts = CreateTableStructure.makeStructure(createSQLs[i] + ';', thisEnv);
-                setTableStructure(ts);
+                ts = CreateTableStructure.makeStructure(createSQLs[i] + ';', thisEnv);
+                setLineNumber(thisEnv.getCreateNum());
+                setTableStructure();
                 createInsertPool();
 
                 service.shutdown();
@@ -58,12 +57,9 @@ public class InsertProcessor extends start implements MessageProcessor<RuntimeEn
                 exList.add(msg);
             }
         }
-
-
-
+        session.writeBuffer().flush();
+        session.close(true);
     }
-
-
 
     @Override
     public void stateEvent(AioSession aioSession, StateMachineEnum stateMachineEnum, Throwable throwable) {
@@ -78,32 +74,27 @@ public class InsertProcessor extends start implements MessageProcessor<RuntimeEn
         }
     }
 
-    @Override
-    public void start() throws IOException {
-
-    }
-
-    @Override
     protected void createInsertPool() throws CloneNotSupportedException {
-        super.setLineNumber(thisEnv.getCreateNum());
+        service.execute(writer);
         for (int loop = 0; loop < TOTAL_THREADS; loop++)
             service.execute(new SQLCreaterRunner(
                     (TableStructure) ts.clone(),
                     linenumber[loop],
-                    this,
+                    writeCache,
                     thisEnv));
     }
 
-    @Override
-    public void send(String str) {
-        lock.lock();
-        if(writer.WriteLine(str)) {
-            try {
-                session.writeBuffer().writeAndFlush(writer.getCompress());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+    public void setTableStructure() {
+        if(ts.isPrimary()){
+            ts.setPrimaryInterval(BigInteger.valueOf(TOTAL_THREADS>1?this.linenumber[1]:this.linenumber[0]));
         }
-        lock.unlock();
+    }
+
+    protected void setLineNumber(Double setnumber){
+        this.linenumber = new int[TOTAL_THREADS];
+        for (int loop = 1; loop < TOTAL_THREADS; loop++) {
+            this.linenumber[loop] = setnumber.intValue() / TOTAL_THREADS;
+        }
+        this.linenumber[0] = setnumber.intValue() / TOTAL_THREADS + setnumber.intValue() % TOTAL_THREADS;
     }
 }

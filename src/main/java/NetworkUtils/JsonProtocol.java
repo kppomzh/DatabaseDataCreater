@@ -4,7 +4,6 @@ import Utils.Factorys.getEnvRecordFactory;
 import com.facebook.presto.jdbc.internal.jackson.core.type.TypeReference;
 import com.facebook.presto.jdbc.internal.jackson.databind.ObjectMapper;
 import dataStructure.RuntimeEnvironment;
-import main.control.network.NetworkStart;
 import org.smartboot.socket.Protocol;
 import org.smartboot.socket.transport.AioSession;
 
@@ -14,12 +13,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class JsonProtocol implements Protocol<RuntimeEnvironment> {
-    private NetworkStart backGround;
-
-    public JsonProtocol(NetworkStart backGround) {
-        this.backGround = backGround;
-    }
-
     @Override
     public RuntimeEnvironment decode(ByteBuffer readBuffer, AioSession aioSession) {
         byte length = readBuffer.get(readBuffer.position());

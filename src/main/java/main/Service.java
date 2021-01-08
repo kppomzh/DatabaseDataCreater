@@ -67,6 +67,6 @@ public class Service {
         } else {
             service = new LocalStart(linenumber,filename);
         }
-        service.start();
+        service.startService();
     }
 }
