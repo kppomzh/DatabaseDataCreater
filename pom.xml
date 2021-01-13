@@ -5,7 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>zhzm</groupId>
     <artifactId>DBDF</artifactId>
+    <packaging>pom</packaging>
     <version>1.5.2</version>
+    <modules>
+        <module>PerformanceTest</module>
+    </modules>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>

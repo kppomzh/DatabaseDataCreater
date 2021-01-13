@@ -6,8 +6,6 @@ import CreateSQLParser.Parser.Fugue;
 import CreateSQLParser.Plan.InsertPlanMaker;
 import dataStructure.TableStructure;
 
-import java.util.List;
-
 public class CreateTableStructure {
     /**
      * 解析SQL格式过程

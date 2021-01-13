@@ -2,6 +2,7 @@ package dataStructure;
 
 import DataCreater.TypeCreater.Advanced.PrimaryKey;
 import Exception.DataException.TableStrucDataException;
+import Utils.privateRandom;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -11,16 +12,19 @@ public class TableStructure implements Cloneable {
     private int MaxListRange = 0;//本表中的最大字段长度
     private String tbname;//表名
     private StringBuilder listnamessb;//需要填充的字段名总和
-    private List<ListStructure> listStructureList;
+    private List<ListStructure> listStructureList,numberStructureList,stringStructureList;
     private int readnum = -1;
     private boolean unmake = false;//是否存在不需要填充的字段
     private boolean hasPrimary = false;
     private ListStructure primaryList;
     private BigInteger startPrimary,primaryInterval;
+    private long size;
 
     public TableStructure() {
         listnamessb = new StringBuilder();
         listStructureList = new ArrayList<>();
+        numberStructureList=new ArrayList<>();
+        stringStructureList=new ArrayList<>();
         startPrimary=BigInteger.ZERO;
     }
 
@@ -44,6 +48,12 @@ public class TableStructure implements Cloneable {
             listnamessb.append(ls.getListname());
         }
 
+        if(ls.getListType().equals("number")){
+            numberStructureList.add(ls);
+        }
+        else if(ls.getListType().equals("string")){
+            stringStructureList.add(ls);
+        }
         listStructureList.add(ls);
     }
 
@@ -109,5 +119,13 @@ public class TableStructure implements Cloneable {
 
     public boolean isPrimary(){
         return this.hasPrimary;
+    }
+
+    public ListStructure getPrimaryList(){
+        return isPrimary()?primaryList: numberStructureList.get(privateRandom.RandomInteger(0,numberStructureList.size()));
+    }
+
+    public ListStructure getStringStructureList() {
+        return stringStructureList.get(privateRandom.RandomInteger(0,stringStructureList.size()));
     }
 }
