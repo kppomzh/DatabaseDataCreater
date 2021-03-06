@@ -6,6 +6,7 @@ import Utils.privateRandom;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class TableStructure implements Cloneable {
@@ -19,12 +20,14 @@ public class TableStructure implements Cloneable {
     private ListStructure primaryList;
     private BigInteger startPrimary,primaryInterval;
     private long size;
+    private List<String> foreignRely;
 
     public TableStructure() {
         listnamessb = new StringBuilder();
         listStructureList = new ArrayList<>();
         numberStructureList=new ArrayList<>();
         stringStructureList=new ArrayList<>();
+        foreignRely=new LinkedList<>();
         startPrimary=BigInteger.ZERO;
     }
 
@@ -37,6 +40,10 @@ public class TableStructure implements Cloneable {
                 hasPrimary=true;
                 primaryList=ls;
             }
+        }
+
+        if(ls.isForeign()){
+            foreignRely.add(ls.getForeignTable());
         }
 
         if(ls.isUnmake()){
@@ -127,5 +134,9 @@ public class TableStructure implements Cloneable {
 
     public ListStructure getStringStructureList() {
         return stringStructureList.get(privateRandom.RandomInteger(0,stringStructureList.size()));
+    }
+
+    public List<String> getForeignRely() {
+        return foreignRely;
     }
 }

@@ -7,12 +7,10 @@ import Utils.FileLoader;
 import dataStructure.SelectUpdateBox;
 import dataStructure.TableStructure;
 import utils.BaseProperties;
-import utils.DastabaseMessage;
 import utils.MakeSQLBox;
 import utils.jdbcClient;
 
 import java.io.File;
-import java.io.IOException;
 
 public class TestMain {
     //    private String[] createSQLs;
@@ -56,6 +54,7 @@ public class TestMain {
         } else if (vacuum) {
             makeVacuum();
         }
+        SelectUpdateBox box = MakeSQLBox.getSQLBox(ts);
 
         for (int i = 0; i < insert; i++) {
             String insertSQL = this.creater.makeinsert(insertNumber);
@@ -65,14 +64,12 @@ public class TestMain {
         System.out.println();
 
         for (int i = 0; i < select; i++) {
-            SelectUpdateBox box = MakeSQLBox.getSQLBox(ts);
             System.out.println("第"+i+"次运行select测试，测试SQL："+box.getSelectSQL());
             RunSelectTest(box.getSelectSQL());
         }
         System.out.println();
 
         for (int i = 0; i < update; i++) {
-            SelectUpdateBox box = MakeSQLBox.getSQLBox(ts);
             System.out.println("第"+i+"次运行update测试，测试SQL："+box.getUpdateSQL());
             System.out.println("该SQL影响范围："+dm[0].getUpdateExplain(box.getSelectRangeSQL()));
             RunUpdateTest(box);

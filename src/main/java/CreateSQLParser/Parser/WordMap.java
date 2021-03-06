@@ -36,6 +36,8 @@ public abstract class WordMap {
         wordMap.put("not",temp);
         wordMap.put("unique",temp);
         wordMap.put("primark",temp);
+        wordMap.put("foreign",temp);
+        wordMap.put("references",temp);
         wordMap.put("key",temp);
         wordMap.put("stringtype",temp);
         wordMap.put(";",temp);

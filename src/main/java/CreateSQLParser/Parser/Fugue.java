@@ -39,6 +39,8 @@ public class Fugue {
         multi = new HashSet<>();
         multi.add("not");
         multi.add("primary");
+        multi.add("foreign");
+        multi.add("references");
     }
 
     public Fugue() {
@@ -91,6 +93,11 @@ public class Fugue {
                         w.setName("tablename");
                         break;
                     case "(":
+                        if(words[loop-2].getName().equals("references")){
+                            w.setSubstance(w.getName().toLowerCase());
+                            w.setName("listname");
+                            break;
+                        }
                     case ",":
                         if (!w.getName().equals("String"))
                             w.setSubstance(w.getName());
@@ -114,6 +121,10 @@ public class Fugue {
                     case "regulartype":
                         w.setSubstance(w.getName());
                         w.setName("isRegular");
+                        break;
+                    case "references":
+                        w.setSubstance(w.getName().toLowerCase());
+                        w.setName("tablename");
                         break;
                     default:
                         break;

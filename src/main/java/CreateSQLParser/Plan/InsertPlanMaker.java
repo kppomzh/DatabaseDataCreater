@@ -4,27 +4,32 @@ import CreateSQLParser.Lex.Word;
 import Exception.DataException.TableStrucDataException;
 import Exception.TypeException.CompareException;
 import Exception.TypeException.MultiKeywordException;
-import Exception.TypeException.RegularinPlanException;
-import DataCreater.RegularCreater.Regular;
 import Utils.Factorys.TypeCreaterFactory;
 import dataStructure.ListStructure;
 import dataStructure.TableStructure;
 import Exception.BaseException;
 
 import java.math.BigDecimal;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
 public class InsertPlanMaker {
-    int[] range;
-    String[] numberarea;
-    boolean rangeEnd , isDefault , isSingal,hasArray=false,
-            setInline , isUnmake , isRegular,isStringType,isPrimary;
-    int arraylocal, na;
-    List<String> inlineObject;
-    Word regular;
-    String listname , type , defaultDataType , defaultStr ;
+    private int[] range;
+    private String[] numberarea;
+    private boolean rangeEnd;
+    private boolean isDefault;
+    private boolean isSingal;
+    private boolean hasArray=false;
+    private boolean setInline;
+    private boolean isUnmake;
+    private boolean isRegular;
+    private boolean isStringType;
+    private boolean isPrimary;
+    private int arraylocal, na;
+    private List<String> inlineObject;
+    private Word regular;
+    private String listname , type , defaultDataType , defaultStr ,foreignTable, foreignList;
+    private boolean isForeign;
 
     public TableStructure makeStrusture(Word[] words) throws BaseException, TableStrucDataException {
         TableStructure structure = new TableStructure();
@@ -41,6 +46,20 @@ public class InsertPlanMaker {
                     loop++;
                     if (!words[loop].getName().equals("null"))
                         throw new MultiKeywordException(w,"多单词关键字：not null必须连用。");
+                    break;
+                case "foreign":
+                    loop++;
+                    isForeign=true;
+                    if (!words[loop].getName().equals("key"))
+                        throw new MultiKeywordException(w,"多单词关键字：foreign key必须连用。");
+                    loop++;
+                    if (!words[loop].getName().equals("references"))
+                        throw new MultiKeywordException(w,"多单词关键字：foreign key references必须连用。");
+                    loop++;
+                    foreignTable=words[loop].getSubstance();
+                    loop+=2;
+                    foreignList =words[loop].getSubstance();
+                    loop++;
                     break;
                 case "primary":
                     loop++;
@@ -112,8 +131,10 @@ public class InsertPlanMaker {
                             if(isDefault)
                                 structurel.setDefaultStr(defaultStr);
                             structurel.setPrimary(isPrimary);
-                            //singal一定放在最后在设置，内部会有特性的冲突检查，如果存在default或者inline的话会屏蔽这两种特性
+                            //singal，内部会有特性的冲突检查，如果存在default或者inline的话会屏蔽这两种特性
                             structurel.setSingal(isSingal);
+                            if(isForeign)
+                                structurel.setForeignKey(foreignTable, foreignList);
 
                             structurel.setCreater(TypeCreaterFactory.getTypeCreater(structurel));
                             structure.addList(structurel);
@@ -137,10 +158,11 @@ public class InsertPlanMaker {
         arraylocal = 0; na = 0;
         numberarea = new String[2];
         regular=null;
+        foreignList =null;foreignTable=null;
         inlineObject = new LinkedList<>();
         listname = null; type = "string"; defaultDataType = ""; defaultStr = null;
         rangeEnd = false; isDefault = false; isSingal = false;hasArray=false;
         setInline = false; isUnmake = false; isRegular = false;isStringType=false;
-        isPrimary=false;
+        isPrimary=false;isForeign=false;
     }
 }
