@@ -1,11 +1,11 @@
 package Utils;
 
+import DataCreater.TypeCreater.Advanced.ForeignKey;
 import Exception.DataException.ForeignTableRelyException;
+import dataStructure.ListStructure;
 import dataStructure.NodeMap;
-import dataStructure.NodeMap.Node;
 import dataStructure.TableStructure;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,8 +22,8 @@ public class relyCalculation {
         map = new NodeMap<>();
     }
 
-    public Map<String,TableStructure> makeNodeMap() throws ForeignTableRelyException {
-        Map<String,TableStructure> makeOrderMap=new LinkedHashMap<>();
+    public Map<String, TableStructure> makeNodeMap() throws ForeignTableRelyException {
+        Map<String, TableStructure> makeOrderMap = new LinkedHashMap<>();
 
         for (Map.Entry<String, TableStructure> ts : tss.entrySet()) {
             map.addNode(ts.getKey(), ts.getValue());
@@ -34,24 +34,35 @@ public class relyCalculation {
             calculationTreeNode(ts.getValue());
         }
 
-        setForeignRely(map.sortLevelTree());
+        Map<String, TableStructure> listmap=map.getSortListMap();
+        setForeignRely(listmap);
 
-        return map.getSortListMap();
+        return listmap;
     }
 
     private void calculationTreeNode(TableStructure ts) throws ForeignTableRelyException {
         if (ts.hasForeign()) {
-            List<String> foreignRelyTable=ts.getForeignRelyTable();
-            for(String table:foreignRelyTable){
-                map.relatedNode(table,ts.getTbname());
+            List<String> foreignRelyTable = ts.getForeignRelyTable();
+            for (String table : foreignRelyTable) {
+                map.relatedNode(table, ts.getTbname());
             }
         }
     }
 
-    private void setForeignRely(ArrayList<Map<String, NodeMap<TableStructure>.Node<TableStructure>>> levelTree){
-        for (int i = levelTree.size()-1; i>0; i--) {
-            for(NodeMap<TableStructure>.Node<TableStructure> node:levelTree.get(i).values()){
-
+    private void setForeignRely(Map<String, TableStructure> map) {
+        for (TableStructure ts : map.values()) {
+            if(ts.hasForeign()) {
+                if (ts.hasNext()) {
+                    ListStructure ls=ts.getNextStruc();
+                    if(ls.isForeign()){
+                        String foreignTable=ls.getForeignTable(),
+                                foreignList=ls.getForeignList();
+                        ListStructure rely=map.get(foreignTable)
+                                .getStructureList(foreignList);
+                        rely.setRely();
+                        ls.setCreater(new ForeignKey(rely));
+                    }
+                }
             }
         }
     }

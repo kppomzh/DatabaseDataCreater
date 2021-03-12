@@ -80,10 +80,7 @@ public class ListStructure implements Cloneable {
     }
 
     public void setCreater(baseTypeCreater creater) {
-        if(isRely)
-            this.creater=new relyTypeCreater(creater,relyContent);
-        else
-            this.creater = creater;
+        this.creater = creater;
     }
 
     public void setDefaultStr(String defaultStr) {
@@ -205,5 +202,6 @@ public class ListStructure implements Cloneable {
     public void setRely() {
         isRely = true;
         relyContent=new ArrayList<>();
+        creater=new relyTypeCreater(creater,relyContent);
     }
 }
