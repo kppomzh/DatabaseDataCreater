@@ -4,9 +4,12 @@ import Utils.FileLoader;
 import CreateSQLParser.TableStructure.CreateTableStructure;
 import Utils.env_properties;
 import Utils.insert.CreateInsertSQLProcess;
+import Utils.relyCalculation;
 import dataStructure.TableStructure;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Service {
@@ -76,10 +79,18 @@ public class Service {
             }
             createSQLs = FileString.replace("\r","").split(";");
 
+            Map<String,TableStructure> structureMap=new HashMap<>();
             for (int i = 0; i < createSQLs.length; i++) {
                 TableStructure ts = CreateTableStructure.makeStructure(createSQLs[i] + ';');
+                structureMap.put(ts.getTbname(),ts);
+                }
+            relyCalculation rely=new relyCalculation(structureMap);
+            structureMap=rely.makeNodeMap();
+
+            for(TableStructure ts:structureMap.values()){
                 CreateInsertSQLProcess createInsertSQLProcess = new CreateInsertSQLProcess(ts, linenumber);
                 createInsertSQLProcess.createInsertSQLFile();//args -n linenumber
+
             }
         }catch(Throwable t){
             System.out.println(t.getMessage());

@@ -7,8 +7,9 @@ import CreateSQLParser.Lex.Word;
  */
 public abstract class BaseException extends Exception {
     protected StringBuilder errMessage;
-    public BaseException(Word word){
-        errMessage=new StringBuilder();
+
+    public BaseException(Word word) {
+        errMessage = new StringBuilder();
         errMessage.append(word.getSubstance());
         errMessage.append(" at line:");
         errMessage.append(word.getLine());
@@ -17,8 +18,12 @@ public abstract class BaseException extends Exception {
         errMessage.append("  ");
     }
 
+    public BaseException(String message) {
+        errMessage = new StringBuilder(message);
+    }
+
     @Override
-    public String getMessage(){
+    public String getMessage() {
         return errMessage.toString();
     }
 }

@@ -31,7 +31,7 @@ public class InsertPlanMaker {
     private String listname , type , defaultDataType , defaultStr ,foreignTable, foreignList;
     private boolean isForeign;
 
-    public TableStructure makeStrusture(Word[] words) throws BaseException, TableStrucDataException {
+    public TableStructure makeStrusture(Word[] words) throws BaseException {
         TableStructure structure = new TableStructure();
 
         init();

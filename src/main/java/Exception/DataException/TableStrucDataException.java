@@ -1,6 +1,8 @@
 package Exception.DataException;
 
-public class TableStrucDataException extends Exception {
+import Exception.BaseException;
+
+public class TableStrucDataException extends BaseException {
     public TableStrucDataException(String word) {
         super(word);
     }

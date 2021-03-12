@@ -5,37 +5,35 @@ import Exception.DataException.TableStrucDataException;
 import Utils.privateRandom;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class TableStructure implements Cloneable {
     private int MaxListRange = 0;//本表中的最大字段长度
     private String tbname;//表名
     private StringBuilder listnamessb;//需要填充的字段名总和
-    private List<ListStructure> listStructureList,numberStructureList,stringStructureList;
+    private Map<String,ListStructure> listStructureList;
+    private List<ListStructure> numberStructureList,stringStructureList;
     private int readnum = -1;
     private boolean unmake = false;//是否存在不需要填充的字段
     private boolean hasPrimary = false;
     private ListStructure primaryList;
     private BigInteger startPrimary,primaryInterval;
     private long size;
-    private List<String> foreignRely;
+    private List<String> foreignRelyTable;
 
     public TableStructure() {
         listnamessb = new StringBuilder();
-        listStructureList = new ArrayList<>();
+        listStructureList = new LinkedHashMap<>();
         numberStructureList=new ArrayList<>();
         stringStructureList=new ArrayList<>();
-        foreignRely=new LinkedList<>();
+        foreignRelyTable =new LinkedList<>();
         startPrimary=BigInteger.ZERO;
     }
 
     public void addList(ListStructure ls) throws TableStrucDataException {
-        if(hasPrimary&&ls.isPrimary()){
+        if(hasPrimary&&ls.isPrimary()) {
             throw new TableStrucDataException("同一个表中不允许有两个主键");
-        }
-        else{
+        } else{
             if (ls.isPrimary()) {
                 hasPrimary=true;
                 primaryList=ls;
@@ -43,7 +41,7 @@ public class TableStructure implements Cloneable {
         }
 
         if(ls.isForeign()){
-            foreignRely.add(ls.getForeignTable());
+            foreignRelyTable.add(ls.getForeignTable());
         }
 
         if(ls.isUnmake()){
@@ -61,7 +59,7 @@ public class TableStructure implements Cloneable {
         else if(ls.getListType().equals("string")){
             stringStructureList.add(ls);
         }
-        listStructureList.add(ls);
+        listStructureList.put(ls.getListname(),ls);
     }
 
     public boolean hasNext() {
@@ -86,13 +84,13 @@ public class TableStructure implements Cloneable {
             newT.startPrimary = this.startPrimary;
         }
 
-        for (int loop = 0; loop < this.listStructureList.size(); loop++) {
-            if(this.listStructureList.get(loop)==this.primaryList){
+        for (ListStructure ls:listStructureList.values()) {
+            if(ls.isPrimary()){
                 ListStructure copy= (ListStructure) this.primaryList.clone();
                 copy.setCreater(new PrimaryKey(copy,startPrimary));
-                newT.listStructureList.add(copy);
+                newT.listStructureList.put(ls.getListname(),copy);
             } else {
-                newT.listStructureList.add((ListStructure) this.listStructureList.get(loop).clone());
+                newT.listStructureList.put(ls.getListname(),(ListStructure) ls.clone());
             }
         }
         newT.tbname = this.tbname;
@@ -136,7 +134,15 @@ public class TableStructure implements Cloneable {
         return stringStructureList.get(privateRandom.RandomInteger(0,stringStructureList.size()));
     }
 
-    public List<String> getForeignRely() {
-        return foreignRely;
+    public boolean hasForeign(){
+        return !foreignRelyTable.isEmpty();
+    }
+
+    public List<String> getForeignRelyTable() {
+        return foreignRelyTable;
+    }
+
+    public ListStructure getStructureList(String listname) {
+        return listStructureList.get(listname);
     }
 }
