@@ -15,7 +15,7 @@ import java.util.Scanner;
 public class Service {
     private static Scanner scanf = new Scanner(System.in);
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         String filename = null, FileString;
         String[] createSQLs;
         Double linenumber = null;
@@ -31,7 +31,7 @@ public class Service {
                     break;
                 case "--set":
                     env_properties.setEnvironment(args[loop + 1], args[loop + 2]);
-                    loop+=2;
+                    loop += 2;
                     break;
                 case "-o":
                     env_properties.setEnvironment("baseFileDir", args[loop + 1]);
@@ -77,22 +77,23 @@ public class Service {
                 System.out.println("输入create number");
                 linenumber = scanf.nextDouble();
             }
-            createSQLs = FileString.replace("\r","").split(";");
+            createSQLs = FileString.replace("\r", "").split(";");
 
-            Map<String,TableStructure> structureMap=new HashMap<>();
+            Map<String, TableStructure> structureMap = new HashMap<>();
             for (int i = 0; i < createSQLs.length; i++) {
-                TableStructure ts = CreateTableStructure.makeStructure(createSQLs[i] + ';');
-                structureMap.put(ts.getTbname(),ts);
+                if (createSQLs[i].length() > 13) {
+                    TableStructure ts = CreateTableStructure.makeStructure(createSQLs[i] + ';');
+                    structureMap.put(ts.getTbname(), ts);
                 }
-            relyCalculation rely=new relyCalculation(structureMap);
-            structureMap=rely.makeNodeMap();
+            }
+            relyCalculation rely = new relyCalculation(structureMap);
+            structureMap = rely.makeNodeMap();
 
-            for(TableStructure ts:structureMap.values()){
+            for (TableStructure ts : structureMap.values()) {
                 CreateInsertSQLProcess createInsertSQLProcess = new CreateInsertSQLProcess(ts, linenumber);
                 createInsertSQLProcess.createInsertSQLFile();//args -n linenumber
-
             }
-        }catch(Throwable t){
+        } catch (Throwable t) {
             System.out.println(t.getMessage());
         }
     }

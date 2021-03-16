@@ -34,6 +34,7 @@ public class relyCalculation {
             calculationTreeNode(ts.getValue());
         }
 
+//        map.sortLevelTree();
         Map<String, TableStructure> listmap=map.getSortListMap();
         setForeignRely(listmap);
 
@@ -52,7 +53,7 @@ public class relyCalculation {
     private void setForeignRely(Map<String, TableStructure> map) {
         for (TableStructure ts : map.values()) {
             if(ts.hasForeign()) {
-                if (ts.hasNext()) {
+                while (ts.hasNext()) {
                     ListStructure ls=ts.getNextStruc();
                     if(ls.isForeign()){
                         String foreignTable=ls.getForeignTable(),

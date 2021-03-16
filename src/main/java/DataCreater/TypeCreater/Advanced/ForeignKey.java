@@ -1,6 +1,7 @@
 package DataCreater.TypeCreater.Advanced;
 
 import DataCreater.TypeCreater.baseTypeCreaterImpl;
+import Utils.ArraySetList;
 import Utils.privateRandom;
 import dataStructure.ListStructure;
 

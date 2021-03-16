@@ -11,7 +11,8 @@ public class TableStructure implements Cloneable {
     private int MaxListRange = 0;//本表中的最大字段长度
     private String tbname;//表名
     private StringBuilder listnamessb;//需要填充的字段名总和
-    private Map<String,ListStructure> listStructureList;
+    private List<String> listnames;
+    private LinkedHashMap<String,ListStructure> listStructureList;
     private List<ListStructure> numberStructureList,stringStructureList;
     private int readnum = -1;
     private boolean unmake = false;//是否存在不需要填充的字段
@@ -23,6 +24,7 @@ public class TableStructure implements Cloneable {
 
     public TableStructure() {
         listnamessb = new StringBuilder();
+        listnames=new ArrayList<>();
         listStructureList = new LinkedHashMap<>();
         numberStructureList=new ArrayList<>();
         stringStructureList=new ArrayList<>();
@@ -59,6 +61,7 @@ public class TableStructure implements Cloneable {
         else if(ls.getListType().equals("string")){
             stringStructureList.add(ls);
         }
+        listnames.add(ls.getListname());
         listStructureList.put(ls.getListname(),ls);
     }
 
@@ -73,7 +76,7 @@ public class TableStructure implements Cloneable {
     //取字段结构
     public ListStructure getNextStruc() {
         readnum++;
-        return listStructureList.get(readnum);
+        return listStructureList.get(listnames.get(readnum));
     }
 
     @Override
@@ -96,6 +99,7 @@ public class TableStructure implements Cloneable {
         newT.tbname = this.tbname;
         newT.MaxListRange = this.MaxListRange;
         newT.listnamessb = this.listnamessb;
+        newT.listnames=this.listnames;
         newT.unmake = this.unmake;
         newT.hasPrimary=this.hasPrimary;
         return newT;

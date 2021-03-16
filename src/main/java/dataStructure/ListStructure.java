@@ -3,9 +3,9 @@ package dataStructure;
 import CreateSQLParser.Lex.Word;
 import DataCreater.TypeCreater.baseTypeCreater;
 import DataCreater.TypeCreater.relyTypeCreater;
+import Utils.ArraySetList;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * 表字段数据结构
@@ -201,7 +201,16 @@ public class ListStructure implements Cloneable {
 
     public void setRely() {
         isRely = true;
-        relyContent=new ArrayList<>();
+        if(isInline){
+            relyContent= Arrays.asList(inlineObject);
+        }
+        //主键优化尚未执行
+//        else if(isPrimary){
+//            relyContent=
+//        }
+        else {
+            relyContent = new ArraySetList<>();
+        }
         creater=new relyTypeCreater(creater,relyContent);
     }
 }

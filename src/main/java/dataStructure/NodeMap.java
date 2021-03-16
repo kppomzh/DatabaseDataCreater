@@ -6,12 +6,20 @@ import java.util.*;
 import java.util.Map.Entry;
 
 public class NodeMap<T> {
-    private Map<String,Node<T>> all=new HashMap<>();
-    private ArrayList<Map<String,Node<T>>> levelTree=new ArrayList<>();
+    private Map<String,Node<T>> all;
+    private ArrayList<Map<String,Node<T>>> levelTree;
+
+    public NodeMap(){
+        levelTree = new ArrayList<>();
+        all = new HashMap<>();
+        Map<String,Node<T>> level0=new HashMap<>(all);
+        levelTree.add(level0);
+    }
 
     public void addNode(String name, T root){
         Node<T> node=new Node<>(root);
         node.setLevel(0);
+        levelTree.get(0).put(name,node);
         all.put(name,node);
     }
 
@@ -23,9 +31,18 @@ public class NodeMap<T> {
         else {
             parentNode.addSon(son,sonNode);
             sonNode.addParent(parentNode);
+            if(parentNode.getLevel()>=sonNode.getLevel()){
+                levelTree.get(sonNode.getLevel()).remove(son);
+                sonNode.setLevel(parentNode.getLevel()+1);
+                refreshNodeLevel(son,sonNode);
+            }
         }
     }
 
+    /**
+     * 根据深度遍历，计算所有节点到源点的最大距离，构造层级树
+     * @return
+     */
     public ArrayList<Map<String,Node<T>>> sortLevelTree(){
         levelTree.add(new HashMap<>());
         for(Entry<String,Node<T>> node:all.entrySet()){
@@ -45,14 +62,14 @@ public class NodeMap<T> {
                     for(Entry<String,Node<T>> entry:sons.entrySet()){
                         Node<T> nodei= entry.getValue();
                         if(node.getLevel()>=nodei.getLevel()){
-                            levelTree.get(nodei.getLevel()).remove(nodei);
+                            levelTree.get(nodei.getLevel()).remove(entry.getKey());
                             newLevel.put(entry.getKey(),nodei);
                             nodei.setLevel(node.getLevel()+1);
                         }
                     }
                 }
                 else{
-                    levelstop=levelstop&true;
+                    levelstop=levelstop|true;
                 }
             }
 
@@ -71,6 +88,21 @@ public class NodeMap<T> {
             }
         }
         return map;
+    }
+
+    private void refreshNodeLevel(String nodename,Node<T>node){
+        while(levelTree.size()<=node.getLevel()){
+            levelTree.add(new HashMap<>());
+        }
+        levelTree.get(node.getLevel()).put(nodename, node);
+
+        for(Entry<String,Node<T>> son:node.getSons().entrySet()){
+            if(node.getLevel()>=son.getValue().getLevel()){
+                levelTree.get(son.getValue().getLevel()).remove(son.getKey());
+                son.getValue().setLevel(node.getLevel()+1);
+                refreshNodeLevel(son.getKey(),son.getValue());
+            }
+        }
     }
 
     public class Node<T>{
@@ -127,6 +159,5 @@ public class NodeMap<T> {
             return level;
         }
     }
-
 }
 

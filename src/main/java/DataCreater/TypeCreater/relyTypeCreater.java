@@ -1,12 +1,12 @@
 package DataCreater.TypeCreater;
 
-import java.util.List;
+import java.util.Collection;
 
 public class relyTypeCreater extends baseTypeCreaterImpl{
     protected baseTypeCreater creater;
-    protected List<String> data;
+    protected Collection<String> data;
 
-    public relyTypeCreater(baseTypeCreater creater, List<String> data){
+    public relyTypeCreater(baseTypeCreater creater, Collection<String> data){
         this.creater=creater;
         this.data=data;
     }
