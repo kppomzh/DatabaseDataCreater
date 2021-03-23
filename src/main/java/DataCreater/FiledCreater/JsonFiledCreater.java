@@ -16,7 +16,8 @@ public class JsonFiledCreater extends baseFiledCreater {
     }
 
     @Override
-    protected void packFiled(StringBuilder out) {
+    protected String packFiled() {
+        StringBuilder out=new StringBuilder();
         out.append('{');
         String[] temp=super.makeOnceData();
         for (int i = 0; i < temp.length; i++) {
@@ -25,10 +26,11 @@ public class JsonFiledCreater extends baseFiledCreater {
         }
         out.deleteCharAt(out.length()-1);
         out.append("\n}\n");
+        return out.toString();
     }
 
     @Override
     protected String packTail() {
-        return "";
+        return "\n";
     }
 }

@@ -74,7 +74,10 @@ public class CreateInsertSQLProcess {
             case "screenout":
                 return new SystemoutWriter();
             default :
-                return new textFileWriter(filename);
+                if(env_properties.getEnvironment("compress").equals("true"))
+                    return new textCompressWriter(filename);
+                else
+                    return new textFileWriter(filename);
         }
     }
 }

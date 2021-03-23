@@ -67,15 +67,15 @@ public class Service {
             }
         }
 
-        try {
-            if (filename == null) {
-                System.out.println("输入create SQL");
-                FileString = scanf.nextLine();
-            } else
+        if (filename == null) {
+            System.out.println("输入create SQL");
+            FileString = scanf.nextLine();
+        } else {
+            try {
                 FileString = FileLoader.loadFile(new File(filename));
-            if (linenumber == null) {
-                System.out.println("输入create number");
-                linenumber = scanf.nextDouble();
+            } catch (IOException e) {
+                e.printStackTrace();
+                return ;
             }
             createSQLs = FileString.replace("\r", "").split(";");
 
@@ -92,6 +92,8 @@ public class Service {
             for (TableStructure ts : structureMap.values()) {
                 CreateInsertSQLProcess createInsertSQLProcess = new CreateInsertSQLProcess(ts, linenumber);
                 createInsertSQLProcess.createInsertSQLFile();//args -n linenumber
+            } catch (Throwable t) {
+                System.out.println(t.getMessage());
             }
         } catch (Throwable t) {
             System.out.println(t.getMessage());

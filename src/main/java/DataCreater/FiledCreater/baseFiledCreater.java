@@ -43,7 +43,7 @@ public abstract class baseFiledCreater {
 
         for (int loop = 0; loop < makenum; loop++) {
             try {
-                packFiled(Return);
+                Return.append(packFiled());
             } catch (Exception e) {
                 System.out.println(Return.toString());
                 throw new RuntimeException(e.getMessage());
@@ -51,8 +51,10 @@ public abstract class baseFiledCreater {
         }
 
         Return.deleteCharAt(Return.length() - 1);
-        String insert = Return.append(packTail()).append("\n").toString();
-        return new String(insert.getBytes(), env_properties.getEnvirmentCharset());
+        Return.append(packTail());
+//        Return.deleteCharAt(Return.length() - 1);
+
+        return new String(Return.toString().getBytes(), env_properties.getEnvirmentCharset());
     }
 
     /**
@@ -96,9 +98,9 @@ public abstract class baseFiledCreater {
     /**
      * 依赖于不同的数据格式，各类型字段的特殊格式
      *
-     * @param out
+     * @return
      */
-    protected abstract void packFiled(StringBuilder out) throws Exception;
+    protected abstract String packFiled() throws Exception;
 
     /**
      * 依赖于不同的数据格式，一条数据插入时候的尾部特殊格式

@@ -19,7 +19,12 @@ public class CreateTableStructure {
         InsertPlanMaker maker = new InsertPlanMaker();
 
         Word[] words = ws.Segment(createSQL);
-        words = fugue.fugue(words);
+        try {
+            words = fugue.fugue(words);
+        }
+        catch (Throwable t){
+            throw new Exception(t.getMessage()+"\n"+createSQL);
+        }
         return maker.makeStrusture(words);
     }
 }
