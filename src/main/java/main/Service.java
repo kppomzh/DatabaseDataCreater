@@ -4,10 +4,12 @@ import Utils.FileLoader;
 import CreateSQLParser.TableStructure.CreateTableStructure;
 import Utils.env_properties;
 import Utils.insert.CreateInsertSQLProcess;
+import Utils.relyCalculation;
 import dataStructure.TableStructure;
 
 import java.io.File;
-import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Service {
@@ -75,21 +77,26 @@ public class Service {
                 e.printStackTrace();
                 return ;
             }
-        }
-        if (linenumber == null) {
-            System.out.println("输入create number");
-            linenumber = scanf.nextDouble();
-        }
-        createSQLs = FileString.replace("\r", "").split(";");
+            createSQLs = FileString.replace("\r", "").split(";");
 
-        for (int i = 0; i < createSQLs.length; i++) {
-            try {
-                TableStructure ts = CreateTableStructure.makeStructure(createSQLs[i] + ';');
+            Map<String, TableStructure> structureMap = new HashMap<>();
+            for (int i = 0; i < createSQLs.length; i++) {
+                if (createSQLs[i].length() > 13) {
+                    TableStructure ts = CreateTableStructure.makeStructure(createSQLs[i] + ';');
+                    structureMap.put(ts.getTbname(), ts);
+                }
+            }
+            relyCalculation rely = new relyCalculation(structureMap);
+            structureMap = rely.makeNodeMap();
+
+            for (TableStructure ts : structureMap.values()) {
                 CreateInsertSQLProcess createInsertSQLProcess = new CreateInsertSQLProcess(ts, linenumber);
                 createInsertSQLProcess.createInsertSQLFile();//args -n linenumber
             } catch (Throwable t) {
                 System.out.println(t.getMessage());
             }
+        } catch (Throwable t) {
+            System.out.println(t.getMessage());
         }
     }
 }

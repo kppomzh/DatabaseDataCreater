@@ -18,10 +18,11 @@ public class alltest {
 
     @Test
     public void typetest() {
-        Service.main(new String[]{"-n", "5", "-f", "zhaohuang.sql", "-i", "mongo","--set","WriterEngine","screenout"});
-        Service.main(new String[]{"-n", "5", "-f", "zhaohuang.sql", "-i", "sql","--set","WriterEngine","screenout"});
-        Service.main(new String[]{"-n", "5", "-f", "zhaohuang.sql", "-i", "json","--set","WriterEngine","screenout"});
-        Service.main(new String[]{"-n", "5", "-f", "zhaohuang.sql", "-i", "csv","--set","WriterEngine","screenout"});
+//        Service.main(new String[]{"-n", "5", "-f", "zhaohuang.sql", "-i", "mongo","--set","WriterEngine","screenout"});
+//        Service.main(new String[]{"-n", "5", "-f", "zhaohuang.sql", "-i", "sql","--set","WriterEngine","screenout"});
+//        Service.main(new String[]{"-n", "5", "-f", "zhaohuang.sql", "-i", "json","--set","WriterEngine","screenout"});
+//        Service.main(new String[]{"-n", "5", "-f", "zhaohuang.sql", "-i", "csv","--set","WriterEngine","screenout"});
+        Service.main(new String[]{"-n", "5", "-f", "rely.sql", "-i", "csv","--set","WriterEngine","screenout"});
     }
 
     @Test

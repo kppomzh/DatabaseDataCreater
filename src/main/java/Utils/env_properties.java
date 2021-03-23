@@ -110,7 +110,15 @@ public class env_properties {
     }
 
     public static String getEnvironment(String envstring) {
-        return env.getProperty(envstring).strip();
+        return getEnvironment(envstring,"");
+    }
+
+    public static String getEnvironment(String envstring,String defaultStr) {
+        String res=env.getProperty(envstring);
+        if (res==null||res.equals("")){
+            return defaultStr;
+        }
+        return res.strip();
     }
 
     public static void setEnvironment(String envName, String envstring) {
