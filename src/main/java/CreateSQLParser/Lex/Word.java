@@ -1,9 +1,9 @@
 package CreateSQLParser.Lex;
 
 public class Word {
-    String name;//单词的实际名称，如果是常量的话就写常量的类型名称
-    String substance;//单词的实际内容，只对常量、对象名称有效
-    boolean isMark;//简单表示这是一个符号而不是单词
+    private String name;//单词的实际名称，如果是常量的话就写常量的类型名称
+    private String substance;//单词的实际内容，只对常量、对象名称有效
+    private boolean isMark;//简单表示这是一个符号而不是单词
     private int line,list;//首字母所在行/列
 
     /**
