@@ -74,7 +74,7 @@ public class env_properties {
 
     private void loadDefaultProp() {
         if(!env.containsKey("dbCharSet")||env.getProperty("dbCharSet").equals("")){
-            envirmentCharset=Charset.defaultCharset();
+            envirmentCharset=Charset.forName((String) System.getProperties().get("file.encoding"));
         }
         else{
             envirmentCharset=Charset.forName(env.getProperty("dbCharSet"));

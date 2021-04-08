@@ -21,14 +21,13 @@ public class CreateInsertSQLProcess {
 
     /**
      * @param ts 每个表的解析信息
-     * @param linenumber 总的生成行数
      */
-    public CreateInsertSQLProcess(TableStructure ts, double linenumber) {
+    public CreateInsertSQLProcess(TableStructure ts) {
         this.ts = ts;
         this.linenumber = new int[TOTAL_THREADS];
         for (int loop = 1; loop < TOTAL_THREADS; loop++)
-            this.linenumber[loop] = (int) linenumber / TOTAL_THREADS;
-        this.linenumber[0] = (int) linenumber / TOTAL_THREADS + (int) linenumber % TOTAL_THREADS;
+            this.linenumber[loop] = (int) ts.getSize() / TOTAL_THREADS;
+        this.linenumber[0] = (int) ts.getSize() / TOTAL_THREADS + (int) ts.getSize() % TOTAL_THREADS;
         if(ts.isPrimary()){
             ts.setPrimaryInterval(BigInteger.valueOf(TOTAL_THREADS>1?this.linenumber[1]:this.linenumber[0]));
         }

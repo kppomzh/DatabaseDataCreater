@@ -2,6 +2,7 @@ package main;
 
 import Utils.FileLoader;
 import CreateSQLParser.TableStructure.CreateTableStructure;
+import Utils.StringSpecificationOutput;
 import Utils.env_properties;
 import Utils.insert.CreateInsertSQLProcess;
 import Utils.relyCalculation;
@@ -18,7 +19,7 @@ public class Service {
     public static void main(String[] args) {
         String filename = null, FileString;
         String[] createSQLs;
-        Double linenumber = null;
+        Double[] linenumber = new Double[0];
         for (int loop = 0; loop < args.length; loop++) {
             switch (args[loop]) {
                 case "-f":
@@ -26,7 +27,7 @@ public class Service {
                     loop++;
                     break;
                 case "-n":
-                    linenumber = Double.valueOf(args[loop + 1]);
+                    linenumber = StringSpecificationOutput.specLineNumber(args[loop + 1]);
                     loop++;
                     break;
                 case "--set":
@@ -73,24 +74,29 @@ public class Service {
                 FileString = scanf.nextLine();
             } else
                 FileString = FileLoader.loadFile(new File(filename));
-            if (linenumber == null) {
-                System.out.println("输入create number");
-                linenumber = scanf.nextDouble();
-            }
             createSQLs = FileString.replace("\r", "").split(";");
 
             Map<String, TableStructure> structureMap = new HashMap<>();
+            int SQLnum=0;
             for (int i = 0; i < createSQLs.length; i++) {
                 if (createSQLs[i].length() > 13) {
                     TableStructure ts = CreateTableStructure.makeStructure(createSQLs[i] + ';');
                     structureMap.put(ts.getTbname(), ts);
+                    if(linenumber.length>SQLnum){
+                        ts.setSize(linenumber[SQLnum]);
+                    }
+                    else{
+                        System.out.println("表 "+ts.getTbname()+" 没有指定生成行数，请手动输入：");
+                        ts.setSize(scanf.nextDouble());
+                    }
+                    SQLnum++;
                 }
             }
             relyCalculation rely = new relyCalculation(structureMap);
             structureMap = rely.makeNodeMap();
 
             for (TableStructure ts : structureMap.values()) {
-                CreateInsertSQLProcess createInsertSQLProcess = new CreateInsertSQLProcess(ts, linenumber);
+                CreateInsertSQLProcess createInsertSQLProcess = new CreateInsertSQLProcess(ts);
                 createInsertSQLProcess.createInsertSQLFile();//args -n linenumber
             }
         } catch (Throwable t) {

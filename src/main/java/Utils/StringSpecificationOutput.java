@@ -93,4 +93,14 @@ public class StringSpecificationOutput {
         else
             return "false";
     }
+
+    public static Double[] specLineNumber(String arnum){
+        String[] nums=arnum.split(",");
+        Double[] res=new Double[nums.length];
+
+        for (int i = 0; i < res.length; i++) {
+            res[i]=Double.valueOf(nums[i]);
+        }
+        return res;
+    }
 }

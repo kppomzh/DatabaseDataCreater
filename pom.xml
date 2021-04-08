@@ -96,8 +96,6 @@
                             <headerType>console</headerType>
                             <jar>${buildDir}/${project.artifactId}-${project.version}-shaded.jar</jar>
                             <outfile>${buildDir}/${project.artifactId}-${project.version}.exe</outfile>
-<!--                            <jar>target/${project.artifactId}-${project.version}-shaded.jar</jar>-->
-<!--                            <outfile>target/${project.artifactId}-${project.version}.exe</outfile>-->
                             <errTitle>${project.artifactId}</errTitle>
                             <classPath>
                                 <mainClass>main.Service</mainClass>

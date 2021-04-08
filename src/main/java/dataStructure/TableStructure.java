@@ -19,7 +19,7 @@ public class TableStructure implements Cloneable {
     private boolean hasPrimary = false;
     private ListStructure primaryList;
     private BigInteger startPrimary,primaryInterval;
-    private long size;
+    private double size;
     private List<String> foreignRelyTable;
 
     public TableStructure() {
@@ -148,5 +148,13 @@ public class TableStructure implements Cloneable {
 
     public ListStructure getStructureList(String listname) {
         return listStructureList.get(listname);
+    }
+
+    public double getSize() {
+        return size;
+    }
+
+    public void setSize(double size) {
+        this.size = size;
     }
 }

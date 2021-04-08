@@ -6,24 +6,22 @@ import Utils.env_properties;
 import Utils.insert.CreateInsertSQLProcess;
 import Utils.relyCalculation;
 import dataStructure.TableStructure;
-import main.help;
 import org.junit.Test;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
 
 public class relyTest {
     @Test
     public void relyTest(){
         String FileString;
         String[] createSQLs;
-        Double linenumber = 10d;
+        Double linenumber[] = {5d,10d,50d};
         env_properties.setEnvironment("toDB", "sql");
         env_properties.setEnvironment("baseFileDir", "./");
         env_properties.setEnvironment("TOTAL_THREADS", "1");
-        env_properties.setEnvironment("longerInsert", "true");
+        env_properties.setEnvironment("longerInsert", "false");
         env_properties.setEnvironment("canbeNegative", "true");
         env_properties.setEnvironment("WriterEngine","screenout");
 
@@ -32,10 +30,19 @@ public class relyTest {
             createSQLs = FileString.replace("\r","").split(";");
 
             Map<String, TableStructure> structureMap=new HashMap<>();
+            int SQLnum=0;
             for (int i = 0; i < createSQLs.length; i++) {
-                if(createSQLs[i].length()>13) {
+                if (createSQLs[i].length() > 13) {
                     TableStructure ts = CreateTableStructure.makeStructure(createSQLs[i] + ';');
                     structureMap.put(ts.getTbname(), ts);
+                    if(linenumber.length>SQLnum){
+                        ts.setSize(linenumber[SQLnum]);
+                    }
+                    else{
+                        System.out.println("表 "+ts.getTbname()+" 没有指定生成行数，请手动输入：");
+                        ts.setSize(1);
+                    }
+                    SQLnum++;
                 }
             }
             relyCalculation rely=new relyCalculation(structureMap);
@@ -43,7 +50,7 @@ public class relyTest {
 
             for(TableStructure ts:structureMap.values()){
                 ts.getTbname();
-                CreateInsertSQLProcess createInsertSQLProcess = new CreateInsertSQLProcess(ts, linenumber);
+                CreateInsertSQLProcess createInsertSQLProcess = new CreateInsertSQLProcess(ts);
                 createInsertSQLProcess.createInsertSQLFile();//args -n linenumber
             }
         }catch(Throwable t){
