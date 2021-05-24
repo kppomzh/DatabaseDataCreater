@@ -11,11 +11,11 @@ public class testFunc {
         env_properties.setEnvironment("longerInsertNumber",String.valueOf(insertnum));
         env_properties.setEnvironment("toDB","sql");
         env_properties.setEnvironment("Optimal","false");
-        env_properties.setEnvironment("TOTAL_THREADS","12");
+        env_properties.setEnvironment("TOTAL_THREADS","6");
         env_properties.setEnvironment("defaultProportion","0.5");
         env_properties.setEnvironment("canbeNegative","false");
         env_properties.setEnvironment("longerInsert","true");
-        env_properties.setEnvironment("baseFileDir","E:/");
+        env_properties.setEnvironment("baseFileDir","F:/");
     }
 
     public static void PerformanceBase(int ci, int createnum) throws SQLException {

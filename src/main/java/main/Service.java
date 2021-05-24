@@ -79,7 +79,7 @@ public class Service {
             Map<String, TableStructure> structureMap = new HashMap<>();
             int SQLnum=0;
             for (int i = 0; i < createSQLs.length; i++) {
-                if (createSQLs[i].length() > 13) {
+                if (!(createSQLs[i].length() <= 17 || createSQLs[i].matches("^\\s+$"))) {
                     TableStructure ts = CreateTableStructure.makeStructure(createSQLs[i] + ';');
                     structureMap.put(ts.getTbname(), ts);
                     if(linenumber.length>SQLnum){

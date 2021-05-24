@@ -14,7 +14,7 @@ import java.util.zip.ZipEntry;
 //这里除了参数是手动写死的之外其他部分和正式的没有区别
 public class alltest {
     final static int ci = 5;
-    final static String testfile="E:\\datafile\\download\\s3_2_tableCreates.sql";
+    final static String testfile="zhaohuang.sql";
 
     @Test
     public void typetest() {
@@ -57,7 +57,7 @@ public class alltest {
         int[] insertnum = {10000};
         for (int value : insertnum) {
             testFunc.setLocalEnv(value);
-            testFunc.PerformanceBase(ci, 100000000);
+            testFunc.PerformanceBase(ci, 2100000000);
         }
     }
 
