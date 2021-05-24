@@ -49,7 +49,7 @@ public class alltest {
      * @param ar
      */
     public static void main(String... ar) {
-        Service.main(new String[]{"-n", "15000", "-f", testfile});
+        Service.main(new String[]{"-n", "100000", "-f", testfile});
     }
 
     @Test

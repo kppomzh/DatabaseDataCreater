@@ -16,7 +16,7 @@ public class textFileJDBC extends tF {
     @Override
     public boolean WriteLine(String insert) {
         try {
-            stmt.executeUpdate(insert);
+            stmt.executeUpdate(insert.substring(0,insert.length()-1));
             return true;
         } catch (Exception e) {
             e.printStackTrace();

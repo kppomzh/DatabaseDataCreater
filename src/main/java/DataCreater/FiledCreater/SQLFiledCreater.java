@@ -20,7 +20,8 @@ public class SQLFiledCreater extends baseFiledCreater {
     }
 
     @Override
-    protected void packFiled(StringBuilder out) {
+    protected String packFiled() {
+        StringBuilder out=new StringBuilder();
         out.append('(');
         for (String appendStr:super.makeOnceData()) {
             out.append(appendStr);
@@ -28,10 +29,11 @@ public class SQLFiledCreater extends baseFiledCreater {
         }
         out.deleteCharAt(out.length()-1);
         out.append(')').append(',');
+        return out.toString();
     }
 
     @Override
     protected String packTail() {
-        return ";";
+        return ";\n";
     }
 }
