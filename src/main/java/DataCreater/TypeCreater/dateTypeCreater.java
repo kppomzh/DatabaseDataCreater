@@ -8,8 +8,33 @@ public class dateTypeCreater extends baseTypeCreaterImpl {
 
     public dateTypeCreater(){
         if(env_properties.getEnvironment("toDB").equals("sql")){
-            wrapBefore="to_date('";
-            wrapAfter="','yyyy-mm-dd hh24:mi:ss')";
+            switch (env_properties.getEnvironment("DBsoftware","oracle").toLowerCase()){
+                case "oracle":
+                case "postgresql":
+                    wrapBefore="to_date('";
+                    wrapAfter="','yyyy-mm-dd hh24:mi:ss')";
+                    break;
+                case "db2":
+                    wrapBefore="to_date('";
+                    wrapAfter="','yyyy-MM-dd hh:mi:ss')";
+                    break;
+                case "mysql":
+                    wrapBefore="date('";
+                    wrapAfter="')";
+                    break;
+                case "sqlserver":
+                    wrapBefore="cast('";
+                    wrapAfter="' as datetime)";
+                    break;
+                case "sqlite":
+                    wrapBefore="datetime('";
+                    wrapAfter="')";
+                    break;
+                default:
+                    wrapBefore="'";
+                    wrapAfter="'";
+                    break;
+            }
         }
         else{
             wrapBefore="'";
