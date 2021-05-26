@@ -23,8 +23,6 @@ public class relyCalculation {
     }
 
     public Map<String, TableStructure> makeNodeMap() throws ForeignTableRelyException {
-        Map<String, TableStructure> makeOrderMap = new LinkedHashMap<>();
-
         for (Map.Entry<String, TableStructure> ts : tss.entrySet()) {
             map.addNode(ts.getKey(), ts.getValue());
 
@@ -34,10 +32,8 @@ public class relyCalculation {
             calculationTreeNode(ts.getValue());
         }
 
-//        map.sortLevelTree();
         Map<String, TableStructure> listmap=map.getSortListMap();
         setForeignRely(listmap);
-
         return listmap;
     }
 

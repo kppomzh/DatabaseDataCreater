@@ -53,8 +53,13 @@ public abstract class baseTypeCreaterImpl implements baseTypeCreater,Cloneable {
         char[] str = new char[range];
 
         for (int loop = start; loop < end; loop++) {
-            int local = privateRandom.RandomInteger(min, max);
-            str[loop] = c[local];
+            if(max<=77 && min>=0) {
+                int local = privateRandom.RandomInteger(min, max);
+                str[loop] = c[local];
+            }
+            else {//if(min>77)
+                str[loop]=(char)privateRandom.RandomInteger(min, max).intValue();
+            }
         }
         return new String(str);
     }

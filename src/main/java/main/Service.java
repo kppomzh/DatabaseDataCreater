@@ -52,9 +52,6 @@ public class Service {
                 case "-O":
                     env_properties.setEnvironment("Optimal", "true");
                     break;
-//                case "-a":
-//                    env_properties.setEnvironment("asynchronous", "true");
-//                    break;
                 case "-L":
                     env_properties.setEnvironment("longerInsert", "true");
                     break;

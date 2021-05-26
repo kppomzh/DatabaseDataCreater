@@ -6,19 +6,16 @@ import Utils.privateRandom;
 public class stringTypeCreater extends baseTypeCreaterImpl {
     //strusages:总字符串使用重置次数，到达0的时候将会重置字符串，增强随机性
     //piecewise:分段，将会把一个字符串分成几段拼接完成，根据简单的计算，开根号可以在随机性和性能上取得比较平衡的效果
+    //rangeLength:每一次截取字符串的最大长度
     private int rangeLength, strusages, piecewise;
     private String quickStr;
 
     public stringTypeCreater(int range) {
         if (range < 1) {
-            rangeLength = privateRandom.RandomInteger(1, 10);
-        } else if (env_properties.getEnvironment("Optimal").equals("true")) {
-            if (range < 32 && range > 8) rangeLength = range - privateRandom.RandomInteger(1, 8);
-            else if (range >= 32) rangeLength = privateRandom.RandomInteger(1, range >> 3);
-        } else {
-            rangeLength = range;
+            range = privateRandom.RandomInteger(1, 10);
         }
-        piecewise = Double.valueOf(Math.sqrt(rangeLength)).intValue();
+        piecewise = (int)Math.ceil(Math.sqrt(range));
+        rangeLength = (int)Math.floor(Math.sqrt(range)*2-1);
 
         reinitStr();
     }
