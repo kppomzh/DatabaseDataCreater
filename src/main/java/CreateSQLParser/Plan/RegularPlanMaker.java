@@ -1,7 +1,7 @@
 package CreateSQLParser.Plan;
 
 import CreateSQLParser.Lex.Word;
-import DataCreater.RegularCreater.*;
+import DataCreater.TypeCreater.RegularCreater.*;
 import Exception.RegularException.*;
 import Utils.Factorys.getRegularElementsFactory;
 

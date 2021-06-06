@@ -2,7 +2,7 @@ package test;
 
 import CreateSQLParser.Lex.Word;
 import CreateSQLParser.Plan.RegularPlanMaker;
-import DataCreater.RegularCreater.Regular;
+import DataCreater.TypeCreater.RegularCreater.Regular;
 import org.junit.Assert;
 import org.junit.Test;
 
