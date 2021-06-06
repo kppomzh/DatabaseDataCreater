@@ -13,7 +13,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 public class CreateInsertSQLProcess {
-    private int basicThreads = Integer.valueOf(env_properties.getEnvironment("nCPU"));
+    private int basicThreads = Integer.valueOf(env_properties.getEnvironment("basicThread"));
     private int TOTAL_THREADS = Integer.valueOf(env_properties.getEnvironment("TOTAL_THREADS"));
     private ExecutorService service = Executors.newFixedThreadPool(basicThreads);//根据CPU核心最大值确定线程数量，一般是核心数减一
     private TableStructure ts;
@@ -73,9 +73,9 @@ public class CreateInsertSQLProcess {
             case "screenout":
                 return new SystemoutWriter();
             default :
-                if(env_properties.getEnvironment("compress").equals("true"))
-                    return new textCompressWriter(filename);
-                else
+//                if(env_properties.getEnvironment("compress").equals("true"))
+//                    return new textCompressWriter(filename);
+//                else
                     return new textFileWriter(filename);
         }
     }

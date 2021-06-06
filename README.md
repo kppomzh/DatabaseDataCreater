@@ -173,7 +173,7 @@ dbCharSet:指定输出的字符串以什么字符集写入指定位置；理论�
 
 ### 性能参数
 Optimal:SQL优化，（伪）随机缩短字符串长度，避免超长字符串的变量生成导致长时间卡顿。    
-TOTAL_THREADS:总线程数量，当asynchronous为true的时候整个任务将会被分成和线程数量同等的多个文件。  
+TOTAL_THREADS:总线程数量，当该值不为0的时候，整个任务将会被分成和线程数量同等的多个文件输出。  
 defaultProportion:取值区间0~1，default值在整个字段中占用的默认比例，如果有使用default值的字段，加大该参数会适当的提高程序的性能，但是一定要按照实际的业务需求制定该参数的允许上限。  
 WriterEngine:输出结果使用的引擎，目前有三种：default、apache、screenout。default与apache性能上差不多，不同条件下略有差异；另外如果需要
 验证create语句中各选项的写法是否有问题，想要输出到命令行中的话，请使用screenout参数，不过使用前请先仔细看好生成条数。  

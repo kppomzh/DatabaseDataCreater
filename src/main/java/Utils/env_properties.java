@@ -2,8 +2,10 @@ package Utils;
 
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
+import com.sun.management.OperatingSystemMXBean;
 
 import java.io.*;
+import java.lang.management.ManagementFactory;
 import java.nio.charset.Charset;
 import java.util.Properties;
 import java.util.jar.JarFile;
@@ -12,6 +14,7 @@ import java.util.zip.ZipEntry;
 public class env_properties {
     protected static final env_properties init = new env_properties();
     protected static Properties env;
+    private OperatingSystemMXBean osmxb;
 
     private Charset envirmentCharset;
 
@@ -23,8 +26,11 @@ public class env_properties {
         FileInputStream FIS;
         InputStream pom;
         String path;
+        osmxb = (OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
         try {
-            env.setProperty("nCPU", String.valueOf(Runtime.getRuntime().availableProcessors()));
+            int cpunum=Runtime.getRuntime().availableProcessors();
+            long memt=2*osmxb.getTotalPhysicalMemorySize()/950000000l;
+            env.setProperty("basicThread",String.valueOf(Math.min(memt,cpunum)));
 
             String classresource=this.getClass().getResource(this.getClass().getSimpleName() + ".class").toString();
             if (classresource.startsWith("file:")) {
@@ -88,9 +94,6 @@ public class env_properties {
         if (!env.containsKey("Optimal")) {
             env.setProperty("Optimal", "false");
         }
-//        if (!env.containsKey("asynchronous")) {
-//            env.setProperty("asynchronous", "false");
-//        }
         if (!env.containsKey("TOTAL_THREADS")) {
             env.setProperty("TOTAL_THREADS", "1");
         }

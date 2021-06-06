@@ -1,7 +1,10 @@
 package dataStructure;
 
 import DataCreater.TypeCreater.Advanced.PrimaryKey;
+import DataCreater.TypeCreater.baseTypeCreater;
+import DataCreater.TypeCreater.relyTypeCreater;
 import Exception.DataException.TableStrucDataException;
+import Utils.ArraySetList;
 import Utils.privateRandom;
 
 import java.math.BigInteger;
@@ -90,7 +93,11 @@ public class TableStructure implements Cloneable {
         for (ListStructure ls:listStructureList.values()) {
             if(ls.isPrimary()){
                 ListStructure copy= (ListStructure) this.primaryList.clone();
-                copy.setCreater(new PrimaryKey(copy,startPrimary));
+                baseTypeCreater bccp=new PrimaryKey(copy,startPrimary);
+                if(ls.isRely()){
+                    bccp=new relyTypeCreater(bccp,primaryList.getRelyContent());
+                }
+                copy.setCreater(bccp);
                 newT.listStructureList.put(ls.getListname(),copy);
             } else {
                 newT.listStructureList.put(ls.getListname(),(ListStructure) ls.clone());

@@ -4,13 +4,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Word_Segment {
-    Coolean status;
-    String toSQL;
-    int nowline = 0, nowlist = 0;
-
-    public Word_Segment() {
-
-    }
+    private Coolean status;
+    private String toSQL;
+    private int nowline = 0, nowlist = 0;
+    public Word_Segment() {}
 
     public Word[] Segment(String content) throws Exception {
         List<Word> LW= new LinkedList<>();
@@ -20,12 +17,8 @@ public class Word_Segment {
         for (int loop = 0; loop < toSQL.length(); loop++) {
             char c = toSQL.charAt(loop);
             Coolean nowstatus = c_BuildWord(c);
-            boolean isStop = nowstatus.equals(Coolean.stop);//
-            boolean charStop = charStop(nowstatus);
-            boolean quotation = (c == '\"');
+            boolean isStop = nowstatus.equals(Coolean.stop),charStop = charStop(nowstatus),quotation = (c == '\"'),isRegular = false;;
             boolean Stop = isStop | charStop | quotation | (toWord.length() != 0 && status.equals(Coolean.stop));
-
-            boolean isRegular = false;
 
             if (Stop) { //
                 String isWord = toWord.toString().toLowerCase();//统一转换成小写
@@ -63,7 +56,6 @@ public class Word_Segment {
                     nowstatus = Coolean.mark;
                 }
             }
-
             if (!isStop && !quotation) {
                 toWord.append(c);
                 if (c == '\'') {
@@ -71,17 +63,14 @@ public class Word_Segment {
                     toWord.append(c);
                 }
             }
-
             if (isRegular) {
                 loop = loop + varnameinquotation(loop, toWord, '$');
                 create_word_and_add(toWord.toString(), null,LW);
                 toWord.delete(0, toWord.length());
             }
-
             status = nowstatus;
         }
         create_word_and_add(";", null,LW);
-
         return LW.toArray(new Word[0]);
     }
 
@@ -93,93 +82,17 @@ public class Word_Segment {
                 return Coolean.stop;
             case ' ':
                 nowlist++;
-            case '\r':
-            case ';':
+            case '\r':case ';':
                 //识别为stop的时候不将当前字符列为单词
                 //case '\''://但是单引号是特例，另有专门的方法处理
                 return Coolean.stop;
 
-            case '(':
-            case ')':
-            case ',':
-            case '\"':
-            case '~':
-            case '{':
-            case '}':
+            case '(':case ')':case ',':case '\"':case '~':case '{':case '}':
                 return Coolean.mark;//识别为mark的时候将当前字符列为单词
 
-            case '[':
-            case ']':
-
-            case '?':
-            case '*':
-            case '+':
-            case '|':
+            case '[':case ']':case '?': case '*': case '+':case '|':
                 //类正则表达式
-            case '0':
-            case '1':
-            case '2':
-            case '3':
-            case '4':
-            case '5':
-            case '6':
-            case '7':
-            case '8':
-            case '9':
-            case 'a':
-            case 'b':
-            case 'c':
-            case 'd':
-            case 'e':
-            case 'f':
-            case 'g':
-            case 'h':
-            case 'i':
-            case 'j':
-            case 'k':
-            case 'l':
-            case 'm':
-            case 'n':
-            case 'o':
-            case 'p':
-            case 'q':
-            case 'r':
-            case 's':
-            case 't':
-            case 'u':
-            case 'v':
-            case 'w':
-            case 'x':
-            case 'y':
-            case 'z':
-            case 'A':
-            case 'B':
-            case 'C':
-            case 'D':
-            case 'E':
-            case 'F':
-            case 'G':
-            case 'H':
-            case 'I':
-            case 'J':
-            case 'K':
-            case 'L':
-            case 'M':
-            case 'N':
-            case 'O':
-            case 'P':
-            case 'Q':
-            case 'R':
-            case 'S':
-            case 'T':
-            case 'U':
-            case 'V':
-            case 'W':
-            case 'X':
-            case 'Y':
-            case 'Z':
-            case '.':
-            case '_':
+            case '0':case '1':case '2': case '3':case '4': case '5': case '6': case '7': case '8': case '9': case 'a': case 'b': case 'c': case 'd': case 'e': case 'f': case 'g': case 'h': case 'i':case 'j':case 'k':case 'l': case 'm': case 'n': case 'o': case 'p': case 'q': case 'r': case 's': case 't': case 'u': case 'v': case 'w': case 'x': case 'y': case 'z': case 'A': case 'B': case 'C': case 'D': case 'E': case 'F': case 'G': case 'H': case 'I': case 'J': case 'K': case 'L': case 'M': case 'N': case 'O': case 'P': case 'Q': case 'R': case 'S': case 'T': case 'U': case 'V': case 'W': case 'X': case 'Y': case 'Z': case '.': case '_':
             case '\''://单引号在纯create语句当中并没有作用，所以被拿来当作stringType的一个字符来识别
             default:
                 return Coolean.letter;

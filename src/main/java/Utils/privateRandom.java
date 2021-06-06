@@ -21,9 +21,10 @@ public class privateRandom {
     }
 
     public static void reSetRandom() {
-        int i = re.nextInt(7);
+        int i = re.nextInt(71);
         for (int loop = 0; loop < i; loop++)
             rm.nextDouble();
+
     }
 
     /**

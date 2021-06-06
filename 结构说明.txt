@@ -12,12 +12,18 @@ TableStructure.CreateTableStructure:控制包内三个解析步骤
 
 DataCreater：拼接数据
     FiledCreater:按照不同的文件类型拼接模板代码，比如SQL的insert into、或者JSON的{}
-    RegularCreater:生成符合正则表达式的字符串（数据结构的自描述）
     templet:生成固化的特定格式的字符串，这种方式的效率略高于正则表达式
     TypeCreater
         *:产生基本字段类型的数据
         Advanced:产生“标准SQL中存在的关键字作用的说明”、“如何自定义数据格式”中的数据
             AdvanceTypeCreater:调用templet包（Java反射）
+        RegularCreater:生成符合正则表达式的字符串（数据结构的自描述）
+            MetaString:元字符串，根结构，也用于子表达式
+            SingalMetaChar:单个元字符，主要用于一些反斜杠表达的元字符
+            BracketExpression:字母集合或字母范围集合
+            LengthExpression:长度元字符
+            NmetaString:固定字符串
+            OrSeparator:布尔元字符，‘|’
 
 dataStructure:数据结构
     TableStructure:表结构

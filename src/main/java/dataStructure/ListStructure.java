@@ -6,6 +6,7 @@ import DataCreater.TypeCreater.relyTypeCreater;
 import Utils.ArraySetList;
 
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * 表字段数据结构
@@ -35,7 +36,7 @@ public class ListStructure implements Cloneable {
     private String[] inlineObject;//inline可选范围
     private baseTypeCreater creater;//用于自动生成数据的creater
 
-    private List<String> relyContent;//如果是其他表的外键，则该字段的所有内容都会被填写到这个集合种
+    private List<String> relyContent;//如果是其他表的外键，则该字段的所有内容都会被填写到这个集合
     /**
      * @param listname
      * @param ListType
@@ -209,8 +210,12 @@ public class ListStructure implements Cloneable {
 //            relyContent=
 //        }
         else {
-            relyContent = new ArraySetList<>();
+            relyContent = new CopyOnWriteArrayList<>();
         }
         creater=new relyTypeCreater(creater,relyContent);
+    }
+
+    public boolean isRely() {
+        return isRely;
     }
 }
