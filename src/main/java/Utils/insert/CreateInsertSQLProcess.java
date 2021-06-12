@@ -1,7 +1,7 @@
 package Utils.insert;
 
 import Utils.DataWriter.*;
-import Utils.env_properties;
+import Utils.baseEnvironment;
 import dataStructure.TableStructure;
 
 import java.io.IOException;
@@ -13,8 +13,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 public class CreateInsertSQLProcess {
-    private int basicThreads = Integer.valueOf(env_properties.getEnvironment("basicThread"));
-    private int TOTAL_THREADS = Integer.valueOf(env_properties.getEnvironment("TOTAL_THREADS"));
+    private int basicThreads = Integer.valueOf(baseEnvironment.getEnvironment("basicThread"));
+    private int TOTAL_THREADS = Integer.valueOf(baseEnvironment.getEnvironment("TOTAL_THREADS"));
     private ExecutorService service = Executors.newFixedThreadPool(basicThreads);//根据CPU核心最大值确定线程数量，一般是核心数减一
     private TableStructure ts;
     private int[] linenumber;
@@ -64,16 +64,16 @@ public class CreateInsertSQLProcess {
     }
 
     private tF getWriter(String tablename) throws IOException {
-        String filename = env_properties.getEnvironment("baseFileDir") + tablename + "." + env_properties.getEnvironment("toDB");
-        if (env_properties.getEnvironment("toDB").equals("jdbc")) {
+        String filename = baseEnvironment.getEnvironment("baseFileDir") + tablename + "." + baseEnvironment.getEnvironment("toDB");
+        if (baseEnvironment.getEnvironment("toDB").equals("jdbc")) {
             return new textFileJDBC();
-        } else switch(env_properties.getEnvironment("WriterEngine")){
+        } else switch(baseEnvironment.getEnvironment("WriterEngine")){
             case "apache":
                 return new ApacheFileWriter(filename);
             case "screenout":
                 return new SystemoutWriter();
             default :
-//                if(env_properties.getEnvironment("compress").equals("true"))
+//                if(baseEnvironment.getEnvironment("compress").equals("true"))
 //                    return new textCompressWriter(filename);
 //                else
                     return new textFileWriter(filename);

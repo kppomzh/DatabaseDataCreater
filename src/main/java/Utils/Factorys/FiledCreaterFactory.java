@@ -1,12 +1,12 @@
 package Utils.Factorys;
 
 import DataCreater.FiledCreater.*;
-import Utils.env_properties;
+import Utils.baseEnvironment;
 import dataStructure.TableStructure;
 
 public class FiledCreaterFactory {
     public static baseFiledCreater getFiledCreater(TableStructure tableStructure){
-        switch (env_properties.getEnvironment("toDB")) {
+        switch (baseEnvironment.getEnvironment("toDB")) {
             case "csv":
                 return new csvFiledCreater(tableStructure);
             case "json":
@@ -14,7 +14,7 @@ public class FiledCreaterFactory {
             case "mongo":
                 return new MongoFiledCreater(tableStructure);
             case "jdbc":
-                if(env_properties.getEnvironment("DBsoftware").toLowerCase().equals("mongodb")){
+                if(baseEnvironment.getEnvironment("DBsoftware").toLowerCase().equals("mongodb")){
                     return new MongoFiledCreater(tableStructure);
                 }
             case "sql":

@@ -1,20 +1,16 @@
 package Utils.DataWriter;
 
-import Utils.env_properties;
+import Utils.baseEnvironment;
 import org.apache.commons.io.output.FileWriterWithEncoding;
 
 import java.io.*;
-import java.nio.ByteBuffer;
-import java.nio.channels.Channels;
-import java.nio.channels.FileChannel;
-import java.nio.channels.WritableByteChannel;
 
 public class textFileWriter extends tF{
     private Writer bw;
 
     public textFileWriter(String Filename) throws IOException {
         super(Filename);
-        Writer writer=new FileWriterWithEncoding(textfile,env_properties.getEnvirmentCharset());
+        Writer writer=new FileWriterWithEncoding(textfile, baseEnvironment.getEnvirmentCharset());
         bw = new BufferedWriter(writer, 32768);//now 32768 is best
     }
 

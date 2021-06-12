@@ -1,9 +1,8 @@
 package DataCreater.TypeCreater.Advanced;
 
 import DataCreater.TypeCreater.baseTypeCreater;
-import DataCreater.TypeCreater.stringTypeCreater;
 import Utils.StringSpecificationOutput;
-import Utils.env_properties;
+import Utils.baseEnvironment;
 import Utils.privateRandom;
 import dataStructure.ListStructure;
 
@@ -16,7 +15,7 @@ public class DefaultCreater implements baseTypeCreater {
         innerCreater=creater;
         this.Proportion=Proportion;
 
-        if("sql".equals(env_properties.getEnvironment("toDB")) && list.getListType().equals("date")){
+        if("sql".equals(baseEnvironment.getEnvironment("toDB")) && list.getListType().equals("date")){
             DefaultStr=StringSpecificationOutput.specDate(list.getDefaultStr());
         }
         else if(list.getListType().equals("string")){

@@ -1,6 +1,6 @@
 package DataCreater.FiledCreater;
 
-import Utils.env_properties;
+import Utils.baseEnvironment;
 import dataStructure.ListStructure;
 import dataStructure.TableStructure;
 
@@ -54,7 +54,7 @@ public abstract class baseFiledCreater {
         Return.append(packTail());
 //        Return.deleteCharAt(Return.length() - 1);
 
-        return new String(Return.toString().getBytes(), env_properties.getEnvirmentCharset());
+        return new String(Return.toString().getBytes(), baseEnvironment.getEnvirmentCharset());
     }
 
     /**

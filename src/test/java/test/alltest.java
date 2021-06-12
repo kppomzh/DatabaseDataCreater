@@ -1,6 +1,6 @@
 package test;
 
-import Utils.env_properties;
+import Utils.baseEnvironment;
 import main.Service;
 import org.junit.Test;
 
@@ -14,7 +14,7 @@ import java.util.zip.ZipEntry;
 //这里除了参数是手动写死的之外其他部分和正式的没有区别
 public class alltest {
     final static int ci = 5;
-    final static String testfile="zhaohuang.sql";
+    final static String testfile="qiu.sql";
 
     @Test
     public void typetest() {
@@ -49,7 +49,7 @@ public class alltest {
      * @param ar
      */
     public static void main(String... ar) {
-        Service.main(new String[]{"-n", "100000", "-f", testfile});
+        Service.main(new String[]{"-n", "10000", "-f", testfile});
     }
 
     @Test
@@ -64,7 +64,7 @@ public class alltest {
 //    @Ignore
     @Test
     public void JDBCWriteFullTimeTest() throws SQLException {
-        env_properties.setEnvironment("toDB","jdbc");
+        baseEnvironment.setEnvironment("toDB","jdbc");
         int[] insertnum = {10000};//2500, 5000, 10000,
         for (int value : insertnum) {
             testFunc.PerformanceBase(ci, 10000000);
@@ -73,7 +73,7 @@ public class alltest {
 
     @Test
     public void MultiThreadOneFileTest() throws SQLException {
-        env_properties.setEnvironment("TOTAL_THREADS","3");
+        baseEnvironment.setEnvironment("TOTAL_THREADS","3");
         testFunc.PerformanceBase(1,15000);
     }
 

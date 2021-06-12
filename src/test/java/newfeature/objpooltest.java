@@ -1,6 +1,6 @@
 package newfeature;
 
-import Utils.env_properties;
+import Utils.baseEnvironment;
 import org.apache.commons.pool2.PooledObject;
 import org.apache.commons.pool2.PooledObjectFactory;
 import org.apache.commons.pool2.impl.DefaultPooledObject;
@@ -48,7 +48,7 @@ class objpool {
     public objpool(int poolSize) {
         GenericObjectPoolConfig<Random> conf = new GenericObjectPoolConfig<>();
         conf.setMaxIdle(poolSize);
-        conf.setMaxTotal(Integer.valueOf(env_properties.getEnvironment("nCPU")));
+        conf.setMaxTotal(Integer.valueOf(baseEnvironment.getEnvironment("nCPU")));
         pool = new GenericObjectPool<>(new RandomPooledFactory(), conf);
         for (int i = 0; i < poolSize; i++) {
             try {

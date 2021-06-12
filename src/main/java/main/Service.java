@@ -3,7 +3,7 @@ package main;
 import Utils.FileLoader;
 import CreateSQLParser.TableStructure.CreateTableStructure;
 import Utils.StringSpecificationOutput;
-import Utils.env_properties;
+import Utils.baseEnvironment;
 import Utils.insert.CreateInsertSQLProcess;
 import Utils.relyCalculation;
 import dataStructure.TableStructure;
@@ -31,32 +31,32 @@ public class Service {
                     loop++;
                     break;
                 case "--set":
-                    env_properties.setEnvironment(args[loop + 1], args[loop + 2]);
+                    baseEnvironment.setEnvironment(args[loop + 1], args[loop + 2]);
                     loop += 2;
                     break;
                 case "-o":
-                    env_properties.setEnvironment("baseFileDir", args[loop + 1]);
+                    baseEnvironment.setEnvironment("baseFileDir", args[loop + 1]);
                     loop++;
                     break;
                 case "-t":
-                    env_properties.setEnvironment("TOTAL_THREADS", args[loop + 1]);
+                    baseEnvironment.setEnvironment("TOTAL_THREADS", args[loop + 1]);
                     loop++;
                     break;
                 case "-i":
-                    env_properties.setEnvironment("toDB", args[loop + 1]);
+                    baseEnvironment.setEnvironment("toDB", args[loop + 1]);
                     loop++;
                     break;
                 case "-h":
                     help.printHelpMessage();
                     System.exit(0);
                 case "-O":
-                    env_properties.setEnvironment("Optimal", "true");
+                    baseEnvironment.setEnvironment("Optimal", "true");
                     break;
                 case "-L":
-                    env_properties.setEnvironment("longerInsert", "true");
+                    baseEnvironment.setEnvironment("longerInsert", "true");
                     break;
                 case "-N":
-                    env_properties.setEnvironment("canbeNegative", "true");
+                    baseEnvironment.setEnvironment("canbeNegative", "true");
                     break;
                 case "-v":
 //                case "-version":

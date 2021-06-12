@@ -1,6 +1,5 @@
 package DataCreater.TypeCreater;
 
-import Utils.env_properties;
 import Utils.privateRandom;
 
 public class stringTypeCreater extends baseTypeCreaterImpl {
