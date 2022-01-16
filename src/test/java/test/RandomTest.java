@@ -73,4 +73,11 @@ public class RandomTest {
         }
         System.out.println((System.nanoTime()-time)/1000D);
     }
+
+    @Test
+    public void ad(){
+        int i=3,a=i;
+        System.out.println(i^((i>>1)<<1));
+        System.out.println(i);
+    }
 }

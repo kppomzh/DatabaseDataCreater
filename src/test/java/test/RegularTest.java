@@ -6,6 +6,8 @@ import DataCreater.TypeCreater.RegularCreater.Regular;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.io.File;
+
 public class RegularTest {
     /**
      * 这个数组中的所有字符串都要在try块最后加入Assert.fail();
