@@ -2,14 +2,19 @@ package com.zhzm.service;
 
 import com.zhzm.antlr.createLexer;
 import com.zhzm.antlr.createParser;
+import com.zhzm.datacreater.factory.FiledCreaterFactory;
+import com.zhzm.datacreater.line.BaseFiledCreater;
 import com.zhzm.datacreater.table.TableMaker;
 import com.zhzm.datastructure.table.TableStructure;
 import com.zhzm.exceptions.TableLoopRelyException;
+import com.zhzm.output.SystemOutput;
+import com.zhzm.output.tF;
 import com.zhzm.parser.CreateListenerImpl;
 import com.zhzm.utils.BaseEnvironment;
 import com.zhzm.utils.FileLoader;
 import com.zhzm.utils.InsertPlanMaker;
 import com.zhzm.utils.StringSpecificationOutput;
+import com.zhzm.utils.insert.CreateInsertSQLProcess;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CodePointCharStream;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -19,6 +24,7 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -101,8 +107,20 @@ public class LocalServer {
         }
 
         assert tableMakers != null;
-        for (Collection<TableMaker> maker : tableMakers) {
+        tF output=new SystemOutput();
+        for (Collection<TableMaker> makers : tableMakers) {
             //根据每张表的maker数量建立线程数量，并放到线程池中
+            List<BaseFiledCreater> creaters=new LinkedList<>();
+            CreateInsertSQLProcess process=new CreateInsertSQLProcess();
+            process.setOutput(output);
+            for(TableMaker maker:makers){
+                creaters.add(FiledCreaterFactory.getFiledCreater(maker));
+            }
+            try {
+                process.createInsertSQL(creaters);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

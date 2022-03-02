@@ -3,23 +3,29 @@ package com.zhzm.datacreater.table;
 import com.zhzm.datacreater.table.index.BaseIndex;
 import com.zhzm.datacreater.typecreater.Advanced.RelyTypeCreater;
 import com.zhzm.datacreater.typecreater.baseTypeCreaterImpl;
-import com.zhzm.utils.BaseEnvironment;
 import com.zhzm.utils.privateRandom;
 
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 public class TableMaker implements Cloneable{
     private Map<String, baseTypeCreaterImpl> listCreaterMap;
-    private Map<String, Set<String>> listContentMap;
     private String tablename,listnamessb;
     private List<BaseIndex> indexes;
     private Double linenumber;
+    private baseTypeCreaterImpl primaryCreater;
 
     public TableMaker(String tablename,boolean hasUnmake){
         this.tablename=tablename;
         listCreaterMap=new LinkedHashMap<>();
-        listContentMap=new HashMap<>();
         listnamessb=hasUnmake?null:"";
+        primaryCreater=null;
+    }
+
+    public void addPrimaryList(String listname, baseTypeCreaterImpl typeCreater, boolean rely) {
+        addList(listname, typeCreater, rely);
+        primaryCreater=listCreaterMap.get(listname);
     }
 
     public void addList(String listname, baseTypeCreaterImpl creater,boolean isRely){
@@ -97,6 +103,14 @@ public class TableMaker implements Cloneable{
         return linenumber;
     }
 
+    public Object clone(){
+        TableMaker newMaker=new TableMaker(this.tablename,!"".equals(this.listnamessb));
+
+        newMaker.listCreaterMap=this.listCreaterMap;
+        newMaker.setIndexes(this.indexes);
+
+        return newMaker;
+    }
 
 }
 

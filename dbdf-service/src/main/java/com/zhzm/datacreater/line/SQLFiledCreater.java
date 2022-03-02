@@ -2,7 +2,7 @@ package com.zhzm.datacreater.line;
 
 import com.zhzm.datacreater.table.TableMaker;
 
-public class SQLFiledCreater extends baseFiledCreater {
+public class SQLFiledCreater extends BaseFiledCreater {
     public SQLFiledCreater(TableMaker maker) {
         super(maker);
     }

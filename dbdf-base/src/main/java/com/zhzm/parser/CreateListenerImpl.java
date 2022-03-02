@@ -192,4 +192,8 @@ public class CreateListenerImpl extends createBaseListener {
             return ctx.binary_comparison_operator().getText();
         }
     }
+
+    public void exitNumberset(createParser.NumbersetContext ctx){
+        tss.getLast().setLinenum(Double.parseDouble(ctx.DIGINT().getText()));
+    }
 }

@@ -311,6 +311,12 @@ public interface createVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitAdvance_data(createParser.Advance_dataContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link createParser#numberset}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNumberset(createParser.NumbersetContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link createParser#datatype}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

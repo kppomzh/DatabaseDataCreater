@@ -2,14 +2,13 @@ package com.zhzm.datacreater.factory;
 
 import com.zhzm.datacreater.line.*;
 import com.zhzm.datacreater.table.TableMaker;
-import com.zhzm.datastructure.table.TableStructure;
 import com.zhzm.utils.BaseEnvironment;
 
 public class FiledCreaterFactory {
-    public static baseFiledCreater getFiledCreater(TableMaker maker){
+    public static BaseFiledCreater getFiledCreater(TableMaker maker){
         switch (BaseEnvironment.getEnvironment("toDB")) {
             case "csv":
-                return new csvFiledCreater(maker);
+                return new CsvFiledCreater(maker);
             case "json":
                 return new JsonFiledCreater(maker);
             case "mongo":

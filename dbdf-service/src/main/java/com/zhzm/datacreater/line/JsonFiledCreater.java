@@ -4,7 +4,7 @@ import com.facebook.presto.jdbc.internal.jackson.core.JsonProcessingException;
 import com.facebook.presto.jdbc.internal.jackson.databind.ObjectMapper;
 import com.zhzm.datacreater.table.TableMaker;
 
-public class JsonFiledCreater extends baseFiledCreater {
+public class JsonFiledCreater extends BaseFiledCreater {
     private ObjectMapper objectMapper;
 
     public JsonFiledCreater(TableMaker maker) {

@@ -50,11 +50,15 @@ public class InsertPlanMaker {
     }
 
     public List<TableMaker> transMsg(TableStructure structure) {
+        //threadNum：该表需要用多少线程完成
+        //checkNum：每个线程至少要生成多少数据
         int threadNum = Integer.parseInt(BaseEnvironment.getEnvironment("threads")),
                 checkNum=Integer.parseInt(BaseEnvironment.getEnvironment("defaultCreateNum","100"));
         if(BaseEnvironment.getEnvironment("longerInsert").equals("true")){
+            //将checkNum改为longerInsertNumber
             checkNum=Integer.parseInt(BaseEnvironment.getEnvironment("longerInsertNumber"));
         }
+        //如果生成数除以线程数小于至少生成的数据的话，则减少线程数
         if(structure.getLinenum()/checkNum<threadNum){
             threadNum= (int) (structure.getLinenum()/checkNum);
             if(threadNum<1){
@@ -63,7 +67,8 @@ public class InsertPlanMaker {
         }
         TableMaker[] makers = new TableMaker[threadNum];
         TableMaker maker = new TableMaker(structure.getTableName(),structure.isUnmake());
-        double sublinenumber=structure.getLinenum()/checkNum,linenumber=structure.getLinenum();
+        //推算每一个maker的生成数，向上取整
+        double sublinenumber=Math.ceil(structure.getLinenum()/checkNum),linenumber=structure.getLinenum();
 
         while (structure.hasNext()) {
             ListStructure listStructure = structure.getNextStruc();
@@ -71,11 +76,19 @@ public class InsertPlanMaker {
                 baseTypeCreaterImpl foreign = makerMap.get(listStructure.getForeignTable()).get(0)
                         .getFieldTypeCreater(listStructure.getForeignList());
                 maker.addList(listStructure.getListname(), new ForeignKey(foreign), listStructure.isRely());
-            } else
+            } else if(listStructure.isPrimary()){
+                maker.addPrimaryList(listStructure.getListname(), TypeCreaterFactory.getTypeCreater(listStructure), listStructure.isRely());
+            }else
                 maker.addList(listStructure.getListname(), TypeCreaterFactory.getTypeCreater(listStructure), listStructure.isRely());
         }
 
         maker.setIndexes(IndexCreaterFactory.getIndexesCreater(structure.getIndexes()));
+
+        for (int i = 0; i < threadNum; i++) {
+            makers[i]= (TableMaker) maker.clone();
+            makers[i].setLinenumber(Math.min(linenumber, sublinenumber));
+            linenumber-=sublinenumber;
+        }
 
         return Arrays.asList(makers);
     }

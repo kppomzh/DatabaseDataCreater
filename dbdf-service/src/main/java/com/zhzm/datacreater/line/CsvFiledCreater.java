@@ -1,10 +1,11 @@
-package com.zhzm.filedcreater;
+package com.zhzm.datacreater.line;
+
 
 import com.zhzm.datacreater.table.TableMaker;
 
 public class CsvFiledCreater extends BaseFiledCreater {
-    public CsvFiledCreater(TableMaker tableStructure) {
-        super(tableStructure);
+    public CsvFiledCreater(TableMaker maker) {
+        super(maker);
     }
 
     @Override
@@ -15,7 +16,7 @@ public class CsvFiledCreater extends BaseFiledCreater {
     @Override
     protected String packFiled() {
         StringBuilder out=new StringBuilder();
-        for (String appendStr:super.makeOnceData()) {
+        for (String appendStr:super.makeOnceData().values()) {
             out.append(appendStr);
             out.append(',');
         }

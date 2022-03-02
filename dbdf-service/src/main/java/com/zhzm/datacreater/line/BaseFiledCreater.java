@@ -1,15 +1,18 @@
-package com.zhzm.filedcreater;
+package com.zhzm.datacreater.line;
 
-import com.zhzm.datacreater.table.TableMaker;
 import com.zhzm.utils.BaseEnvironment;
+import com.zhzm.datacreater.table.TableMaker;
+
+import java.util.*;
 
 public abstract class BaseFiledCreater {
     protected TableMaker tableMaker;
+    protected boolean closed;
 
-    public BaseFiledCreater(TableMaker tableMaker) {
-        this.tableMaker = tableMaker;
+    public BaseFiledCreater(TableMaker maker) {
+        this.tableMaker = maker;
+        closed = false;
     }
-
 
     /**
      * 生成对应数据形式的插入内容
@@ -18,9 +21,16 @@ public abstract class BaseFiledCreater {
      * @throws Exception
      */
     public String makeinsert(int makenum) {
+        int count=makenum;
+        if(makenum>=tableMaker.getLinenumber()){
+            closed=true;
+            count=tableMaker.getLinenumber().intValue();
+        }
+        tableMaker.setLinenumber(tableMaker.getLinenumber()-makenum);
+
         StringBuilder Return = new StringBuilder(packHead());
 
-        for (int loop = 0; loop < makenum; loop++) {
+        for (int loop = 0; loop < count; loop++) {
             try {
                 Return.append(packFiled());
             } catch (Exception e) {
@@ -31,33 +41,15 @@ public abstract class BaseFiledCreater {
 
         Return.deleteCharAt(Return.length() - 1);
         Return.append(packTail());
-//        Return.deleteCharAt(Return.length() - 1);
 
         return new String(Return.toString().getBytes(), BaseEnvironment.getEnvirmentCharset());
     }
 
     /**
-     * 用于唯一约束检测，每一个线程会分配一个
-     *
-     * @param ls
-     * @param appendStr
-     */
-//    protected boolean addtoSet(ListStructure ls, String appendStr) {
-//        if (ls.isSingal()) {
-//            if (unique.get(ls.getListname()).contains(appendStr)) {
-//                return false;//错误标记，用于一旦出现了重复的字段内容的时候重新生成数据
-//            } else {
-//                unique.get(ls.getListname()).add(appendStr);
-//            }
-//        }
-//        return true;
-//    }
-
-    /**
      * @return
      */
-    protected String[] makeOnceData(){
-        return tableMaker.getLineContent().values().toArray(new String[0]);
+    protected Map<String,String> makeOnceData(){
+        return tableMaker.getLineContent();
     }
 
     /**
@@ -80,4 +72,8 @@ public abstract class BaseFiledCreater {
      * @return
      */
     protected abstract String packTail();
+
+    public boolean isClosed(){
+        return closed;
+    }
 }
