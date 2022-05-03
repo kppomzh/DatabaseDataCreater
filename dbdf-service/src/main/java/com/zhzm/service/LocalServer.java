@@ -7,14 +7,13 @@ import com.zhzm.datacreater.line.BaseFiledCreater;
 import com.zhzm.datacreater.table.TableMaker;
 import com.zhzm.datastructure.table.TableStructure;
 import com.zhzm.exceptions.TableLoopRelyException;
-import com.zhzm.output.SystemOutput;
+import com.zhzm.output.FileOutupt;
 import com.zhzm.output.tF;
 import com.zhzm.parser.CreateListenerImpl;
 import com.zhzm.utils.BaseEnvironment;
 import com.zhzm.utils.FileLoader;
 import com.zhzm.utils.InsertPlanMaker;
-import com.zhzm.utils.StringSpecificationOutput;
-import com.zhzm.utils.insert.CreateInsertSQLProcess;
+import com.zhzm.utils.CreateInsertSQLProcess;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CodePointCharStream;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -31,7 +30,7 @@ import java.util.Scanner;
 public class LocalServer {
     private static Scanner scanf = new Scanner(System.in);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         String filename = null, FileString;
         Double[] linenumber = new Double[0];
 
@@ -39,10 +38,6 @@ public class LocalServer {
             switch (args[loop]) {
                 case "-f":
                     filename = args[loop + 1];
-                    loop++;
-                    break;
-                case "-n":
-                    linenumber = StringSpecificationOutput.specLineNumber(args[loop + 1]);
                     loop++;
                     break;
                 case "--set":
@@ -107,9 +102,9 @@ public class LocalServer {
         }
 
         assert tableMakers != null;
-        tF output=new SystemOutput();
         for (Collection<TableMaker> makers : tableMakers) {
             //根据每张表的maker数量建立线程数量，并放到线程池中
+            tF output=new FileOutupt(makers.toArray(new TableMaker[0])[0].getTablename());
             List<BaseFiledCreater> creaters=new LinkedList<>();
             CreateInsertSQLProcess process=new CreateInsertSQLProcess();
             process.setOutput(output);

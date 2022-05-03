@@ -1,6 +1,6 @@
 package com.zhzm.datacreater.typecreater.templet;
 
-import Utils.privateRandom;
+import com.zhzm.utils.privateRandom;
 
 public abstract class Email {
     private static String[] emailSuffix = {"@qq.com", "@163.com", "@126.com",

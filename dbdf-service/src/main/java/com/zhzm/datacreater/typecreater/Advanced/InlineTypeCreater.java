@@ -11,7 +11,7 @@ public class InlineTypeCreater extends baseTypeCreaterImpl {
     private String[] inlineArray;
 
     public InlineTypeCreater(ListStructure list){
-        super(list.isRely());
+//        super(list.isRely());
         inlineArray=list.getInlineObjects();
 
         if(list.getListType().equals("string")){
@@ -44,7 +44,7 @@ public class InlineTypeCreater extends baseTypeCreaterImpl {
     }
 
     @Override
-    public String getString(Object... option) {
+    public String getString() {
         return inlineArray[privateRandom.RandomInteger(0,inlineArray.length)];
     }
 }

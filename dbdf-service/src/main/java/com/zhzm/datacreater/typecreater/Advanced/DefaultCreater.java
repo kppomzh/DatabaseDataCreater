@@ -13,7 +13,7 @@ public class DefaultCreater extends baseTypeCreaterImpl {
     private double Proportion;
 
     public DefaultCreater(baseTypeCreater creater, ListStructure list, double Proportion){
-        super(list.isRely());
+//        super(list.isRely());
         innerCreater=creater;
         this.Proportion=Proportion;
 
@@ -32,7 +32,7 @@ public class DefaultCreater extends baseTypeCreaterImpl {
     }
 
     @Override
-    public String getString(Object... option) {
+    public String getString() {
         String res=privateRandom.RandomDouble(0,1)<Proportion?DefaultStr:innerCreater.getString();
         post(res);
         return res;

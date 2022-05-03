@@ -1,6 +1,6 @@
 package com.zhzm.datacreater.typecreater.templet;
 
-import Utils.privateRandom;
+import com.zhzm.utils.privateRandom;
 
 public abstract class Telephone {
     private static String[] Prefix = {"133", "149", "153", "173", "177", "180", "181", "189", "199", "130", "131", "132", "145", "155", "156",

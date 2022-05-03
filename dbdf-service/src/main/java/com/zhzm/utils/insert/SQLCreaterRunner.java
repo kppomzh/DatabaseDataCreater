@@ -20,7 +20,7 @@ public class SQLCreaterRunner implements Runnable {
         this.writer = writer;
         bc=tableStructure;
         partCreatemax=Objects.equals(BaseEnvironment.getEnvironment("longerInsert"), "true")?
-                Integer.valueOf(BaseEnvironment.getEnvironment("longerInsertNumber")):1;
+                Integer.parseInt(BaseEnvironment.getEnvironment("longerInsertNumber")):1;
     }
 
     @Override

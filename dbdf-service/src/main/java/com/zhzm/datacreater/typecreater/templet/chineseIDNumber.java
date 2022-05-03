@@ -1,6 +1,6 @@
 package com.zhzm.datacreater.typecreater.templet;
 
-import Utils.privateRandom;
+import com.zhzm.utils.privateRandom;
 
 import java.util.HashMap;
 

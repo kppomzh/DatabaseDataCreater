@@ -25,6 +25,11 @@ public class NetOutput implements tF {
         }
     }
 
+    @Override
+    public void close() throws IOException {
+        session.close();
+    }
+
     public static byte[] intToByteArray(int i) {
         byte[] result = new byte[5];
         result[0] = (byte)((i >> 24) & 0xFF);

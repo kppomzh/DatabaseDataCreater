@@ -16,4 +16,9 @@ public class SystemOutput implements tF {
             }
         }
     }
+
+    @Override
+    public void close() throws IOException {
+
+    }
 }

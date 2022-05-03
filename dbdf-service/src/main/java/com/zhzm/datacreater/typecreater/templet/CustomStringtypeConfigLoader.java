@@ -1,6 +1,6 @@
 package com.zhzm.datacreater.typecreater.templet;
 
-import Utils.baseEnvironment;
+import com.zhzm.utils.BaseEnvironment;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -19,7 +19,7 @@ public class CustomStringtypeConfigLoader{
 
         File[] confiles;
 //        Collections.addAll(confiles,getFiles(new File(regularpath)));
-        String[] pathsa= baseEnvironment.getEnvironment("CustomStringtypeConf").split(";");
+        String[] pathsa= BaseEnvironment.getEnvironment("CustomStringtypeConf").split(";");
         confiles=getFiles(pathsa);
 
         custom=new Properties();

@@ -10,7 +10,7 @@ import com.zhzm.exceptions.TableLoopRelyException;
 import com.zhzm.output.*;
 import com.zhzm.parser.CreateListenerImpl;
 import com.zhzm.utils.InsertPlanMaker;
-import com.zhzm.utils.insert.CreateInsertSQLProcess;
+import com.zhzm.utils.CreateInsertSQLProcess;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CodePointCharStream;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -20,6 +20,7 @@ import org.smartboot.socket.MessageProcessor;
 import org.smartboot.socket.StateMachineEnum;
 import org.smartboot.socket.transport.AioSession;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -55,6 +56,13 @@ public class ServerProcessor implements MessageProcessor<String> {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+
+        output.WriteLine("\\end");
+        try {
+            output.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
