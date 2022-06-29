@@ -2,7 +2,7 @@ package newfeature;
 
 import CreateSQLParser.TableStructure.CreateTableStructure;
 import Utils.FileLoader;
-import Utils.env_properties;
+import Utils.baseEnvironment;
 import Utils.insert.CreateInsertSQLProcess;
 import Utils.relyCalculation;
 import dataStructure.TableStructure;
@@ -18,12 +18,12 @@ public class relyTest {
         String FileString;
         String[] createSQLs;
         Double linenumber[] = {5d,10d,50d};
-        env_properties.setEnvironment("toDB", "sql");
-        env_properties.setEnvironment("baseFileDir", "./");
-        env_properties.setEnvironment("TOTAL_THREADS", "1");
-        env_properties.setEnvironment("longerInsert", "false");
-        env_properties.setEnvironment("canbeNegative", "true");
-        env_properties.setEnvironment("WriterEngine","screenout");
+        baseEnvironment.setEnvironment("toDB", "sql");
+        baseEnvironment.setEnvironment("baseFileDir", "./");
+        baseEnvironment.setEnvironment("TOTAL_THREADS", "1");
+        baseEnvironment.setEnvironment("longerInsert", "false");
+        baseEnvironment.setEnvironment("canbeNegative", "true");
+        baseEnvironment.setEnvironment("WriterEngine","screenout");
 
         try {
             FileString = FileLoader.loadFile(new File("rely.sql"));

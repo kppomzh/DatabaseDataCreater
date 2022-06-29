@@ -8,7 +8,7 @@ import DataCreater.TypeCreater.Advanced.InlineTypeCreater;
 import DataCreater.TypeCreater.Advanced.PrimaryKey;
 import Exception.BaseException;
 import Exception.TypeException.RegularinPlanException;
-import Utils.env_properties;
+import Utils.baseEnvironment;
 import dataStructure.ListStructure;
 
 public class TypeCreaterFactory {
@@ -16,7 +16,7 @@ public class TypeCreaterFactory {
         if (list.isPrimary()) {
             return new PrimaryKey(list);
         } else if (list.isDefault()) {
-            return new DefaultCreater(makeCreater(list), list, Double.valueOf(env_properties.getEnvironment("defaultProportion")));
+            return new DefaultCreater(makeCreater(list), list, Double.valueOf(baseEnvironment.getEnvironment("defaultProportion")));
         } else if (list.isUnmake()) {
             return null;
         } else if (list.isInline()) {
@@ -32,7 +32,7 @@ public class TypeCreaterFactory {
             case "int":
             case "decimal":
                 return new numberTypeCreater(list.getRange()[0], list.getRange()[1], list.getNumberarea(),
-                        Boolean.valueOf(env_properties.getEnvironment("canbeNegative")));
+                        Boolean.valueOf(baseEnvironment.getEnvironment("canbeNegative")));
             case "date":
                 return new dateTypeCreater();
             case "bool":

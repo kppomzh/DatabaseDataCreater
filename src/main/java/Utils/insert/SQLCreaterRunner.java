@@ -3,7 +3,7 @@ package Utils.insert;
 import DataCreater.FiledCreater.baseFiledCreater;
 import Utils.DataWriter.tF;
 import Utils.Factorys.FiledCreaterFactory;
-import Utils.env_properties;
+import Utils.baseEnvironment;
 import dataStructure.TableStructure;
 
 import java.util.Objects;
@@ -23,8 +23,8 @@ public class SQLCreaterRunner implements Runnable {
         this.makenumber = makenumber;
         this.writer = writer;
         bc= FiledCreaterFactory.getFiledCreater(tableStructure);
-        partCreatemax=Objects.equals(env_properties.getEnvironment("longerInsert"), "true")?
-                Integer.valueOf(env_properties.getEnvironment("longerInsertNumber")):1;
+        partCreatemax=Objects.equals(baseEnvironment.getEnvironment("longerInsert"), "true")?
+                Integer.valueOf(baseEnvironment.getEnvironment("longerInsertNumber")):1;
     }
 
     @Override

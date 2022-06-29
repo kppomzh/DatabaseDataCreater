@@ -1,21 +1,21 @@
 package test;
 
 import Utils.DBConn.getConn;
-import Utils.env_properties;
+import Utils.baseEnvironment;
 import main.Service;
 
 import java.sql.SQLException;
 
 public class testFunc {
     public static void setLocalEnv(int insertnum){
-        env_properties.setEnvironment("longerInsertNumber",String.valueOf(insertnum));
-        env_properties.setEnvironment("toDB","sql");
-        env_properties.setEnvironment("Optimal","false");
-        env_properties.setEnvironment("TOTAL_THREADS","6");
-        env_properties.setEnvironment("defaultProportion","0.5");
-        env_properties.setEnvironment("canbeNegative","false");
-        env_properties.setEnvironment("longerInsert","true");
-        env_properties.setEnvironment("baseFileDir","F:/");
+        baseEnvironment.setEnvironment("longerInsertNumber",String.valueOf(insertnum));
+        baseEnvironment.setEnvironment("toDB","sql");
+        baseEnvironment.setEnvironment("Optimal","false");
+        baseEnvironment.setEnvironment("TOTAL_THREADS","6");
+        baseEnvironment.setEnvironment("defaultProportion","0.5");
+        baseEnvironment.setEnvironment("canbeNegative","false");
+        baseEnvironment.setEnvironment("longerInsert","true");
+        baseEnvironment.setEnvironment("baseFileDir","F:/");
     }
 
     public static void PerformanceBase(int ci, int createnum) throws SQLException {
@@ -24,7 +24,7 @@ public class testFunc {
         //虚拟机预热数据
         {
             Service.main(new String[]{"-n", "10000", "-f", "./zhaohuang.sql"});
-            if (env_properties.getEnvironment("toDB").equals("jdbc")) {
+            if (baseEnvironment.getEnvironment("toDB").equals("jdbc")) {
                 getConn conn = new getConn();
                 conn.Stmt().executeUpdate("truncate table zhzm_dbdf_test");
             }
@@ -34,7 +34,7 @@ public class testFunc {
             all = all + testBase(createnum,"./zhaohuang.sql");
         }
         System.out.print("insertnum:");
-        System.out.println(env_properties.getEnvironment("longerInsertNumber"));
+        System.out.println(baseEnvironment.getEnvironment("longerInsertNumber"));
         System.out.println("avg:" + all / ci + " min");
     }
 
@@ -45,7 +45,7 @@ public class testFunc {
         time = System.currentTimeMillis() - time;
         System.out.println("this" + ":" + time);
 
-        if (env_properties.getEnvironment("toDB").equals("jdbc")) {
+        if (baseEnvironment.getEnvironment("toDB").equals("jdbc")) {
             getConn conn = new getConn();
             conn.Stmt().executeUpdate("truncate table zhzm_dbdf_test");
         }

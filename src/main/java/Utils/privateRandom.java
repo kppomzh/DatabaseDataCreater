@@ -86,7 +86,7 @@ public class privateRandom {
     }
 
     public static BigDecimal RandomBDecimal() {
-        return new BigDecimal(rm.nextGaussian() % 1).abs();
+        return BigDecimal.valueOf(rm.nextGaussian() % 1).abs();
     }
 
     /**

@@ -1,7 +1,7 @@
 package Utils.DBConn;
 
 import SavingTypeString.DBJdbcLinkString;
-import Utils.env_properties;
+import Utils.baseEnvironment;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -34,12 +34,12 @@ public class getConn {
     }
 
     private Connection getConn() throws Exception {
-        return getConn(env_properties.getEnvironment("DBsoftware"),
-                env_properties.getEnvironment("IP"),
-                env_properties.getEnvironment("port",DBJdbcLinkString.getDefaultJDBCPort(env_properties.getEnvironment("DBsoftware"))),
-                env_properties.getEnvironment("database"),
-                env_properties.getEnvironment("user"),
-                env_properties.getEnvironment("password"));
+        return getConn(baseEnvironment.getEnvironment("DBsoftware"),
+                baseEnvironment.getEnvironment("IP"),
+                baseEnvironment.getEnvironment("port",DBJdbcLinkString.getDefaultJDBCPort(baseEnvironment.getEnvironment("DBsoftware"))),
+                baseEnvironment.getEnvironment("database"),
+                baseEnvironment.getEnvironment("user"),
+                baseEnvironment.getEnvironment("password"));
     }
 
     private Connection getConn(String soft,String IP,String port,String dbname,String user,String password) throws Exception {
@@ -64,7 +64,7 @@ public class getConn {
     public void refreshStmt() {
         try {
             stmt = conn.createStatement();
-//            if (env_properties.getEnvironment("DBsoftware").toLowerCase().equals("khan"))
+//            if (baseEnvironment.getEnvironment("DBsoftware").toLowerCase().equals("khan"))
 //                stmt.executeUpdate("set dialect='oracle'");
         } catch (Exception e) {
             e.printStackTrace();

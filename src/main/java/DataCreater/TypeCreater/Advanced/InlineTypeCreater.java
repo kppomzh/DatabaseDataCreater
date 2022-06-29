@@ -2,7 +2,7 @@ package DataCreater.TypeCreater.Advanced;
 
 import DataCreater.TypeCreater.baseTypeCreater;
 import Utils.StringSpecificationOutput;
-import Utils.env_properties;
+import Utils.baseEnvironment;
 import Utils.privateRandom;
 import dataStructure.ListStructure;
 
@@ -28,7 +28,7 @@ public class InlineTypeCreater implements baseTypeCreater {
             }
         }
         else if(list.getListType().equals("date")){
-            if("sql".equals(env_properties.getEnvironment("toDB")) || "jdbc".equals(env_properties.getEnvironment("toDB"))){
+            if("sql".equals(baseEnvironment.getEnvironment("toDB")) || "jdbc".equals(baseEnvironment.getEnvironment("toDB"))){
                 for (int loop = 0; loop < inlineArray.length; loop++) {
                     inlineArray[loop] = StringSpecificationOutput.specDate(inlineArray[loop]);
                 }

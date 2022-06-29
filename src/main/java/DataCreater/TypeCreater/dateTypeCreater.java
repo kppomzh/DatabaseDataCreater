@@ -1,14 +1,14 @@
 package DataCreater.TypeCreater;
 
-import Utils.env_properties;
+import Utils.baseEnvironment;
 import Utils.privateRandom;
 
 public class dateTypeCreater extends baseTypeCreaterImpl {
     private String wrapBefore,wrapAfter;
 
     public dateTypeCreater(){
-        if(env_properties.getEnvironment("toDB").equals("sql")){
-            switch (env_properties.getEnvironment("DBsoftware","oracle").toLowerCase()){
+        if(baseEnvironment.getEnvironment("toDB").equals("sql")){
+            switch (baseEnvironment.getEnvironment("DBsoftware","oracle").toLowerCase()){
                 case "oracle":
                 case "postgresql":
                     wrapBefore="to_date('";
