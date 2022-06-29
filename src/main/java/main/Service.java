@@ -67,8 +67,8 @@ public class Service {
 
         try {
             if (filename == null) {
-                System.out.println("输入create SQL");
-                FileString = scanf.nextLine();
+                System.out.println("请通过命令行模式使用本程序");
+                return ;
             } else
                 FileString = FileLoader.loadFile(new File(filename));
             createSQLs = FileString.replace("\r", "").split(";");
